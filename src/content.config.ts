@@ -47,6 +47,15 @@ const projects = defineCollection({
       /** Portrait-friendly image for the mobile swipe strip. */
       tall: z.string().optional(),
       bg: z.string().optional(),
+      /** Looping video for the desktop home stage, in place of the image. */
+      video: z
+        .object({
+          /** Path in public/media without extension, e.g. "sio/site-walkthrough" */
+          src: z.string(),
+          /** Poster image key in src/assets/img */
+          poster: z.string(),
+        })
+        .optional(),
     }),
     /** Slug of the next project. Defaults to the next one in `order`, looping. */
     next: z.string().optional(),

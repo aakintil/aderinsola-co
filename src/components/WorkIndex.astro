@@ -5,7 +5,9 @@
  * Mobile (720px and below): a scroll-snap swipe strip above the same list.
  * Behavior lives in src/scripts/home.ts. Without JS the list links still work.
  */
+import { getImage } from 'astro:assets';
 import Media from './Media.astro';
+import { image } from '../lib/images';
 import { projectHref, type Project } from '../lib/projects';
 import { pad2 } from '../lib/site';
 
@@ -15,26 +17,56 @@ interface Props {
 const { projects } = Astro.props;
 const first = projects[0]!;
 const total = pad2(projects.length);
+
+// Projects with a stage video get a poster, shown until the video plays (and always without JS).
+const posters = await Promise.all(
+  projects.map((p) =>
+    p.data.card.video ? getImage({ src: image(p.data.card.video.poster), width: 1600, format: 'webp', quality: 80 }) : null,
+  ),
+);
 ---
 
 <section class="work gutter" aria-label="Selected work" data-work>
-  <a class="stage" href={projectHref(first)} tabindex="-1" aria-hidden="true" data-enter="stage" style="--d:120">
-    {
-      projects.map((p, i) => (
-        <Media
-          class:list={['layer', { on: i === 0 }]}
-          src={p.data.card.src}
-          alt=""
-          fit={p.data.card.fit}
-          tone={p.data.tone}
-          bg={p.data.card.bg}
-          size="wide"
-          only="desktop"
-          priority={i === 0}
-        />
-      ))
-    }
-  </a>
+  <div class="stage-wrap" data-enter="stage" style="--d:120">
+    <a class="stage" href={projectHref(first)} tabindex="-1" aria-hidden="true">
+      {
+        projects.map((p, i) => {
+          const video = p.data.card.video;
+          const poster = posters[i];
+          return video && poster ? (
+            <div
+              class:list={['layer', 'vlayer', { on: i === 0 }]}
+              style={`background:var(--t-${p.data.tone})`}
+              data-i={i}
+            >
+              <video poster={poster.src} muted loop playsinline preload="none" width="1280" height="918">
+                <source src={`/media/${video.src}.webm`} type="video/webm" />
+                <source src={`/media/${video.src}.mp4`} type="video/mp4" />
+              </video>
+            </div>
+          ) : (
+            <Media
+              class:list={['layer', { on: i === 0 }]}
+              src={p.data.card.src}
+              alt=""
+              fit={p.data.card.fit}
+              tone={p.data.tone}
+              bg={p.data.card.bg}
+              size="wide"
+              only="desktop"
+              priority={i === 0}
+            />
+          );
+        })
+      }
+    </a>
+    <button class="vbtn" type="button" hidden data-stage-toggle>
+      <span class="visually-hidden">Pause video</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"
+        ><path class="i-pause" d="M4 3h3v10H4zM9 3h3v10H9z"></path><path class="i-play" d="M4.5 2.5v11l9-5.5z"></path></svg
+      >
+    </button>
+  </div>
 
   <div class="mstrip" tabindex="0" role="region" aria-label="Projects, swipe sideways" data-mstrip>
     {
@@ -85,11 +117,14 @@ const total = pad2(projects.length);
   }
 
   /* ---------- desktop stage ---------- */
+  .stage-wrap {
+    position: relative;
+    max-width: 1200px;
+    margin-inline: auto;
+  }
   .stage {
     position: relative;
     display: block;
-    max-width: 1200px;
-    margin-inline: auto;
     aspect-ratio: 16 / 9;
     border-radius: 12px;
     overflow: hidden;
@@ -105,6 +140,40 @@ const total = pad2(projects.length);
   }
   .stage :global(.layer.on) {
     opacity: 1;
+  }
+  .vlayer video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Pause control for the stage video (WCAG 2.2.2). Shown by home.ts while the video layer is on. */
+  .vbtn {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--surface) 86%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--fg);
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+  .vbtn path {
+    fill: currentColor;
+  }
+  .vbtn .i-play,
+  [data-paused] .vbtn .i-pause {
+    display: none;
+  }
+  [data-paused] .vbtn .i-play {
+    display: inline;
   }
 
   /* ---------- list ---------- */
@@ -160,7 +229,7 @@ const total = pad2(projects.length);
   }
 
   @media (max-width: 720px) {
-    .stage {
+    .stage-wrap {
       display: none;
     }
     .mstrip {

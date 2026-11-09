@@ -21,10 +21,53 @@ if (root) {
   const total = String(cards.length).padStart(2, '0');
   let current = 0;
 
+  /* ---------- stage video ----------
+     Plays only on desktop, while its project is selected and the stage is on screen.
+     Starts paused under reduced motion; the button pauses and resumes it (WCAG 2.2.2). */
+  const wrap = root.querySelector<HTMLElement>('.stage-wrap')!;
+  const toggle = root.querySelector<HTMLButtonElement>('[data-stage-toggle]')!;
+  const toggleLabel = toggle.querySelector('.visually-hidden');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let paused = reduced.matches;
+  let stageVisible = false;
+
+  const syncVideo = () => {
+    const layer = layers[current];
+    const hasVideo = !!layer?.classList.contains('vlayer');
+    toggle.hidden = !hasVideo || small.matches;
+    wrap.toggleAttribute('data-paused', paused);
+    if (toggleLabel) toggleLabel.textContent = paused ? 'Play video' : 'Pause video';
+    for (const l of layers) {
+      const video = l.querySelector('video');
+      if (!video) continue;
+      const play = l === layer && stageVisible && !paused && !small.matches;
+      if (play && video.paused) video.play().catch(() => {});
+      if (!play && !video.paused) video.pause();
+    }
+  };
+
+  new IntersectionObserver(
+    ([entry]) => {
+      stageVisible = !!entry?.isIntersecting;
+      syncVideo();
+    },
+    { threshold: 0.25 },
+  ).observe(wrap);
+  toggle.addEventListener('click', () => {
+    paused = !paused;
+    syncVideo();
+  });
+  reduced.addEventListener('change', () => {
+    paused = reduced.matches;
+    syncVideo();
+  });
+  small.addEventListener('change', syncVideo);
+
   const select = (i: number) => {
     if (i === current) return;
     current = i;
     layers.forEach((el, k) => el.classList.toggle('on', k === i));
+    syncVideo();
     cards.forEach((el, k) => el.classList.toggle('on', k === i));
     dots.forEach((el, k) => el.classList.toggle('on', k === i));
     picks.forEach((el, k) => el.toggleAttribute('data-on', k === i));
