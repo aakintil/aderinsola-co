@@ -29,7 +29,10 @@ if (root) {
   const toggleLabel = toggle.querySelector('.visually-hidden');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let paused = reduced.matches;
-  let stageVisible = false;
+  // Start from the stage's actual position, so a hover right after load can play a video
+  // before the IntersectionObserver below reports in.
+  const box = wrap.getBoundingClientRect();
+  let stageVisible = box.height > 0 && box.top < innerHeight && box.bottom > 0;
 
   // The stage video autoplays natively; stop it straight away if the viewer asked for less motion.
   if (paused) root.querySelectorAll<HTMLVideoElement>('.vlayer video').forEach((v) => v.pause());

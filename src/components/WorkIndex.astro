@@ -39,9 +39,18 @@ const posters = await Promise.all(
               style={`background:var(--t-${p.data.tone})`}
               data-i={i}
             >
-              {/* Native autoplay. Sources only match on desktop, so phones (where the stage
-                  is hidden) download nothing. home.ts pauses it offscreen and under reduced motion. */}
-              <video poster={poster.src} autoplay muted loop playsinline width="1506" height="1080">
+              {/* The first project's video autoplays natively; the others load nothing until
+                  selected, then home.ts plays them. Sources only match on desktop, so phones
+                  (where the stage is hidden) download nothing. home.ts also pauses offscreen
+                  and under reduced motion. */}
+              <video
+                poster={poster.src}
+                autoplay={i === 0}
+                preload={i === 0 ? undefined : 'none'}
+                muted
+                loop
+                playsinline
+              >
                 <source src={`/media/${video.src}.mp4`} type="video/mp4" media="(min-width: 721px)" />
               </video>
             </div>
