@@ -34,3 +34,4 @@ public/fonts/flexa/
 
 # local tooling
 .claude/
+.vercel

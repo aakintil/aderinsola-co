@@ -1,0 +1,11 @@
+# Private build kit and local files: never upload to Vercel
+BRIEF.md
+KIT-README.md
+FONTS-SETUP.md
+reference
+.claude
+.env
+.env.*
+dist
+node_modules
+src/assets/fonts/flexa
