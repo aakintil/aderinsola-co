@@ -3,7 +3,7 @@ export const site = {
   role: 'Lead Product Designer',
   description: 'A lead product designer who turns complex systems into products people actually use.',
   // Leave empty until confirmed. Empty values render as drafts (hidden in production).
-  email: '',
+  email: 'aderinsola.akintilo@gmail.com',
   resume: '',
   social: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/aderinsola/' },
