@@ -50,7 +50,7 @@ const projects = defineCollection({
       /** Looping video for the desktop home stage, in place of the image. */
       video: z
         .object({
-          /** Path in public/media without extension, e.g. "sio/site-walkthrough" */
+          /** MP4 in public/media, without extension, e.g. "sio/site-walkthrough-hd" */
           src: z.string(),
           /** Poster image key in src/assets/img */
           poster: z.string(),

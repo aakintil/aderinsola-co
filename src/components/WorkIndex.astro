@@ -39,9 +39,10 @@ const posters = await Promise.all(
               style={`background:var(--t-${p.data.tone})`}
               data-i={i}
             >
-              <video poster={poster.src} muted loop playsinline preload="none" width="1280" height="918">
-                <source src={`/media/${video.src}.webm`} type="video/webm" />
-                <source src={`/media/${video.src}.mp4`} type="video/mp4" />
+              {/* Native autoplay. Sources only match on desktop, so phones (where the stage
+                  is hidden) download nothing. home.ts pauses it offscreen and under reduced motion. */}
+              <video poster={poster.src} autoplay muted loop playsinline width="1506" height="1080">
+                <source src={`/media/${video.src}.mp4`} type="video/mp4" media="(min-width: 721px)" />
               </video>
             </div>
           ) : (

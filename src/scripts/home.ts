@@ -31,6 +31,9 @@ if (root) {
   let paused = reduced.matches;
   let stageVisible = false;
 
+  // The stage video autoplays natively; stop it straight away if the viewer asked for less motion.
+  if (paused) root.querySelectorAll<HTMLVideoElement>('.vlayer video').forEach((v) => v.pause());
+
   const syncVideo = () => {
     const layer = layers[current];
     const hasVideo = !!layer?.classList.contains('vlayer');
