@@ -1,0 +1,30 @@
+---
+/** Full-bleed hero image with a 12px side gutter. Fades in from an 18px blur. */
+import Media from './Media.astro';
+import type { Project } from '../lib/projects';
+
+interface Props {
+  hero: Project['data']['hero'];
+  tone: Project['data']['tone'];
+}
+const { hero, tone } = Astro.props;
+const flat = hero.fit === 'flat';
+---
+
+<div class="bleed hero">
+  <Media
+    src={hero.src}
+    alt={hero.alt}
+    fit={hero.fit}
+    tone={hero.tone ?? tone}
+    bg={hero.bg}
+    ratio={flat ? hero.ratio : undefined}
+    height={flat ? undefined : 'clamp(320px, 52vw, 720px)'}
+    style={flat ? 'max-height:780px;margin-inline:auto' : undefined}
+    size="full"
+    large
+    priority
+    blurUp
+    data-enter="hero"
+  />
+</div>

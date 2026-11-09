@@ -1,0 +1,125 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import TitleBlock from '../../components/TitleBlock.astro';
+import Media from '../../components/Media.astro';
+import Facts from '../../components/Facts.astro';
+import NextProject from '../../components/NextProject.astro';
+import { mdxComponents } from '../../components/mdx';
+import { getProjects, position, type Project } from '../../lib/projects';
+import { pad2 } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const d = project.data;
+const { index, total, next, nextIndex } = position(await getProjects(), project);
+const { Content } = await render(project);
+const og = d.hero.fit === 'cover' ? d.hero.src : d.card.src;
+---
+
+<Base title={d.title} description={d.description ?? d.lead} ogImage={og}>
+  <div class="progress" aria-hidden="true"></div>
+  <header class="gutter">
+    <div class="case-top wide">
+      <a class="back" href="/"><span aria-hidden="true">←</span> All work</a>
+      <span class="label" aria-label={`Project ${index + 1} of ${total}`}>{pad2(index + 1)} / {pad2(total)}</span>
+    </div>
+  </header>
+
+  <main id="main" data-type={d.type}>
+    <article>
+      <Hero hero={d.hero} tone={d.tone} />
+      <div class="gutter">
+        <div class="wide">
+          <TitleBlock data={d} />
+          {
+            d.feature && (
+              <Media
+                src={d.feature.src}
+                alt={d.feature.alt}
+                fit={d.feature.fit}
+                tone={d.feature.tone ?? d.tone}
+                ratio={d.feature.ratio}
+                bg={d.feature.bg}
+                large={d.feature.fit !== 'flat'}
+              />
+            )
+          }
+          <Facts stats={d.stats} meta={d.meta} footnote={d.footnote} />
+          <Content components={mdxComponents} />
+        </div>
+      </div>
+    </article>
+
+    <nav class="gutter" aria-label="Next project">
+      <div class="wide">
+        <NextProject project={next} number={nextIndex + 1} />
+      </div>
+    </nav>
+  </main>
+</Base>
+
+<script>
+  import '../../scripts/expander';
+  import '../../scripts/video';
+</script>
+
+<style>
+  /* Reading progress, driven by scroll position in CSS. No JS. */
+  .progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 30;
+    height: 2px;
+    margin-top: env(safe-area-inset-top, 0px);
+    background: var(--accent);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    pointer-events: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .progress {
+      animation: progress linear both;
+      animation-timeline: scroll(root);
+    }
+    @keyframes progress {
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .progress {
+      display: none;
+    }
+  }
+
+  .case-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-block: 22px;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 14px;
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+</style>

@@ -1,0 +1,165 @@
+---
+/**
+ * Outcomes and project meta on one 3-column grid with hairline rules.
+ * Each stat is a single value; the caption carries any before-to-after.
+ * Below 720px it stacks, with meta as label beside value.
+ */
+import DraftText from './DraftText.astro';
+import { SHOW_DRAFTS, stripDrafts } from '../lib/drafts';
+import type { Project } from '../lib/projects';
+
+interface Props {
+  stats: Project['data']['stats'];
+  meta: Project['data']['meta'];
+  footnote?: string | undefined;
+}
+const { stats, meta, footnote } = Astro.props;
+const showNote = footnote && (SHOW_DRAFTS || stripDrafts(footnote).length > 0);
+---
+
+<div class="facts">
+  <ul class="stats" aria-label="Outcomes">
+    {
+      stats.map((s) => (
+        <li class="stat">
+          <b>
+            <DraftText text={s.value} />
+          </b>
+          <span>
+            <DraftText text={s.caption} />
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  <dl class="meta">
+    {
+      meta.map((m) => (
+        <div>
+          <dt>{m.label}</dt>
+          <dd>
+            <DraftText text={m.value} />
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+  {
+    showNote && (
+      <p class="fnote">
+        <DraftText text={footnote} />
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .facts {
+    margin: 32px 0 var(--chapter-gap);
+  }
+  .stats,
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .meta {
+    border-bottom: 1px solid var(--line);
+  }
+  .stat,
+  .meta > div {
+    min-width: 0;
+    padding: 28px 24px 30px;
+    border-left: 1px solid var(--line);
+  }
+  .stat:first-child,
+  .meta > div:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .stat b {
+    display: block;
+    font-family: var(--display);
+    font-weight: var(--bold);
+    font-size: clamp(44px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.005em;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg);
+  }
+  .stat span {
+    display: block;
+    max-width: 24ch;
+    margin-top: 12px;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: var(--fg-2);
+  }
+  .meta > div {
+    padding-block: 18px 20px;
+  }
+  dt {
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+  dd {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--fg);
+  }
+  .fnote {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  @media (max-width: 720px) {
+    .stats,
+    .meta {
+      grid-template-columns: 1fr;
+    }
+    .stat,
+    .meta > div {
+      padding-inline: 0;
+      border-left: 0;
+    }
+    .stat {
+      padding-block: 20px 22px;
+    }
+    .stat + .stat {
+      border-top: 1px solid var(--line);
+    }
+    .stat b {
+      font-size: 48px;
+    }
+    .stat span {
+      max-width: none;
+      margin-top: 8px;
+    }
+    .meta > div {
+      display: grid;
+      grid-template-columns: 30% 1fr;
+      gap: 12px;
+      padding-block: 12px;
+    }
+    .meta > div + div {
+      border-top: 1px solid var(--line);
+    }
+    dt {
+      margin: 0;
+    }
+    .fnote {
+      text-align: left;
+    }
+  }
+</style>

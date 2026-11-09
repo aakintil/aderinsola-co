@@ -1,0 +1,45 @@
+---
+/** A design decision in rows, such as Chose / Moved away from / Why. */
+interface Props {
+  items: { label: string; value: string }[];
+  /** Minimum column width in px before the rows wrap. */
+  min?: number;
+}
+const { items, min = 200 } = Astro.props;
+---
+
+<dl class="decision" style={`--min:${min}px`}>
+  {
+    items.map((it) => (
+      <div>
+        <dt>{it.label}</dt>
+        <dd>{it.value}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .decision {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--min), 100%), 1fr));
+    gap: 24px;
+    max-width: 960px;
+    margin: 0;
+    padding-block: 22px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  dt {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  dd {
+    margin: 6px 0 0;
+    font-size: 16px;
+    color: var(--fg);
+  }
+</style>

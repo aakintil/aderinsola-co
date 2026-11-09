@@ -1,0 +1,59 @@
+---
+/**
+ * One chapter of a case study: media, then eyebrow, H2, sub text and an optional expander.
+ *
+ *   <Chapter eyebrow="01 · The problem" title="Great tools nobody could find.">
+ *     <Media slot="media" ... />
+ *     Sub text as a plain paragraph.
+ *     <Expander summary="What we saw">...</Expander>
+ *     <Decision slot="after" ... />
+ *   </Chapter>
+ */
+import DraftText from './DraftText.astro';
+import { slugify } from '../lib/site';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  id?: string;
+}
+const { eyebrow, title, id = slugify(title) } = Astro.props;
+---
+
+<section class="chapter" aria-labelledby={id}>
+  <slot name="media" />
+  <div class="ctext">
+    <p class="eyebrow"><DraftText text={eyebrow} /></p>
+    <h2 class="h2" id={id}>{title}</h2>
+    <slot />
+  </div>
+  <slot name="after" />
+</section>
+
+<style>
+  .chapter {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-bottom: var(--chapter-gap);
+    scroll-margin-top: 24px;
+  }
+  .ctext {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 760px;
+  }
+  /* MDX paragraphs in the default slot are the chapter's sub text */
+  .ctext > :global(p:not(.eyebrow)) {
+    margin: 0;
+    max-width: 620px;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+</style>

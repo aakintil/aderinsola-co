@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ArchiveItem from '../components/ArchiveItem.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DraftText from '../components/DraftText.astro';
+import { SHOW_DRAFTS } from '../lib/drafts';
+import { site } from '../lib/site';
+
+const entries = (await getCollection('archive', ({ data }) => SHOW_DRAFTS || !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const groups = [
+  { key: 'product', title: 'Product work' },
+  { key: 'studio', title: 'Blue Meridian · independent studio, [years]' },
+] as const;
+
+const filters = [
+  { key: 'all', label: 'All' },
+  { key: 'product', label: 'Product' },
+  { key: 'brand', label: 'Brand' },
+  { key: 'ai', label: 'AI' },
+];
+---
+
+<Base title="Archive" description="Earlier work, side projects and studio work from Ade Akintilo." ogImage="archive/cahpp-about.webp">
+  <header class="gutter col top">
+    <a class="crumb" href="/" data-enter>{site.name} <span>/ {site.role}</span></a>
+  </header>
+
+  <main id="main" class="gutter">
+    <div class="wide">
+      <section class="intro">
+        <p class="eyebrow" data-enter style="--d:140">Archive</p>
+        <h1 class="h2" data-enter style="--d:220">Earlier work, side projects and studio work.</h1>
+        <p class="sub" data-enter style="--d:320">
+          Smaller projects, earlier roles and work from Blue Meridian, my independent brand and product studio.
+        </p>
+      </section>
+
+      <div class="filters" role="group" aria-label="Filter archive" data-filters>
+        {
+          filters.map((f, i) => (
+            <button type="button" class="chip" data-f={f.key} aria-pressed={i === 0 ? 'true' : 'false'}>
+              {f.label}
+            </button>
+          ))
+        }
+      </div>
+      <!-- Filters need JS. Hiding them here (not with JS) keeps the layout from shifting on load. -->
+      <noscript><style is:inline>.filters { display: none !important; }</style></noscript>
+      <p class="visually-hidden" aria-live="polite" data-count></p>
+
+      {
+        groups.map((g) => (
+          <section class="agroup" data-g={g.key} aria-labelledby={`ag-${g.key}`}>
+            <h2 class="eyebrow quiet" id={`ag-${g.key}`}>
+              <DraftText text={g.title} />
+            </h2>
+            <ul class="agrid">
+              {entries
+                .filter((e) => e.data.group === g.key)
+                .map((entry) => (
+                  <ArchiveItem entry={entry} />
+                ))}
+            </ul>
+          </section>
+        ))
+      }
+
+      <SiteFooter links={[{ label: 'Home', href: '/' }]} class="archive-foot" />
+    </div>
+  </main>
+</Base>
+
+<script>
+  import '../scripts/archive';
+</script>
+
+<style>
+  .top {
+    padding-top: 44px;
+  }
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 760px;
+    padding-top: 48px;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-block: 28px 8px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--fg-2);
+    font-size: 13px;
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .chip:hover {
+    border-color: var(--fg-2);
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--fg);
+    border-color: var(--fg);
+    color: var(--bg);
+  }
+  .agroup {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 32px;
+  }
+  .agrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+    gap: 28px 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  main :global(.archive-foot) {
+    padding-block: 56px 120px;
+  }
+</style>

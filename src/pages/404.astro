@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/site';
+---
+
+<Base title="Page not found" noindex>
+  <header class="gutter col top">
+    <a class="crumb" href="/" data-enter>{site.name} <span>/ {site.role}</span></a>
+  </header>
+  <main id="main" class="gutter col">
+    <p class="eyebrow" data-enter style="--d:140">404</p>
+    <h1 class="statement" data-enter style="--d:220">This page doesn’t exist.</h1>
+    <p class="sub" data-enter style="--d:320">It may have moved, or the link may be mistyped.</p>
+    <a class="home" href="/" data-enter style="--d:400"><span aria-hidden="true">←</span> All work</a>
+  </main>
+</Base>
+
+<style>
+  .top {
+    padding-top: 44px;
+  }
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-block: 18vh 120px;
+  }
+  .statement {
+    margin: 0;
+  }
+  .home {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    align-self: flex-start;
+    margin-top: 12px;
+    color: var(--fg);
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .home:hover {
+    color: var(--accent);
+  }
+</style>

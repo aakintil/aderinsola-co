@@ -1,0 +1,12 @@
+---
+/** Placeholder content. Shows in dev and preview deploys, removed from production HTML. */
+import { SHOW_DRAFTS } from '../lib/drafts';
+
+interface Props {
+  /** Render as a block (div) instead of inline (span). */
+  block?: boolean;
+}
+const Tag = Astro.props.block ? 'div' : 'span';
+---
+
+{SHOW_DRAFTS && <Tag class="draft"><slot /></Tag>}

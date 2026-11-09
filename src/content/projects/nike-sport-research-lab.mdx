@@ -1,0 +1,100 @@
+---
+slug: nike-sport-research-lab
+title: Nike Sport Research Lab
+years: '[Year]'
+order: 5
+type: project
+tone: nike
+headline: Less time on data, more time on athletes.
+lead: 'I led the experience and managed development of Nike''s research tools: a tablet app for running the lab, and a web app for analyzing what happens in it.'
+hero:
+  src: nike/cover.webp
+  alt: Fourtrack check-in app on a tablet, on a dark textured background
+  fit: cover
+  bg: '#111'
+feature:
+  src: nike/both-tools.webp
+  alt: Fourtrack on a tablet next to Area42 on a laptop
+  tone: nike
+  ratio: 2200/1160
+stats:
+  - value: Minutes
+    caption: To collect athlete data in the lab, down from hours
+  - value: 5 days
+    caption: Development time per feature, down from 14
+meta:
+  - label: Role
+    value: Lead Product Designer, managed development
+  - label: Team
+    value: Engineering manager, two senior developers, DevOps
+  - label: Platforms
+    value: Tablet, web
+footnote: '[Figures pending confirmation]'
+card:
+  result: Dev time 14 to 5 days
+  src: nike/tablet-dark.webp
+  fit: cover
+  bg: '#111'
+---
+
+<Chapter eyebrow="01 · The problem" title="Researchers spent their sessions on paperwork.">
+  <Media slot="media" src="nike/athlete.webp" alt="Sprinter in the blocks on a red track" fit="cover" ratio="16/8" large />
+
+Checking athletes in, collecting consent, recording measurements and pulling it all together for analysis took hours of manual work around every session.
+
+</Chapter>
+
+<Chapter eyebrow="02 · Fourtrack" title="The whole lab visit, on one tablet.">
+  <Video
+    slot="media"
+    src="nike/workflow"
+    poster="nike/workflow-poster.webp"
+    label="Fourtrack check-in workflow on a tablet"
+    tone="nike"
+    ratio="1080/608"
+  />
+
+Today's visitors, check-in, consent and waivers, study assignment and measurements, in the order a researcher actually works.
+
+  <MediaGrid slot="after" min={220}>
+    <Media src="nike/visitors.webp" alt="Today's visitors list" tone="nike" ratio="4/5" size="third" />
+    <Media src="nike/checkin.webp" alt="Check in to a study" tone="sio" ratio="4/5" size="third" />
+    <Media src="nike/data-review.webp" alt="Basic anthropometric data review" tone="hub" ratio="4/5" size="third" />
+  </MediaGrid>
+</Chapter>
+
+<Chapter eyebrow="03 · Capture flow" title="Designed around the session, not the database.">
+  <Media slot="media" src="nike/capture-flow.webp" alt="Fourtrack capture flow diagram" tone="nike" ratio="16/10" large />
+
+Each capture step mirrors what happens in the room, with errors caught at entry instead of during analysis.
+
+</Chapter>
+
+<Chapter eyebrow="04 · Area42" title="Ask the data a question, get an answer the same day.">
+  <Video
+    slot="media"
+    src="nike/area42"
+    poster="nike/area42-poster.webp"
+    label="Area42 query builder in use"
+    tone="hub"
+    ratio="1080/608"
+  />
+
+A web app with a query builder, so researchers run faster and more thorough analysis on live sessions without waiting on an engineer.
+
+</Chapter>
+
+<Chapter eyebrow="05 · Design system" title="Specs that went straight into React.">
+  <MediaGrid slot="media" min={300}>
+    <Media src="nike/area42-specs.webp" alt="Area42 component specs" tone="nike" ratio="1" size="half" />
+    <Media src="nike/fourtrack-features.webp" alt="Fourtrack screens built from shared components" tone="sio" ratio="1" size="half" />
+  </MediaGrid>
+
+One component library for both tools, specified closely enough that engineers built from it directly. That is what took development from 14 days to 5.
+
+</Chapter>
+
+<Quote
+  text="He is both talented at interaction design and UI development. I believe he has a firm grip on software development processes and how designing and developing software go hand in hand."
+  cite="Eric Brousseau · Managed Ade directly"
+/>

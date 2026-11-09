@@ -1,0 +1,27 @@
+---
+/** Eyebrow (project · client · years), H1 and lead line. */
+import DraftText from './DraftText.astro';
+import type { Project } from '../lib/projects';
+
+interface Props {
+  data: Project['data'];
+}
+const { title, client, years, headline, lead } = Astro.props.data;
+const eyebrow = [title, client, years].filter(Boolean).join(' · ');
+---
+
+<header class="title">
+  <p class="eyebrow" data-enter style="--d:140"><DraftText text={eyebrow} /></p>
+  <h1 class="h1" data-enter style="--d:220">{headline}</h1>
+  <p class="lead" data-enter style="--d:320">{lead}</p>
+</header>
+
+<style>
+  .title {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 960px;
+    padding-block: 48px 36px;
+  }
+</style>

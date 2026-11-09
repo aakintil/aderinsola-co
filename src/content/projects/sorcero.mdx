@@ -1,0 +1,145 @@
+---
+slug: sorcero
+title: Sorcero
+client: Life sciences, AI/ML
+order: 2
+type: case
+tone: sor
+headline: Medical Affairs insight, from 6 weeks to hours.
+lead: An enterprise AI platform that helps Medical Affairs teams understand medical content and find insights faster. Three modules and a digital style guide.
+hero:
+  src: sorcero/rapt.webp
+  alt: Sorcero RAPT literature monitoring, two screens side by side
+feature:
+  src: sorcero/analytics.webp
+  alt: 'Insights analytics module: listening topics, strategic imperatives, trending insights and regional activity'
+  tone: sor2
+  ratio: 16/8
+stats:
+  - value: 1000%
+    caption: Productivity increase
+  - value: 90%
+    caption: Less time on literature monitoring
+  - value: 99.8%
+    caption: Sensitivity in detecting relevancy
+meta:
+  - label: Role
+    value: Senior UX and Visual Designer
+  - label: Team
+    value: Engineers, AI/ML leads, PMs, SMEs
+  - label: Scope
+    value: Product design, UX, research, visual design
+footnote: Results reported across the 40% of the top 10 global life science enterprises using Sorcero.
+card:
+  result: 6 weeks to hours
+  src: sorcero/rapt.webp
+  tall: sorcero/cluster.webp
+---
+
+<Chapter eyebrow="The problem" title="Up to six weeks to find one insight.">
+  <Media slot="media" src="sorcero/article-card.webp" alt="Literature monitoring article card with highlighted drug mentions and knowledge graph" tone="sor" ratio="16/9" large />
+
+Medical Affairs teams sift clinical trial data, publications and health records by hand, across spreadsheets and slide decks.
+
+<Expander summary="Why it matters">
+
+It often takes an average of six weeks to work through spreadsheets, presentations and publications, and longer to spot trends and inform internal and external stakeholders. In life sciences, time spent waiting for answers costs millions in lost opportunities, money and lives.
+
+</Expander>
+</Chapter>
+
+<Chapter eyebrow="Research" title="Three users, three very different days.">
+  <Trio
+    slot="media"
+    items={[
+      { label: '01', title: 'Vice Presidents', text: 'The customer and decision maker.' },
+      { label: '02', title: 'Field Medical Directors', text: 'The managers and data wranglers.' },
+      { label: '03', title: 'Medical Science Liaisons', text: 'The people getting their hands dirty.' },
+    ]}
+  />
+
+I worked with our product director and subject matter experts to document what Medical Affairs teams actually go through.
+
+</Chapter>
+
+<Chapter eyebrow="System architecture" title="Making sense of an enterprise system.">
+  <Media slot="media" src="sorcero/ma360.webp" alt="Medical Affairs 360 analytics mapping board with annotations" tone="sor2" ratio="16/8" large />
+
+With the research in hand, I mapped how the whole platform would work. It took many iterations.
+
+<Expander summary="Data sources">
+
+Part of the mapping was deciding which data sources the platform would listen to, and which to cut.
+
+<Media src="sorcero/sources.webp" alt="Annotated table of agent and data sources with two rows struck out" tone="sor" ratio="16/9" size="half" />
+
+</Expander>
+</Chapter>
+
+<Chapter eyebrow="Iterations" title="Our first direction missed.">
+  <MediaGrid slot="media" min={260}>
+    <Media tone="sor" tag="Iteration · vendor-led dashboard" ratio="4/3" />
+    <Media tone="sor2" tag="Iteration · action items and stages" ratio="4/3" />
+  </MediaGrid>
+
+We started with a third-party vendor and a clear plan, but had not validated it with customers. What we presented was not what they expected.
+
+<Expander summary="What customers told us">
+
+The experience was too complicated and did not help them group insights from the field. Action items, stages and navigating from the dashboard added steps to an already long workflow. They wanted to upload insights, have them organized and tagged, group them, and visualize the data.
+
+</Expander>
+</Chapter>
+
+<Chapter eyebrow="The turning point" title="What would Spotify do?">
+  <Media slot="media" src="sorcero/cluster.webp" alt="MIM observation with AI suggested related observations, grouped like a playlist" tone="sor" ratio="16/10" large />
+
+Insights as songs, collections as playlists. A mental model even medical experts already use every day.
+
+  <Decision
+    slot="after"
+    items={[
+      { label: 'Chose', value: 'Spotify-style collections for grouping insights' },
+      { label: 'Considered', value: 'Apple folders, Evernote, Raindrop.io' },
+      { label: 'Why', value: 'Simple, familiar, and built for grouping things you collect' },
+    ]}
+  />
+</Chapter>
+
+<Chapter eyebrow="Bottom-up workflow" title="Capture first, interface second.">
+  <Media slot="media" src="sorcero/observation.webp" alt="Observation card with metadata and sentiment" tone="sor2" ratio="16/7" large />
+
+This time I started from the bottom up, making sure the basic workflows and data points were captured before designing the screens.
+
+<Expander summary="Observation states">
+
+Default and edit states for an observation, designed so field teams can correct AI tagging without leaving the page.
+
+<MediaGrid cols={2}>
+  <Media src="sorcero/obs-default.webp" alt="Observation detail, default state" tone="sor" ratio="1" size="quarter" />
+  <Media src="sorcero/obs-edit.webp" alt="Observation detail, edit state" tone="sor" ratio="1" size="quarter" />
+</MediaGrid>
+
+</Expander>
+</Chapter>
+
+<Chapter eyebrow="Design system" title="One system across three modules.">
+  <MediaGrid slot="media" min={220}>
+    <Media src="sorcero/geo.webp" alt="Insights by geography choropleth chart" tone="sor" ratio="4/5" size="third" />
+    <Media src="sorcero/filters.webp" alt="Filter panel component" tone="sor2" ratio="4/5" size="third" />
+    <Media src="sorcero/obs-default.webp" alt="Observation detail built from the new component library" tone="sor" ratio="4/5" size="third" />
+  </MediaGrid>
+
+After MIM v1 launched, I rebuilt the design system from the MIM designs and carried it into IPM and Analytics, with a component library built alongside our front-end developer and a Figma library.
+
+</Chapter>
+
+<Closing eyebrow="What customers said">
+  <Quotes
+    quotes={[
+      'I spend hours in Excel to develop a monthly insights report. Sorcero removes that burden.',
+      'There’s a lot of bias in our current process. I like how this can interrogate raw data without layers of subjectivity.',
+      'We were doing all of this work in Excel and summarizing in PowerPoint. Sorcero eliminates a huge headache.',
+    ]}
+  />
+</Closing>

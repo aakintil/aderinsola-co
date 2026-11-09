@@ -1,0 +1,25 @@
+---
+/** A ruled section near the end of a page: "What I'd keep", "What customers said". */
+import { slugify } from '../lib/site';
+
+interface Props {
+  eyebrow: string;
+}
+const { eyebrow } = Astro.props;
+const id = `s-${slugify(eyebrow)}`;
+---
+
+<section class="closing" aria-labelledby={id}>
+  <h2 class="eyebrow" id={id}>{eyebrow}</h2>
+  <slot />
+</section>
+
+<style>
+  .closing {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-block: 48px 56px;
+    border-top: 1px solid var(--line);
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+/** A single large stakeholder quote with attribution. */
+import DraftText from './DraftText.astro';
+
+interface Props {
+  text: string;
+  cite: string;
+}
+const { text, cite } = Astro.props;
+---
+
+<figure class="quote">
+  <blockquote><p>“{text}”</p></blockquote>
+  <figcaption class="label"><DraftText text={cite} /></figcaption>
+</figure>
+
+<style>
+  .quote {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    max-width: 980px;
+    margin: 0;
+    padding-block: 48px 56px;
+    border-top: 1px solid var(--line);
+  }
+  blockquote,
+  p {
+    margin: 0;
+  }
+  p {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(26px, 3.4vw, 44px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+</style>

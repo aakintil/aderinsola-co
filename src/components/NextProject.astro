@@ -1,0 +1,46 @@
+---
+import Media from './Media.astro';
+import { projectHref, type Project } from '../lib/projects';
+import { pad2 } from '../lib/site';
+
+interface Props {
+  project: Project;
+  number: number;
+}
+const { project, number } = Astro.props;
+const { card, tone, title } = project.data;
+---
+
+<a class="next" href={projectHref(project)}>
+  <span class="label">Next · {pad2(number)}</span>
+  <Media src={card.src} alt="" fit={card.fit} tone={tone} bg={card.bg} ratio="21/9" large={card.fit !== 'flat'} />
+  <span class="t">{title} <span aria-hidden="true">→</span></span>
+</a>
+
+<style>
+  .next {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-block: 22px 70px;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+  }
+  .t {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 30px;
+    letter-spacing: var(--track-head);
+    color: var(--fg);
+    transition: color 0.2s;
+  }
+  .next:hover .t {
+    color: var(--accent);
+  }
+  .next :global(.ph .shot) {
+    transition: transform 0.6s var(--ease);
+  }
+  .next:hover :global(.ph .shot) {
+    transform: scale(1.015);
+  }
+</style>

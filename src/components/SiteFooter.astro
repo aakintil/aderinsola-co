@@ -1,0 +1,77 @@
+---
+import { site } from '../lib/site';
+import { SHOW_DRAFTS } from '../lib/drafts';
+
+interface Props {
+  /** Links in the first column. The first one reads darker. */
+  links: { label: string; href: string }[];
+  class?: string;
+}
+const { links, class: className } = Astro.props;
+---
+
+<footer class:list={['foot', className]}>
+  <ul>
+    {
+      links.map((l) => (
+        <li>
+          <a href={l.href}>{l.label}</a>
+        </li>
+      ))
+    }
+    {
+      site.resume ? (
+        <li>
+          <a href={site.resume}>Resume</a>
+        </li>
+      ) : (
+        SHOW_DRAFTS && (
+          <li>
+            <a class="draft" href="#">
+              Resume
+            </a>
+          </li>
+        )
+      )
+    }
+  </ul>
+  <ul>
+    {
+      site.social.map((l) => (
+        <li>
+          <a href={l.href} rel="me">
+            {l.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</footer>
+
+<style>
+  .foot {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    padding-block: 48px 60px;
+    font-size: 13px;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    display: flex;
+    align-items: center;
+    min-height: 28px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  ul:first-child li:first-child a,
+  a:hover {
+    color: var(--fg);
+  }
+</style>

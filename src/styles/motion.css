@@ -1,0 +1,78 @@
+/*
+  Motion layer.
+  Entrances run only when <html> has the .m class, which an inline script in <head> sets when
+  motion is allowed and the visit is not a back/forward navigation. With JS off, or under
+  prefers-reduced-motion, everything is visible immediately.
+
+  Above the fold: CSS animations, so nothing flashes before JS loads.
+  Below the fold: src/scripts/motion.ts arms elements and reveals them on scroll.
+*/
+@keyframes m-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes m-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes m-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Page load fade */
+.m .page {
+  animation: m-fade var(--t-load) var(--ease) backwards;
+}
+
+/* data-enter="up|fade|hero", style="--d:140" for a delay in spec milliseconds */
+.m [data-enter] {
+  animation-name: m-up;
+  animation-duration: var(--t-text);
+  animation-timing-function: var(--ease);
+  animation-delay: calc(var(--d, 0) * var(--speed) * 1ms);
+  animation-fill-mode: backwards;
+}
+.m [data-enter='fade'] {
+  animation-name: m-fade;
+}
+/* Hero: the frame fades in showing a tiny blurred preview (.lqip, blurred once, never animated),
+   then the sharp image fades in over it. Only opacity animates, so it all stays on the GPU. */
+.m [data-enter='hero'] {
+  animation-name: m-fade;
+  animation-duration: var(--t-load);
+}
+.m [data-enter='hero'] .shot {
+  animation: m-fade var(--t-hero) var(--ease) calc(var(--d, 0) * var(--speed) * 1ms) backwards;
+}
+.m [data-enter='hero'] .lqip {
+  display: block;
+  animation: m-out 1ms linear calc(var(--t-hero) + var(--d, 0) * var(--speed) * 1ms) forwards;
+}
+/* Home stage: a plain fade at hero length */
+.m [data-enter='stage'] {
+  animation-name: m-fade;
+  animation-duration: var(--t-hero);
+}
+
+/* Waiting below the fold for a scroll reveal */
+.m-arm {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .m-arm {
+    opacity: 1;
+  }
+}

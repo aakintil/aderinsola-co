@@ -1,0 +1,38 @@
+---
+/** A row of short quotes without attribution, such as customer research. */
+interface Props {
+  quotes: string[];
+}
+---
+
+<div class="quotes">
+  {
+    Astro.props.quotes.map((q) => (
+      <blockquote>
+        <p>“{q}”</p>
+      </blockquote>
+    ))
+  }
+</div>
+
+<style>
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    gap: 40px;
+    padding-top: 12px;
+  }
+  blockquote,
+  p {
+    margin: 0;
+  }
+  p {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+</style>

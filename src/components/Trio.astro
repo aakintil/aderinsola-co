@@ -1,0 +1,47 @@
+---
+/** Three cards: an optional small label, a title and one line. Used for "What I'd keep" and research summaries. */
+interface Props {
+  items: { label?: string; title: string; text: string }[];
+}
+---
+
+<ul class="trio">
+  {
+    Astro.props.items.map((it) => (
+      <li>
+        {it.label && <span class="label">{it.label}</span>}
+        <b>{it.title}</b>
+        <span>{it.text}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .trio {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+  }
+  b {
+    font-family: var(--display);
+    font-weight: var(--bold);
+    font-size: 24px;
+    line-height: 1.05;
+    letter-spacing: var(--track-head);
+    color: var(--fg);
+    text-wrap: balance;
+  }
+</style>

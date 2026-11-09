@@ -1,0 +1,113 @@
+---
+slug: cigna-oneguide
+title: Cigna OneGuide
+client: Healthcare
+years: '2017'
+order: 4
+type: project
+tone: cigna
+headline: Healthcare answers, before you have to ask.
+lead: UX Lead on the next version of OneGuide, Cigna's premium guidance app. It brings the right help to the right moment in someone's care journey.
+hero:
+  src: cigna/cover.webp
+  alt: Cigna OneGuide home screen on a phone
+  fit: flat
+  ratio: 2125/1375
+feature:
+  src: cigna/status.webp
+  alt: 'Your Status: deductible and out-of-pocket progress shown as a single bar'
+  fit: flat
+stats:
+  - value: 22%
+    caption: Fewer avoidable ER visits
+  - value: 55%
+    caption: More virtual care visits
+  - value: 46%
+    caption: Chose high-performing providers
+meta:
+  - label: Role
+    value: UX Lead
+  - label: Team
+    value: Research, visual design, [design lead]
+  - label: Platforms
+    value: iOS, Android, responsive web
+footnote: Reported for OneGuide customers. [Confirm source and scope.]
+card:
+  result: 22% fewer ER visits
+  src: cigna/cover.webp
+  fit: flat
+---
+
+<Chapter eyebrow="The problem" title="Two apps, one confused customer.">
+
+Guidance lived in Compass. Coverage lived in myCigna. Customers had to stitch the two together, so most of them picked up the phone.
+
+<Expander summary="What we set out to do">
+
+1. Reduce the number of customer phone calls
+2. Give quick access to personal health information
+3. Make it easier to find care, lower-cost options, and pre and post-surgery support
+4. Turn moments of doubt into a calm digital experience
+
+</Expander>
+</Chapter>
+
+<Chapter eyebrow="Research" title="Following one journey, end to end.">
+  <Trio
+    slot="media"
+    items={[
+      { label: 'Observed', title: '14+ participants', text: 'Real customers, in the middle of real care decisions.' },
+      { label: 'Mapped', title: 'One back-pain journey', text: 'From first twinge to recovery, end to end.' },
+      { label: 'Found', title: 'Moments of doubt', text: 'The exact points where people stalled, guessed or called.' },
+    ]}
+  />
+
+Instead of auditing features, we followed a single chronic back-pain journey and tested low-fidelity wireframes at each step.
+
+<Draft block>
+<Expander summary="The journey map">
+
+[Back-pain journey map with the moments of doubt marked.]
+
+<Media tone="cigna" tag="Journey map" ratio="16/7" />
+
+</Expander>
+</Draft>
+</Chapter>
+
+<Chapter eyebrow="The idea" title="Sensing moments: the next best action, right on time.">
+  <Media slot="media" src="cigna/compare.webp" alt="Drug comparison: Lipitor estimated at 380 dollars, generic Atorvastatin at 5 dollars" fit="flat" />
+
+Small, contextual prompts that answer the question before it is asked. Your prescription costs $380. The generic costs $5. OneGuide tells you before you reach the pharmacy.
+
+  <Decision
+    slot="after"
+    min={160}
+    items={[
+      { label: 'Principle 01', value: 'Be useful' },
+      { label: 'Principle 02', value: 'Be concise' },
+      { label: 'Principle 03', value: 'Consider context' },
+      { label: 'Principle 04', value: 'Minimize delay' },
+    ]}
+  />
+</Chapter>
+
+<Chapter eyebrow="Finding care" title="Cost and quality, side by side.">
+  <MediaGrid slot="media" min={300}>
+    <Media src="cigna/provider.webp" alt="Your provider and preferred in-network providers with ratings and estimated cost" fit="flat" size="half" />
+    <Media src="cigna/coverage.webp" alt="Coverage overview with an alert: 10 of 12 physical therapy sessions used" fit="flat" size="half" />
+  </MediaGrid>
+
+Preferred providers with ratings and estimated cost, and an alert before coverage runs out, with covered alternatives right underneath.
+
+</Chapter>
+
+<Chapter eyebrow="Support" title="Help is always one tap away.">
+  <MediaGrid slot="media" min={300}>
+    <Media src="cigna/assistant.webp" alt="Virtual assistant offering to find a provider, explore resources, explain incentives and coverage" fit="flat" size="half" />
+    <Media src="cigna/quick-access.webp" alt="Quick access to ID cards and conversations" fit="flat" size="half" />
+  </MediaGrid>
+
+Live chat and a virtual assistant from anywhere in the app, plus ID cards and past conversations a tap from home.
+
+</Chapter>

@@ -1,0 +1,62 @@
+---
+/**
+ * Responsive AVIF + WebP <picture> for an image in src/assets/img.
+ * Always carries width and height, so the browser reserves space before it loads.
+ */
+import { getImage } from 'astro:assets';
+import { image } from '../lib/images';
+import { stripDrafts } from '../lib/drafts';
+
+interface Props {
+  /** Path from src/assets/img, e.g. "sio/field-1.webp" */
+  src: string;
+  alt: string;
+  sizes?: string;
+  class?: string;
+  /** Above-the-fold image: load eagerly with high priority. */
+  priority?: boolean;
+  /**
+   * Download only on one side of the 720px breakpoint. Use when the image's container is hidden
+   * on the other side, so a phone never fetches desktop-only images and vice versa.
+   */
+  only?: 'mobile' | 'desktop' | undefined;
+}
+
+const { src, alt, sizes = '100vw', priority = false, only, class: className } = Astro.props;
+const meta = image(src);
+
+const MAX = 2400;
+const widths = [480, 800, 1200, 1600, 2000, MAX].filter((w) => w < meta.width);
+widths.push(Math.min(meta.width, MAX));
+
+const [avif, webp] = await Promise.all([
+  getImage({ src: meta, widths, format: 'avif', quality: 65 }),
+  getImage({ src: meta, widths, format: 'webp', quality: 80 }),
+]);
+
+// A 1x1 transparent GIF: a matching <source> with this srcset stops the real download.
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAACH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+const skipWhen = only === 'mobile' ? '(min-width: 721px)' : only === 'desktop' ? '(max-width: 720px)' : null;
+---
+
+<picture>
+  {skipWhen && <source media={skipWhen} srcset={BLANK} />}
+  <source type="image/avif" srcset={avif.srcSet.attribute} sizes={sizes} />
+  <source type="image/webp" srcset={webp.srcSet.attribute} sizes={sizes} />
+  <img
+    class={className}
+    src={webp.src}
+    alt={stripDrafts(alt)}
+    width={meta.width}
+    height={meta.height}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding={priority ? 'auto' : 'async'}
+    fetchpriority={priority ? 'high' : undefined}
+  />
+</picture>
+
+<style>
+  picture {
+    display: contents;
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+/** Renders text, marking [bracketed] placeholders as drafts. Drafts are dropped from production. */
+import { splitDrafts, SHOW_DRAFTS } from '../lib/drafts';
+
+interface Props {
+  text: string;
+}
+const parts = splitDrafts(Astro.props.text);
+---
+
+{parts.map((p) => (p.draft ? SHOW_DRAFTS && <span class="draft">{p.text}</span> : p.text))}

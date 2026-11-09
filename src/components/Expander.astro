@@ -1,0 +1,89 @@
+---
+/**
+ * Native <details>, so it works with JS off. src/scripts/expander.ts adds the
+ * height and opacity animation when motion is allowed.
+ */
+interface Props {
+  summary: string;
+}
+---
+
+<details class="xp">
+  <summary><span class="plus" aria-hidden="true">+</span>{Astro.props.summary}</summary>
+  <div class="more">
+    <slot />
+  </div>
+</details>
+
+<style>
+  details {
+    max-width: 620px;
+  }
+  summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .plus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 13px;
+    line-height: 1;
+    transition: transform var(--t-expand) var(--ease);
+  }
+  details[open] .plus {
+    transform: rotate(45deg);
+  }
+  details:global(.closing) .plus {
+    transform: none;
+  }
+  .more {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 4px 0 8px 30px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .more :global(p) {
+    margin: 0;
+  }
+  /* Numbered steps: 01, 02, 03 */
+  .more :global(ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    counter-reset: step;
+  }
+  .more :global(ol > li) {
+    counter-increment: step;
+  }
+  .more :global(ol > li)::before {
+    content: counter(step, decimal-leading-zero);
+    margin-right: 12px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+</style>

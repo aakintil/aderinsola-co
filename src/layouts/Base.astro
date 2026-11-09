@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import { Font, getImage } from 'astro:assets';
+import { image } from '../lib/images';
+import { site } from '../lib/site';
+import { stripDrafts } from '../lib/drafts';
+
+interface Props {
+  /** Page title. The site name is appended. Omit on the home page. */
+  title?: string | undefined;
+  description?: string | undefined;
+  /** Social preview image, a key in src/assets/img. Photos only, never text set in GT Flexa. */
+  ogImage?: string | undefined;
+  noindex?: boolean | undefined;
+}
+
+const { title, description = site.description, ogImage = 'sio/field-1.webp', noindex = false } = Astro.props;
+
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
+const desc = stripDrafts(description);
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = await getImage({
+  src: image(ogImage),
+  width: 1200,
+  height: 630,
+  fit: 'cover',
+  format: 'jpg',
+  background: '#F7F8FA',
+  quality: 82,
+});
+const ogUrl = new URL(og.src, Astro.site);
+
+const hasFlexa = import.meta.env.HAS_FLEXA;
+// The display font variable only exists when GT Flexa was present at build time.
+const displayFont = '--font-display' as Parameters<typeof Font>[0]['cssVariable'];
+const analytics = process.env.VERCEL_ENV === 'production';
+
+const speculation = JSON.stringify({
+  prefetch: [{ where: { href_matches: '/*' }, eagerness: 'moderate' }],
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#F7F8FA" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Motion gate: entrances run only when motion is allowed and this is not a back/forward visit. -->
+    <script is:inline>
+      (function () {
+        try {
+          var nav = performance.getEntriesByType('navigation')[0];
+          if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !(nav && nav.type === 'back_forward')) {
+            document.documentElement.classList.add('m');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <Font cssVariable="--font-body" preload />
+    {hasFlexa && <Font cssVariable={displayFont} preload={[{ weight: 700 }]} />}
+
+    <script type="speculationrules" is:inline set:html={speculation} />
+
+    {
+      analytics && (
+        <>
+          <script is:inline>
+            window.va = window.va || function () {(window.vaq = window.vaq || []).push(arguments);};
+          </script>
+          <script is:inline defer src="/_vercel/insights/script.js" />
+        </>
+      )
+    }
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="page">
+      <slot />
+    </div>
+    <script>
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>

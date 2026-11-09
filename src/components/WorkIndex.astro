@@ -1,0 +1,243 @@
+---
+/**
+ * Home project list.
+ * Desktop: one large image stage; hovering or focusing a project crossfades it.
+ * Mobile (720px and below): a scroll-snap swipe strip above the same list.
+ * Behavior lives in src/scripts/home.ts. Without JS the list links still work.
+ */
+import Media from './Media.astro';
+import { projectHref, type Project } from '../lib/projects';
+import { pad2 } from '../lib/site';
+
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+const first = projects[0]!;
+const total = pad2(projects.length);
+---
+
+<section class="work gutter" aria-label="Selected work" data-work>
+  <a class="stage" href={projectHref(first)} tabindex="-1" aria-hidden="true" data-enter="stage" style="--d:120">
+    {
+      projects.map((p, i) => (
+        <Media
+          class:list={['layer', { on: i === 0 }]}
+          src={p.data.card.src}
+          alt=""
+          fit={p.data.card.fit}
+          tone={p.data.tone}
+          bg={p.data.card.bg}
+          size="wide"
+          only="desktop"
+          priority={i === 0}
+        />
+      ))
+    }
+  </a>
+
+  <div class="mstrip" tabindex="0" role="region" aria-label="Projects, swipe sideways" data-mstrip>
+    {
+      projects.map((p, i) => (
+        <a class:list={['mcard', { on: i === 0 }]} href={projectHref(p)} data-i={i} aria-label={`Open ${p.data.title}`}>
+          <Media
+            src={p.data.card.tall ?? p.data.card.src}
+            alt=""
+            fit={p.data.card.fit}
+            tone={p.data.tone}
+            bg={p.data.card.bg ?? (p.data.card.fit === 'flat' ? `var(--t-${p.data.tone})` : undefined)}
+            ratio="4/5"
+            size="full"
+            only="mobile"
+            priority={i === 0}
+          />
+        </a>
+      ))
+    }
+  </div>
+  <div class="mcount label" aria-hidden="true">
+    <span data-mnum>01 / {total} · Tap to open</span>
+    <span class="dots">{projects.map((_, i) => <i class:list={{ on: i === 0 }} />)}</span>
+    <span data-mhint>Swipe →</span>
+  </div>
+
+  <div class="col">
+    <ol class="index">
+      {
+        projects.map((p, i) => (
+          <li data-enter="fade" style={`--d:${360 + i * 60}`}>
+            <a class="pick" href={projectHref(p)} data-i={i} data-on={i === 0 ? '' : undefined}>
+              <span class="n">{p.data.title}</span>
+              <span class="r">
+                {p.data.card.result} <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .work {
+    padding-top: 36px;
+  }
+
+  /* ---------- desktop stage ---------- */
+  .stage {
+    position: relative;
+    display: block;
+    max-width: 1200px;
+    margin-inline: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .stage :global(.layer) {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto !important;
+    border-radius: 0;
+    opacity: 0;
+    transition: opacity var(--t-swap) var(--ease);
+  }
+  .stage :global(.layer.on) {
+    opacity: 1;
+  }
+
+  /* ---------- list ---------- */
+  .col {
+    max-width: var(--col); /* same edges as the text column below */
+  }
+  .index {
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--line);
+  }
+  li {
+    border-top: 1px solid var(--line);
+  }
+  .pick {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 48px;
+    text-decoration: none;
+  }
+  .n {
+    color: var(--muted);
+    transition:
+      color 0.2s,
+      transform 0.3s var(--ease);
+  }
+  .r {
+    flex: none;
+    font-size: 13px;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .pick:hover .n,
+  .pick[data-on] .n {
+    color: var(--fg);
+  }
+  .pick[data-on] .n {
+    transform: translateX(6px);
+  }
+  .pick[data-on] .r,
+  .pick:focus-visible .r {
+    opacity: 1;
+  }
+
+  /* ---------- mobile strip ---------- */
+  .mstrip,
+  .mcount {
+    display: none;
+  }
+
+  @media (max-width: 720px) {
+    .stage {
+      display: none;
+    }
+    .mstrip {
+      display: flex;
+      gap: 8px;
+      margin-left: calc(-1 * var(--gutter-l));
+      margin-right: calc(-1 * var(--gutter-r));
+      padding-inline: var(--gutter-l) var(--gutter-r);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 24px;
+      scrollbar-width: none;
+    }
+    .mstrip::-webkit-scrollbar {
+      display: none;
+    }
+    .mstrip:focus-visible {
+      outline-offset: -2px;
+    }
+    .mcard {
+      flex: 0 0 84%;
+      display: block;
+      scroll-snap-align: center;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition:
+        transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+        opacity 0.35s;
+    }
+    .mcard :global(.ph) {
+      border-radius: var(--radius);
+    }
+    .mcard:not(.on) {
+      transform: scale(0.96);
+      opacity: 0.7;
+    }
+    .mcount {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-top: 14px;
+    }
+    [data-mhint] {
+      transition: opacity 0.3s;
+    }
+    .dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .dots i {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--line);
+      transition:
+        background 0.2s,
+        width 0.2s;
+    }
+    .dots i.on {
+      width: 14px;
+      border-radius: 3px;
+      background: var(--fg);
+    }
+    .index {
+      margin-top: 20px;
+    }
+    .pick:not([data-on]) .r {
+      display: none;
+    }
+    .n {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+</style>

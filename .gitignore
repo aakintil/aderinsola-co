@@ -1,0 +1,36 @@
+# build output
+dist/
+.vercel/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment variables
+.env
+.env.*
+!.env.example
+
+# GT Flexa is licensed for self-hosting only and must never enter this public repo.
+# scripts/fetch-fonts.mjs copies the files here at build time.
+src/assets/fonts/flexa/
+public/fonts/flexa/
+*.otf
+*.ttf
+
+# Private build kit: brief, unconfirmed figures and the prototype. Not for the public repo.
+/BRIEF.md
+/KIT-README.md
+/FONTS-SETUP.md
+/reference/
+
+# editor and OS
+.DS_Store
+.idea/
+
+# local tooling
+.claude/

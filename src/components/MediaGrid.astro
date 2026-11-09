@@ -1,0 +1,21 @@
+---
+/** A row of images. Columns fit automatically down to `min` px each, or use a fixed `cols`. */
+interface Props {
+  min?: number;
+  cols?: number;
+  class?: string;
+}
+const { min = 220, cols, class: className } = Astro.props;
+const columns = cols ? `repeat(${cols}, minmax(0, 1fr))` : `repeat(auto-fit, minmax(min(${min}px, 100%), 1fr))`;
+---
+
+<div class:list={['grid', className]} style={`grid-template-columns:${columns}`}>
+  <slot />
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 10px;
+  }
+</style>
