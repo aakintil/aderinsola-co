@@ -1,64 +1,31 @@
 ---
-/**
- * An archive tile and its <dialog>.
- * The tile opens the dialog with the native Invoker Commands API (commandfor), so it works
- * without JS in current browsers. src/scripts/archive.ts adds the open and close animation
- * and covers older browsers.
- */
+/** An archive tile: image, name, one line, a short description, and the role or context. */
 import type { CollectionEntry } from 'astro:content';
 import Media from './Media.astro';
 import DraftText from './DraftText.astro';
+import { SHOW_DRAFTS, stripDrafts } from '../lib/drafts';
 
 interface Props {
   entry: CollectionEntry<'archive'>;
 }
 const { entry } = Astro.props;
-const { name, meta, line, text, tags, tone, images } = entry.data;
-const id = `av-${entry.id}`;
-const tagLabel = (t: string) => (t === 'ai' ? 'AI' : t);
-// The dialog always shows at least three frames; missing images are tone placeholders.
-const frames = Array.from({ length: Math.max(3, images.length) }, (_, i) => images[i]);
+const { name, meta, line, text, tone, images } = entry.data;
+// Placeholder-only descriptions are dropped in production, so skip the empty paragraph.
+const showText = SHOW_DRAFTS || stripDrafts(text).length > 0;
 ---
 
-<li data-tags={tags.join(' ')}>
-  <button type="button" class="atile" commandfor={id} command="show-modal" aria-haspopup="dialog">
-    <Media
-      src={images[0]?.src}
-      alt=""
-      tone={tone}
-      tag={name}
-      ratio="4/3"
-      size="half"
-    />
-    <span class="t">{name}</span>
-    <span class="d">{line}</span>
-    <span class="tags">{tags.map(tagLabel).join(' · ')}</span>
-  </button>
-
-  <dialog class="aview" id={id} aria-labelledby={`${id}-t`} closedby="any">
-    <div class="av-in">
-      <div class="av-top">
-        <span class="label">{meta}</span>
-        <button type="button" class="av-x" commandfor={id} command="close" aria-label="Close">×</button>
-      </div>
-      <h2 class="h2" id={`${id}-t`}>{name}</h2>
-      <p class="sub"><DraftText text={text} /></p>
-      <div class="av-imgs">
-        {
-          frames.map((img, i) => (
-            <Media
-              src={img?.src}
-              alt={img?.alt ?? ''}
-              tone={tone}
-              tag={i ? `${name} · image ${i + 1}` : name}
-              ratio={i === 0 ? '16/9' : '4/3'}
-              size={i === 0 ? 'wide' : 'half'}
-            />
-          ))
-        }
-      </div>
-    </div>
-  </dialog>
+<li class="atile">
+  <Media src={images[0]?.src} alt={images[0]?.alt ?? ''} tone={tone} tag={name} ratio="4/3" size="half" />
+  <h3 class="t">{name}</h3>
+  <p class="d">{line}</p>
+  {
+    showText && (
+      <p class="x">
+        <DraftText text={text} />
+      </p>
+    )
+  }
+  <p class="tags"><DraftText text={meta} /></p>
 </li>
 
 <style>
@@ -66,39 +33,32 @@ const frames = Array.from({ length: Math.max(3, images.length) }, (_, i) => imag
     display: flex;
     flex-direction: column;
     gap: var(--gap-tight);
-    width: 100%;
-    padding: 0;
-    border: 0;
-    background: none;
-    text-align: left;
-    cursor: pointer;
   }
   .atile :global(.ph) {
     width: 100%;
   }
-  .atile :global(.ph .shot) {
-    transition: transform 0.6s var(--ease);
+  .atile p {
+    margin: 0;
   }
-  .atile:hover :global(.ph .shot) {
-    transform: scale(1.02);
-  }
-  /* Image, then title and line as one unit, then tags */
+  /* Image, then title and line as one unit, then description and role */
   .t {
-    margin-top: 6px;
+    margin: 6px 0 0;
     font-family: var(--display);
     font-weight: var(--bold);
     font-size: 18px;
     letter-spacing: -0.02em;
     color: var(--fg);
-    transition: color 0.2s;
-  }
-  .atile:hover .t {
-    color: var(--accent);
   }
   .d {
-    margin-top: -4px;
+    margin-top: -4px !important;
     font-size: 14px;
     line-height: 1.45;
+    color: var(--fg-2);
+  }
+  .x {
+    max-width: 52ch;
+    font-size: 14px;
+    line-height: 1.5;
     color: var(--muted);
   }
   .tags {
@@ -107,61 +67,5 @@ const frames = Array.from({ length: Math.max(3, images.length) }, (_, i) => imag
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
-  }
-
-  /* ---------- dialog ---------- */
-  .aview {
-    width: 100%;
-    max-width: min(980px, calc(100vw - 32px));
-    max-height: calc(100dvh - 48px);
-    padding: 0;
-    border: 0;
-    border-radius: 18px;
-    background: var(--bg);
-    color: var(--fg-2);
-    box-shadow: 0 30px 80px rgb(0 0 0 / 0.25);
-    overscroll-behavior: contain;
-  }
-  .aview::backdrop {
-    background: var(--scrim);
-  }
-  .av-in {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    max-height: calc(100dvh - 48px);
-    padding: 20px 24px 28px;
-    overflow-y: auto;
-  }
-  .av-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-  }
-  .av-x {
-    flex: none;
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    background: var(--surface);
-    color: var(--fg);
-    font-size: 22px;
-    line-height: 1;
-    cursor: pointer;
-  }
-  .av-x:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .av-imgs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
-    gap: 10px;
-    padding-top: 6px;
-  }
-  .av-imgs > :global(.ph:first-child) {
-    grid-column: 1 / -1;
   }
 </style>

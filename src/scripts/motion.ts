@@ -47,8 +47,8 @@ const CANDIDATES = [
 ].join(',');
 
 // Never revealed on scroll: the home stage and strip, closed expanders, next-project images,
-// archive tiles and dialogs. Above-the-fold entrances are already animated by CSS.
-const EXCLUDED = '[data-enter], .stage, .mstrip, details .more, .next .ph, .atile, dialog, .grid .ph, .grid .vid';
+// archive tiles. Above-the-fold entrances are already animated by CSS.
+const EXCLUDED = '[data-enter], .stage, .mstrip, details .more, .next .ph, .atile, .grid .ph, .grid .vid';
 
 function reveal(el: HTMLElement) {
   el.classList.remove('m-arm');

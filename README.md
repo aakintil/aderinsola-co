@@ -31,11 +31,11 @@ src/
   pages/
     index.astro          home: project index, intro, quotes
     work/[slug].astro    case and project pages, generated from content/projects
-    archive.astro        archive grid, filters and dialogs
+    archive.astro        archive grid
     404.astro
   layouts/Base.astro     <head>, fonts, meta, motion gate, analytics
   components/            Media, Chapter, Facts, Expander, Decision, Trio, Quote, ...
-  scripts/               small vanilla TS islands (motion, expander, video, home, archive)
+  scripts/               small vanilla TS islands (motion, expander, video, home)
   styles/                tokens.css, global.css, motion.css
   lib/                   image lookup, drafts, site settings, project helpers
   assets/img/            source images (WebP), optimized at build
@@ -72,8 +72,7 @@ speed multiplier 1.2, easing `cubic-bezier(.65,0,.35,1)`, 60ms stagger.
 - `prefers-reduced-motion`: no motion, everything visible, videos do not autoplay.
 - The case-page reading bar is a CSS scroll-driven animation. No JS.
 
-**Progressive enhancement.** Expanders are native `<details>`. Archive dialogs open with the native
-`commandfor` Invoker Commands API and close with `closedby="any"`. Videos show native controls until
+**Progressive enhancement.** Expanders are native `<details>`. Videos show native controls until
 the script takes over. The home index is a list of links.
 
 ## Fonts

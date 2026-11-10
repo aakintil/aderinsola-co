@@ -15,13 +15,6 @@ const groups = [
   { key: 'product', title: 'Product work' },
   { key: 'studio', title: 'Blue Meridian · independent studio, [years]' },
 ] as const;
-
-const filters = [
-  { key: 'all', label: 'All' },
-  { key: 'product', label: 'Product' },
-  { key: 'brand', label: 'Brand' },
-  { key: 'ai', label: 'AI' },
-];
 ---
 
 <Base title="Archive" description="Earlier work, side projects and studio work from Ade Akintilo." ogImage="archive/cahpp-about.webp">
@@ -39,22 +32,9 @@ const filters = [
         </p>
       </section>
 
-      <div class="filters" role="group" aria-label="Filter archive" data-filters>
-        {
-          filters.map((f, i) => (
-            <button type="button" class="chip" data-f={f.key} aria-pressed={i === 0 ? 'true' : 'false'}>
-              {f.label}
-            </button>
-          ))
-        }
-      </div>
-      <!-- Filters need JS. Hiding them here (not with JS) keeps the layout from shifting on load. -->
-      <noscript><style is:inline>.filters { display: none !important; }</style></noscript>
-      <p class="visually-hidden" aria-live="polite" data-count></p>
-
       {
         groups.map((g) => (
-          <section class="agroup" data-g={g.key} aria-labelledby={`ag-${g.key}`}>
+          <section class="agroup" aria-labelledby={`ag-${g.key}`}>
             <h2 class="eyebrow quiet" id={`ag-${g.key}`}>
               <DraftText text={g.title} />
             </h2>
@@ -69,14 +49,10 @@ const filters = [
         ))
       }
 
-      <SiteFooter links={[{ label: 'Home', href: '/' }]} class="archive-foot" />
+      <SiteFooter links={[{ label: 'Home', href: '/' }]} />
     </div>
   </main>
 </Base>
-
-<script>
-  import '../scripts/archive';
-</script>
 
 <style>
   .top {
@@ -89,45 +65,10 @@ const filters = [
     max-width: 760px;
     padding-top: 48px;
   }
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding-block: 28px 8px;
-  }
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    min-height: 40px;
-    padding: 0 16px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: var(--surface);
-    color: var(--fg-2);
-    font-size: 13px;
-    cursor: pointer;
-    transition:
-      background 0.2s,
-      color 0.2s,
-      border-color 0.2s;
-  }
-  .chip:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .chip[aria-pressed='true'] {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
   .agroup {
     display: flex;
     flex-direction: column;
     gap: var(--gap-media);
-    padding-top: var(--gap-related); /* the first visible group sits close to its filters */
-  }
-  /* Each later group is a new section. Works when a filter hides a group too. */
-  .agroup:not([hidden]) ~ .agroup {
     padding-top: var(--gap-section);
   }
   .agrid {
@@ -142,9 +83,5 @@ const filters = [
     .agrid {
       grid-template-columns: 1fr;
     }
-  }
-  main :global(.archive-foot) {
-    margin-top: var(--gap-section);
-    padding-block: 24px 120px;
   }
 </style>

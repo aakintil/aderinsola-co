@@ -6,6 +6,7 @@ import TitleBlock from '../../components/TitleBlock.astro';
 import Media from '../../components/Media.astro';
 import Facts from '../../components/Facts.astro';
 import NextProject from '../../components/NextProject.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
 import { mdxComponents } from '../../components/mdx';
 import { getProjects, position, type Project } from '../../lib/projects';
 import { pad2 } from '../../lib/site';
@@ -66,6 +67,18 @@ const og = d.hero.fit === 'cover' ? d.hero.src : d.card.src;
       </div>
     </nav>
   </main>
+
+  <div class="gutter">
+    <div class="wide">
+      <SiteFooter
+        links={[
+          { label: 'All work', href: '/' },
+          { label: 'Archive', href: '/archive' },
+        ]}
+        class="case-foot"
+      />
+    </div>
+  </div>
 </Base>
 
 <script>
@@ -74,6 +87,10 @@ const og = d.hero.fit === 'cover' ? d.hero.src : d.card.src;
 </script>
 
 <style>
+  /* The next-project link already ends with its own bottom space */
+  :global(.case-foot) {
+    margin-top: var(--gap-related) !important;
+  }
   /* Reading progress, driven by scroll position in CSS. No JS. */
   .progress {
     position: fixed;

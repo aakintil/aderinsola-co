@@ -2,7 +2,7 @@
  * Home project list.
  * Desktop: hover or focus a project to crossfade the stage image; click opens it.
  * Mobile: the swipe strip and the list stay in sync. Tapping a project that is not
- * centered scrolls to it first; tapping the centered one opens it.
+ * centered scrolls to it first; tapping the centered one opens it. Both end with the archive.
  */
 import { canAnimate } from './motion';
 
@@ -21,52 +21,52 @@ if (root) {
   const total = String(cards.length).padStart(2, '0');
   let current = 0;
 
-  /* ---------- stage video ----------
-     Plays only on desktop, while its project is selected and the stage is on screen.
-     Starts paused under reduced motion; the button pauses and resumes it (WCAG 2.2.2). */
+  /* ---------- videos ----------
+     Desktop plays the selected stage video; phones play the centered card's video.
+     Each plays only while its area is on screen, and never autoplays under reduced motion. */
   const wrap = root.querySelector<HTMLElement>('.stage-wrap')!;
-  const toggle = root.querySelector<HTMLButtonElement>('[data-stage-toggle]')!;
-  const toggleLabel = toggle.querySelector('.visually-hidden');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let paused = reduced.matches;
-  // Start from the stage's actual position, so a hover right after load can play a video
-  // before the IntersectionObserver below reports in.
-  const box = wrap.getBoundingClientRect();
-  let stageVisible = box.height > 0 && box.top < innerHeight && box.bottom > 0;
+  const onScreen = (el: Element) => {
+    const r = el.getBoundingClientRect();
+    return r.height > 0 && r.top < innerHeight && r.bottom > 0;
+  };
+  // Start from the actual positions, so a hover right after load can play a video
+  // before the IntersectionObservers below report in.
+  let stageVisible = onScreen(wrap);
+  let stripVisible = onScreen(strip);
 
-  // The stage video autoplays natively; stop it straight away if the viewer asked for less motion.
-  if (paused) root.querySelectorAll<HTMLVideoElement>('.vlayer video').forEach((v) => v.pause());
+  // Videos autoplay natively; stop them straight away if the viewer asked for less motion.
+  if (reduced.matches) root.querySelectorAll('video').forEach((v) => v.pause());
 
   const syncVideo = () => {
-    const layer = layers[current];
-    const hasVideo = !!layer?.classList.contains('vlayer');
-    toggle.hidden = !hasVideo || small.matches;
-    wrap.toggleAttribute('data-paused', paused);
-    if (toggleLabel) toggleLabel.textContent = paused ? 'Play video' : 'Pause video';
-    for (const l of layers) {
+    const motion = !reduced.matches;
+    layers.forEach((l, k) => {
       const video = l.querySelector('video');
-      if (!video) continue;
-      const play = l === layer && stageVisible && !paused && !small.matches;
+      if (!video) return;
+      const play = motion && !small.matches && stageVisible && k === current;
       if (play && video.paused) video.play().catch(() => {});
       if (!play && !video.paused) video.pause();
-    }
+    });
+    cards.forEach((c, k) => {
+      const video = c.querySelector('video');
+      if (!video) return;
+      const play = motion && small.matches && stripVisible && k === current;
+      if (play && video.paused) video.play().catch(() => {});
+      if (!play && !video.paused) video.pause();
+    });
   };
 
-  new IntersectionObserver(
-    ([entry]) => {
-      stageVisible = !!entry?.isIntersecting;
-      syncVideo();
-    },
-    { threshold: 0.25 },
-  ).observe(wrap);
-  toggle.addEventListener('click', () => {
-    paused = !paused;
-    syncVideo();
-  });
-  reduced.addEventListener('change', () => {
-    paused = reduced.matches;
-    syncVideo();
-  });
+  const watch = (el: Element, set: (v: boolean) => void) =>
+    new IntersectionObserver(
+      ([entry]) => {
+        set(!!entry?.isIntersecting);
+        syncVideo();
+      },
+      { threshold: 0.25 },
+    ).observe(el);
+  watch(wrap, (v) => (stageVisible = v));
+  watch(strip, (v) => (stripVisible = v));
+  reduced.addEventListener('change', syncVideo);
   small.addEventListener('change', syncVideo);
 
   const select = (i: number) => {

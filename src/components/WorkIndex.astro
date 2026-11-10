@@ -2,7 +2,9 @@
 /**
  * Home project list.
  * Desktop: one large image stage; hovering or focusing a project crossfades it.
- * Mobile (720px and below): a scroll-snap swipe strip above the same list.
+ * Mobile (720px and below): a scroll-snap swipe strip above the same list. Cards with a
+ * walkthrough play a lighter, tall-cropped version of it.
+ * The list and the strip both end with the archive, shown as a panel of its project names.
  * Behavior lives in src/scripts/home.ts. Without JS the list links still work.
  */
 import { getImage } from 'astro:assets';
@@ -13,16 +15,26 @@ import { pad2 } from '../lib/site';
 
 interface Props {
   projects: Project[];
+  /** Archive project names by group, in order. */
+  archive: { title: string; names: string[] }[];
 }
-const { projects } = Astro.props;
+const { projects, archive } = Astro.props;
+const archiveCount = archive.reduce((n, g) => n + g.names.length, 0);
 const first = projects[0]!;
-const total = pad2(projects.length);
+// The archive is the last stop in both the list and the strip.
+const total = pad2(projects.length + 1);
 
 // Projects with a stage video get a poster, shown until the video plays (and always without JS).
 const posters = await Promise.all(
   projects.map((p) =>
     p.data.card.video ? getImage({ src: image(p.data.card.video.poster), width: 1600, format: 'webp', quality: 80 }) : null,
   ),
+);
+const mobilePosters = await Promise.all(
+  projects.map((p) => {
+    const m = p.data.card.video?.mobile;
+    return m ? getImage({ src: image(m.poster), width: 720, format: 'webp', quality: 80 }) : null;
+  }),
 );
 ---
 
@@ -42,7 +54,7 @@ const posters = await Promise.all(
               {/* The first project's video autoplays natively; the others load nothing until
                   selected, then home.ts plays them. Sources only match on desktop, so phones
                   (where the stage is hidden) download nothing. home.ts also pauses offscreen
-                  and under reduced motion. */}
+                  and does not autoplay under reduced motion. */}
               <video
                 poster={poster.src}
                 autoplay={i === 0}
@@ -69,37 +81,80 @@ const posters = await Promise.all(
           );
         })
       }
+      <div class="layer alayer" aria-hidden="true">
+        <p class="label">Archive · {archiveCount} more projects</p>
+        <div class="acols">
+          {archive.map((g) => (
+            <div>
+              <p class="agroup-t">{g.title}</p>
+              <ul class="anames">
+                {g.names.map((name) => (
+                  <li>{name}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
     </a>
-    <button class="vbtn" type="button" hidden data-stage-toggle>
-      <span class="visually-hidden">Pause video</span>
-      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"
-        ><path class="i-pause" d="M4 3h3v10H4zM9 3h3v10H9z"></path><path class="i-play" d="M4.5 2.5v11l9-5.5z"></path></svg
-      >
-    </button>
   </div>
 
   <div class="mstrip" tabindex="0" role="region" aria-label="Projects, swipe sideways" data-mstrip>
     {
       projects.map((p, i) => (
         <a class:list={['mcard', { on: i === 0 }]} href={projectHref(p)} data-i={i} aria-label={`Open ${p.data.title}`}>
-          <Media
-            src={p.data.card.tall ?? p.data.card.src}
-            alt=""
-            fit={p.data.card.fit}
-            tone={p.data.tone}
-            bg={p.data.card.bg ?? (p.data.card.fit === 'flat' ? `var(--t-${p.data.tone})` : undefined)}
-            ratio="4/5"
-            size="full"
-            only="mobile"
-            priority={i === 0}
-          />
+          {p.data.card.video?.mobile && mobilePosters[i] ? (
+            <div class="mvid">
+              {/* Sources only match on phones, so desktop downloads nothing. The first card
+                  autoplays natively; home.ts plays whichever card is centered. */}
+              <video
+                poster={mobilePosters[i]!.src}
+                autoplay={i === 0}
+                preload={i === 0 ? undefined : 'none'}
+                muted
+                loop
+                playsinline
+              >
+                <source src={`/media/${p.data.card.video.mobile.src}.mp4`} type="video/mp4" media="(max-width: 720px)" />
+              </video>
+            </div>
+          ) : (
+            <Media
+              src={p.data.card.tall ?? p.data.card.src}
+              alt=""
+              fit={p.data.card.tall ? 'cover' : p.data.card.fit}
+              tone={p.data.tone}
+              bg={p.data.card.bg ?? (p.data.card.fit === 'flat' ? `var(--t-${p.data.tone})` : undefined)}
+              ratio="4/5"
+              size="full"
+              only="mobile"
+              priority={i === 0}
+            />
+          )}
         </a>
       ))
     }
+    <a class="mcard" href="/archive" data-i={projects.length} aria-label={`Open the archive, ${archiveCount} more projects`}>
+      <div class="marc" aria-hidden="true">
+        <p class="label">Archive · {archiveCount} more projects</p>
+        <div class="acols">
+          {archive.map((g) => (
+            <div>
+              <p class="agroup-t">{g.title}</p>
+              <ul class="anames">
+                {g.names.map((name) => (
+                  <li>{name}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </a>
   </div>
   <div class="mcount label" aria-hidden="true">
     <span data-mnum>01 / {total} · Tap to open</span>
-    <span class="dots">{projects.map((_, i) => <i class:list={{ on: i === 0 }} />)}</span>
+    <span class="dots">{[...projects, null].map((_, i) => <i class:list={{ on: i === 0 }} />)}</span>
     <span data-mhint>Swipe →</span>
   </div>
 
@@ -117,6 +172,14 @@ const posters = await Promise.all(
           </li>
         ))
       }
+      <li data-enter="fade" style={`--d:${360 + projects.length * 60}`}>
+        <a class="pick pick-archive" href="/archive" data-i={projects.length}>
+          <span class="n">Archive</span>
+          <span class="r">
+            {archiveCount} more projects <span aria-hidden="true">→</span>
+          </span>
+        </a>
+      </li>
     </ol>
   </div>
 </section>
@@ -151,39 +214,53 @@ const posters = await Promise.all(
   .stage :global(.layer.on) {
     opacity: 1;
   }
+  /* Archive panel: the project names, set large on the stage gradient */
+  .alayer,
+  .marc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(16px, 2.4vw, 32px);
+    padding: 0 5%;
+    background: linear-gradient(135deg, #f5f7f9, #dce3ee 50%, #c6d1e1);
+  }
+  .alayer .label,
+  .marc .label {
+    margin: 0;
+    color: var(--accent);
+  }
+  .acols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5%;
+  }
+  .agroup-t {
+    margin: 0 0 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid color-mix(in srgb, var(--fg) 14%, transparent);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .anames {
+    display: flex;
+    flex-direction: column;
+    gap: 0.14em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--display);
+    font-weight: var(--bold);
+    font-size: clamp(28px, 3.7vw, 46px);
+    line-height: 1;
+    letter-spacing: var(--track-head);
+    color: var(--fg);
+    text-wrap: balance;
+  }
   .vlayer video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  /* Pause control for the stage video (WCAG 2.2.2). Shown by home.ts while the video layer is on. */
-  .vbtn {
-    position: absolute;
-    right: 14px;
-    bottom: 14px;
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border: 0;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--surface) 86%, transparent);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: var(--fg);
-    cursor: pointer;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
-  }
-  .vbtn path {
-    fill: currentColor;
-  }
-  .vbtn .i-play,
-  [data-paused] .vbtn .i-pause {
-    display: none;
-  }
-  [data-paused] .vbtn .i-play {
-    display: inline;
   }
 
   /* ---------- list ---------- */
@@ -196,7 +273,7 @@ const posters = await Promise.all(
     list-style: none;
     border-bottom: 1px solid var(--line);
   }
-  li {
+  .index li {
     border-top: 1px solid var(--line);
   }
   .pick {
@@ -269,6 +346,41 @@ const posters = await Promise.all(
       transition:
         transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
         opacity 0.35s;
+    }
+    /* Walkthrough cards: the clip keeps its own shape, centered on the same gradient,
+       with its top and bottom edges faded into the card. */
+    .mvid {
+      display: flex;
+      align-items: center;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #f5f7f9, #dce3ee 50%, #c6d1e1);
+    }
+    .mvid video {
+      display: block;
+      width: 100%;
+      height: auto;
+      mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+    }
+    /* Archive card: the stage panel, sized to the card */
+    .marc {
+      aspect-ratio: 4 / 5;
+      gap: 18px;
+      padding: 0 8%;
+      border-radius: var(--radius);
+      container-type: inline-size;
+    }
+    .marc .acols {
+      gap: 7%;
+    }
+    .marc .agroup-t {
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      font-size: 11px;
+    }
+    .marc .anames {
+      font-size: 6.4cqi;
     }
     .mcard :global(.ph) {
       border-radius: var(--radius);

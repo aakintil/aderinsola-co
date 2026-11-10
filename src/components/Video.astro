@@ -1,8 +1,8 @@
 ---
 /**
  * Muted, looping product video (WebM + MP4 + poster) from public/media.
- * src/scripts/video.ts plays it only while on screen, never under reduced motion,
- * and adds a pause button (WCAG 2.2.2). Without JS it shows native controls.
+ * src/scripts/video.ts plays it while on screen, except under reduced motion.
+ * Without JS it shows native controls.
  */
 import { getImage } from 'astro:assets';
 import { image } from '../lib/images';
@@ -40,10 +40,6 @@ const aspect = ratio ?? `${meta.width}/${meta.height}`;
     <source src={`/media/${src}.webm`} type="video/webm" />
     <source src={`/media/${src}.mp4`} type="video/mp4" />
   </video>
-  <button class="vbtn" type="button" hidden>
-    <span class="visually-hidden">Pause video</span>
-    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path class="i-pause" d="M4 3h3v10H4zM9 3h3v10H9z"></path><path class="i-play" d="M4.5 2.5v11l9-5.5z"></path></svg>
-  </button>
 </div>
 
 <style>
@@ -60,44 +56,5 @@ const aspect = ratio ?? `${meta.width}/${meta.height}`;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  .vbtn {
-    position: absolute;
-    right: 14px;
-    bottom: 14px;
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border: 0;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--surface) 86%, transparent);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: var(--fg);
-    cursor: pointer;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .vid:hover .vbtn,
-  .vbtn:focus-visible,
-  [data-paused] .vbtn {
-    opacity: 1;
-  }
-  @media (hover: none) {
-    .vbtn {
-      opacity: 1;
-    }
-  }
-  .vbtn .i-play,
-  [data-paused] .vbtn .i-pause {
-    display: none;
-  }
-  [data-paused] .vbtn .i-play {
-    display: inline;
-  }
-  path {
-    fill: currentColor;
   }
 </style>

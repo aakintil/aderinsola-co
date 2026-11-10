@@ -1,9 +1,13 @@
 ---
+/**
+ * Site footer: a large email sign-off with a copy button, then page links and socials.
+ * The copy button needs the Clipboard API, so it stays hidden until the script shows it.
+ */
 import { site } from '../lib/site';
 import { SHOW_DRAFTS } from '../lib/drafts';
 
 interface Props {
-  /** Links in the first column. The first one reads darker. */
+  /** Page links on the left of the bottom row. */
   links: { label: string; href: string }[];
   class?: string;
 }
@@ -11,74 +15,193 @@ const { links, class: className } = Astro.props;
 ---
 
 <footer class:list={['foot', className]}>
-  <ul>
-    {
-      links.map((l) => (
-        <li>
-          <a href={l.href}>{l.label}</a>
-        </li>
-      ))
-    }
-    {
-      site.resume ? (
-        <li>
-          <a href={site.resume}>Resume</a>
-        </li>
-      ) : (
-        SHOW_DRAFTS && (
+  {
+    site.email ? (
+      <div class="hello">
+        <p class="eyebrow">Say hello</p>
+        <div class="mail">
+          <a class="addr" href={`mailto:${site.email}`}>
+            {site.email}
+          </a>
+          <button type="button" class="copy" data-copy={site.email} hidden>
+            <span data-copy-label>Copy</span>
+          </button>
+        </div>
+        <p class="visually-hidden" aria-live="polite" data-copy-status />
+      </div>
+    ) : (
+      SHOW_DRAFTS && <p class="draft">[Add the email address in src/lib/site.ts]</p>
+    )
+  }
+
+  <div class="row">
+    <ul>
+      {
+        links.map((l) => (
           <li>
-            <a class="draft" href="#">
-              Resume
+            <a href={l.href}>{l.label}</a>
+          </li>
+        ))
+      }
+      {
+        site.resume ? (
+          <li>
+            <a href={site.resume}>Resume</a>
+          </li>
+        ) : (
+          SHOW_DRAFTS && (
+            <li>
+              <a class="draft" href="#">
+                Resume
+              </a>
+            </li>
+          )
+        )
+      }
+    </ul>
+    <ul>
+      {
+        site.social.map((l) => (
+          <li>
+            <a href={l.href} rel="me">
+              {l.label}
             </a>
           </li>
-        )
-      )
-    }
-  </ul>
-  <ul>
-    {
-      site.social.map((l) => (
-        <li>
-          <a href={l.href} rel="me">
-            {l.label}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+        ))
+      }
+    </ul>
+  </div>
 </footer>
+
+<script>
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('.foot [data-copy]')) {
+    if (!navigator.clipboard) continue;
+    const label = btn.querySelector<HTMLElement>('[data-copy-label]')!;
+    const status = btn.closest('.hello')?.querySelector<HTMLElement>('[data-copy-status]');
+    let timer = 0;
+    btn.hidden = false;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+      } catch {
+        return;
+      }
+      label.textContent = 'Copied';
+      btn.dataset.done = '';
+      if (status) status.textContent = 'Email address copied';
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        label.textContent = 'Copy';
+        delete btn.dataset.done;
+        if (status) status.textContent = '';
+      }, 2000);
+    });
+  }
+</script>
 
 <style>
   .foot {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-related);
     margin-top: var(--gap-section);
-    padding-block: 24px 60px;
+    padding-block: var(--gap-related) 60px;
+    border-top: 1px solid var(--line);
+    container-type: inline-size;
+  }
+  .hello {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-tight);
+  }
+  .hello .eyebrow {
+    margin: 0;
+  }
+  .mail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+  }
+  .addr {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-family: var(--display);
+    font-weight: var(--bold);
+    /* Sized to the footer, not the window, so the address stays on one line in narrow columns */
+    font-size: clamp(22px, 5.6cqi, 60px);
+    line-height: 1.05;
+    letter-spacing: var(--track-head);
+    color: var(--fg);
+    text-decoration: none;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+    transition:
+      color 0.2s,
+      background-size 0.35s var(--ease);
+  }
+  .addr:hover,
+  .addr:focus-visible {
+    color: var(--accent);
+    background-size: 100% 2px;
+  }
+  .copy {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--fg-2);
+    font-size: 13px;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      color 0.2s,
+      background 0.2s;
+  }
+  .copy:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .copy[data-done] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding-top: 16px;
     border-top: 1px solid var(--line);
     font-size: 13px;
   }
   ul {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 4px 20px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  a {
+  .row a {
     display: flex;
     align-items: center;
-    min-height: 28px;
+    min-height: 32px;
     color: var(--muted);
     text-decoration: none;
-  }
-  a {
     transition: color 0.2s;
   }
-  ul:first-child li:first-child a {
-    color: var(--fg);
-  }
-  a:hover {
+  .row a:hover {
     color: var(--accent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .addr,
+    .copy {
+      transition: none;
+    }
   }
 </style>

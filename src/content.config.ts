@@ -56,6 +56,8 @@ const projects = defineCollection({
           src: z.string(),
           /** Poster image key in src/assets/img */
           poster: z.string(),
+          /** Lighter version cropped for the mobile swipe strip's tall cards. */
+          mobile: z.object({ src: z.string(), poster: z.string() }).optional(),
         })
         .optional(),
     }),

@@ -4,7 +4,7 @@ export const site = {
   description: 'A lead product designer who turns complex systems into products people actually use.',
   // Leave empty until confirmed. Empty values render as drafts (hidden in production).
   email: 'aderinsola.akintilo@gmail.com',
-  resume: '',
+  resume: '/Aderinsola-Akintilo-Resume.pdf',
   social: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/aderinsola/' },
     { label: 'X', href: 'https://x.com/The_Aderinsola' },

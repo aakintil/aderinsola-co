@@ -3,10 +3,20 @@ import Base from '../layouts/Base.astro';
 import WorkIndex from '../components/WorkIndex.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import Draft from '../components/Draft.astro';
+import { getCollection } from 'astro:content';
 import { getProjects } from '../lib/projects';
+import { SHOW_DRAFTS } from '../lib/drafts';
 import { site } from '../lib/site';
 
 const projects = await getProjects();
+const archiveEntries = (await getCollection('archive', ({ data }) => SHOW_DRAFTS || !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+// Same groups as the archive page: product work, then studio work
+const archive = [
+  { title: 'Product work', names: archiveEntries.filter((e) => e.data.group === 'product').map((e) => e.data.name) },
+  { title: 'Blue Meridian studio', names: archiveEntries.filter((e) => e.data.group === 'studio').map((e) => e.data.name) },
+].filter((g) => g.names.length);
 
 const colleagues = [
   {
@@ -32,7 +42,7 @@ const colleagues = [
   </header>
 
   <main id="main">
-    <WorkIndex projects={projects} />
+    <WorkIndex projects={projects} archive={archive} />
 
     <div class="gutter col intro">
       <div class="prose">
