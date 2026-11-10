@@ -37,7 +37,7 @@ card:
   src: sio/field-1.webp
   fit: cover
   video:
-    src: sio/site-walkthrough-hd
+    src: sio/site-walkthrough-v2
     poster: sio/site-walkthrough-poster.webp
 ---
 
@@ -46,9 +46,13 @@ card:
 
 In 2024, only about 1 in 70 visitors ever reached the Incentive Finder. And the site looked so much like a paid lead marketplace that visitors kept asking what we were selling.
 
-<Expander summary="What we saw">
+<Expander summary="What user testing showed">
 
-Rebates were the top reason people visited, but the Incentive Finder sat below the fold behind dense copy and stock imagery. Contractors landed on a homeowner site and assumed it was not for them, so they never found the free leads. And when the site explained that it was a nonprofit, user testing showed it sounded defensive and made people more suspicious.
+Rebates were the top reason people came to the site, but the Incentive Finder sat below the fold, behind dense copy and stock imagery. The tool most visitors wanted was the hardest one to reach.
+
+Contractors had the opposite problem. They landed on what looked like a homeowner site, assumed it was not for them and left, so they never found the free leads waiting for them.
+
+Then there was trust. When the site explained that SIO was a nonprofit, testing showed it sounded defensive and made people more suspicious, not less. Saying it was not enough; the site had to show it.
 
 </Expander>
 </Chapter>
@@ -63,6 +67,12 @@ Rebates were the top reason people visited, but the Incentive Finder sat below t
 
 The problem was language before it was layout. "Switch", "electrify" and "decarbonize" made it sound like work. Modern electric appliances are simply better: cheaper with local incentives, installed by verified pros, more efficient and easy to get.
 
+<Expander summary="How we landed on better">
+
+The mission words described what we wanted homeowners to do, not what they would get. "Better" turns that around: every message answers what is in it for you. The homepage carries it as four cards, one reason each, so a visitor sees the benefit before they see the ask.
+
+</Expander>
+
   <Decision
     slot="after"
     items={[
@@ -75,19 +85,25 @@ The problem was language before it was layout. "Switch", "electrify" and "decarb
 
 <Chapter eyebrow="03 · Two front doors" title="A homepage that asks one question.">
   <MediaGrid slot="media" min={300}>
-    <Media src="sio/home-a.webp" alt="Homepage composition A: find a pro hero with zip search" tone="sio" ratio="1" size="half" />
-    <Media src="sio/home-b.webp" alt="Homepage composition B" tone="hub" ratio="1" size="half" />
+    <Media src="sio/homepage-laptop.webp" alt="The Switch Is On homepage on a laptop: the headline, two buttons, Take me to incentives and Find me a pro, and a row of appliance cards below" fit="cover" ratio="4/3" size="half" />
+    <Media src="sio/homepage-mobile.webp" alt="Three phone screens from the site: a heat pump article, the contractor sign-up banner above How can I go electric, and the We have so much info to share cards" fit="cover" ratio="4/3" size="half" />
   </MediaGrid>
 
-What do you need? Two paths above the fold, find incentives or find a pro, with each module below doing one job and measured on its own.
+What do you need? Two paths above the fold: find incentives or find a pro. Everything below them does one job and is measured on its own.
 
-<Expander summary="The modules">
+<Expander summary="Five modules, one job each">
 
-1. Hero: clear in three seconds
-2. Tool crossroads: route to incentives or contractors
-3. Benefit carousel: the four "better" themes
-4. About SIO: trust shown through behavior, not claims
-5. Contractor gateway: free leads for pros
+- **Hero:** clear in three seconds.
+- **Tool crossroads:** sends people to incentives or to contractors.
+- **Benefit carousel:** carries the four "better" themes.
+- **About SIO:** builds trust through behavior, not claims. This is where the nonprofit lesson from testing landed.
+- **Contractor gateway:** gives pros a direct route to free leads, so they stop bouncing off a homeowner site.
+
+<Draft block>
+
+After the April 2026 redesign, the share of visitors reaching Incentive Finder detail views rose from 18.5% to 44.4%. [Confirm: non-Windows devices only, launch date inferred]
+
+</Draft>
 
 </Expander>
 </Chapter>
@@ -112,31 +128,49 @@ A platform move in 2024, a full refresh in 2025, then a rolling program of rebui
 
 Past attempts died in review, not in build. I became the single decision owner, moved pages over one at a time as they were touched, and made a shared checklist the definition of done.
 
-<Expander summary="When the plan changed">
+<Expander summary="Inside the token pipeline">
 
-I built a token pipeline and a custom Figma plugin to keep design and code in sync. Engineering then decided against a layer between Figma and code. Rather than defend the work, I collapsed the system to 13 role colors defined the same way for every brand, made the code the source of truth, and kept the plugin as a backup.
+I built a token pipeline and a custom Figma plugin to keep design and code in sync. Engineering then decided against adding a layer between Figma and code. Rather than defend the work, I collapsed the system to 13 role colors defined the same way for every brand, made the code the source of truth, and kept the plugin as a backup.
 
 <Media src="sio/ds-tokens.webp" alt="Token architecture page from the design system" tone="hub" ratio="16/10" size="half" />
 
 </Expander>
+
+  <Decision
+    slot="after"
+    items={[
+      { label: 'Chose', value: 'Code as the source of truth, with 13 role colors per brand' },
+      { label: 'Moved away from', value: 'My own token pipeline and Figma plugin' },
+      { label: 'Why', value: 'Engineering decided against a layer between Figma and code' },
+    ]}
+  />
 </Chapter>
 
 <Chapter eyebrow="06 · The finders" title="Trust is won on the card, not the profile.">
   <Media slot="media" src="sio/confirmed-installs.webp" alt="Contractor cards with verified licenses and confirmed installs" fit="cover" large />
 
-Three finders had grown their own shells, filters and cards. The data showed homeowners decide on the card, so that is where I put the proof: verified licenses and confirmed installs. The rule for merging them: conform first, then converge.
+Three finders had grown their own shells, filters and cards. The data showed homeowners decide on the card, so that is where I put the proof: verified licenses and confirmed installs.
 
-<Expander summary="Partner badges">
+<Expander summary="Three finders, one system">
 
-Every funding program wanted its badge shown, and prominently. Prioritizing paid partners would have quietly pushed down unpaid programs. We landed on fixed-size badges in their own row above the contact button, and accepted two columns instead of three so badges never wrap.
+The finders stayed separate products, each with its own job. What changed is that they now answer to one design system: the same shell, filters and card. The rule for bringing them in was conform first, then converge. Each finder moved onto the shared components before any of them changed how it worked.
+
+<MediaGrid min={160}>
+  <Media src="sio/finder-results.webp" alt="Contractor Finder results page composition" tone="sio" ratio="4/3" size="third" />
+  <Media src="sio/finder-detail.webp" alt="Contractor detail page composition" tone="hub" ratio="4/3" size="third" />
+  <Media src="sio/contractor-card.webp" alt="Contractor card graphic" tone="sor" ratio="4/3" size="third" />
+</MediaGrid>
 
 </Expander>
 
-  <MediaGrid slot="after" min={220}>
-    <Media src="sio/finder-results.webp" alt="Contractor Finder results page composition" tone="sio" ratio="4/3" size="third" />
-    <Media src="sio/finder-detail.webp" alt="Contractor detail page composition" tone="hub" ratio="4/3" size="third" />
-    <Media src="sio/contractor-card.webp" alt="Contractor card graphic" tone="sor" ratio="4/3" size="third" />
-  </MediaGrid>
+  <Decision
+    slot="after"
+    items={[
+      { label: 'Chose', value: 'Fixed-size badges in their own row, and two columns' },
+      { label: 'Moved away from', value: 'Giving paid partners bigger or higher badges' },
+      { label: 'Why', value: 'Paid placement would quietly push down unpaid programs' },
+    ]}
+  />
 </Chapter>
 
 <Chapter eyebrow="07 · Reach" title="One system, many brands.">

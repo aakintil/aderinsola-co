@@ -34,16 +34,19 @@ card:
   result: 6 weeks to hours
   src: sorcero/rapt.webp
   tall: sorcero/cluster.webp
+  video:
+    src: sorcero/mim-walkthrough
+    poster: sorcero/mim-walkthrough-poster.webp
 ---
 
 <Chapter eyebrow="The problem" title="Up to six weeks to find one insight.">
   <Media slot="media" src="sorcero/article-card.webp" alt="Literature monitoring article card with highlighted drug mentions and knowledge graph" tone="sor" ratio="16/9" large />
 
-Medical Affairs teams sift clinical trial data, publications and health records by hand, across spreadsheets and slide decks.
+Medical Affairs teams sift clinical trial data, publications and health records by hand, across spreadsheets and slide decks. One insight could take six weeks.
 
-<Expander summary="Why it matters">
+<Expander summary="What the wait costs">
 
-It often takes an average of six weeks to work through spreadsheets, presentations and publications, and longer to spot trends and inform internal and external stakeholders. In life sciences, time spent waiting for answers costs millions in lost opportunities, money and lives.
+Six weeks is the average just to work through the spreadsheets, presentations and publications. Spotting a trend and briefing internal and external stakeholders takes longer still. In life sciences, time spent waiting for answers costs millions in lost opportunities, money and lives.
 
 </Expander>
 </Chapter>
@@ -67,7 +70,7 @@ I worked with our product director and subject matter experts to document what M
 
 With the research in hand, I mapped how the whole platform would work. It took many iterations.
 
-<Expander summary="Data sources">
+<Expander summary="Which data sources made the cut">
 
 Part of the mapping was deciding which data sources the platform would listen to, and which to cut.
 
@@ -82,11 +85,16 @@ Part of the mapping was deciding which data sources the platform would listen to
     <Media tone="sor2" tag="Iteration · action items and stages" ratio="4/3" />
   </MediaGrid>
 
-We started with a third-party vendor and a clear plan, but had not validated it with customers. What we presented was not what they expected.
+We started with a third-party vendor and a clear plan, but had not validated it with customers. They found it too complicated: action items and stages added steps, and nothing helped them group insights from the field.
 
-<Expander summary="What customers told us">
+<Expander summary="What customers asked for instead">
 
-The experience was too complicated and did not help them group insights from the field. Action items, stages and navigating from the dashboard added steps to an already long workflow. They wanted to upload insights, have them organized and tagged, group them, and visualize the data.
+Action items, stages and navigating from the dashboard added steps to a workflow that was already long. What customers wanted was simpler:
+
+1. Upload insights.
+2. Have them organized and tagged.
+3. Group them.
+4. See the data visually.
 
 </Expander>
 </Chapter>
@@ -109,18 +117,12 @@ Insights as songs, collections as playlists. A mental model even medical experts
 <Chapter eyebrow="Bottom-up workflow" title="Capture first, interface second.">
   <Media slot="media" src="sorcero/observation.webp" alt="Observation card with metadata and sentiment" tone="sor2" ratio="16/7" large />
 
-This time I started from the bottom up, making sure the basic workflows and data points were captured before designing the screens.
+This time I started from the bottom up, making sure the basic workflows and data points were captured before designing the screens. Field teams can correct AI tagging without leaving the page.
 
-<Expander summary="Observation states">
-
-Default and edit states for an observation, designed so field teams can correct AI tagging without leaving the page.
-
-<MediaGrid cols={2}>
-  <Media src="sorcero/obs-default.webp" alt="Observation detail, default state" tone="sor" ratio="1" size="quarter" />
-  <Media src="sorcero/obs-edit.webp" alt="Observation detail, edit state" tone="sor" ratio="1" size="quarter" />
-</MediaGrid>
-
-</Expander>
+  <MediaGrid slot="after" cols={2}>
+    <Media src="sorcero/obs-default.webp" alt="Observation detail, default state" tone="sor" ratio="1" size="half" />
+    <Media src="sorcero/obs-edit.webp" alt="Observation detail, edit state" tone="sor" ratio="1" size="half" />
+  </MediaGrid>
 </Chapter>
 
 <Chapter eyebrow="Design system" title="One system across three modules.">
