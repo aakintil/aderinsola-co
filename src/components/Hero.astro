@@ -18,6 +18,7 @@ const flat = hero.fit === 'flat';
     fit={hero.fit}
     tone={hero.tone ?? tone}
     bg={hero.bg}
+    focus={hero.focus}
     ratio={flat ? hero.ratio : undefined}
     height={flat ? undefined : 'clamp(320px, 52vw, 720px)'}
     style={flat ? 'max-height:780px;margin-inline:auto' : undefined}

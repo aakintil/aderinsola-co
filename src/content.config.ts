@@ -16,6 +16,8 @@ const media = z.object({
   ratio: z.string().optional(),
   /** Background behind a cover image while it loads, e.g. "#111". */
   bg: z.string().optional(),
+  /** CSS object-position for a cover image, e.g. "top" to keep the top edge in frame. */
+  focus: z.string().optional(),
 });
 
 const projects = defineCollection({

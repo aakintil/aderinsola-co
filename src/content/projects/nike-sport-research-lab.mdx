@@ -12,10 +12,11 @@ hero:
   alt: Fourtrack check-in app on a tablet, on a dark textured background
   fit: cover
   bg: '#111'
+  focus: top
 feature:
-  src: nike/both-tools.webp
+  src: nike/gradient-devices.webp
   alt: Fourtrack on a tablet next to Area42 on a laptop
-  tone: nike
+  fit: cover
   ratio: 2200/1160
 stats:
   - value: Minutes
@@ -32,9 +33,9 @@ meta:
 footnote: '[Figures pending confirmation]'
 card:
   result: Dev time 14 to 5 days
-  src: nike/tablet-dark.webp
+  src: nike/home-devices.webp
+  tall: nike/home-devices-tall.webp
   fit: cover
-  bg: '#111'
 ---
 
 <Chapter eyebrow="01 · The problem" title="Researchers spent their sessions on paperwork.">
@@ -56,10 +57,9 @@ Checking athletes in, collecting consent, recording measurements and pulling it 
 
 Today's visitors, check-in, consent and waivers, study assignment and measurements, in the order a researcher actually works.
 
-  <MediaGrid slot="after" min={220}>
-    <Media src="nike/visitors.webp" alt="Today's visitors list" tone="nike" ratio="4/5" size="third" />
-    <Media src="nike/checkin.webp" alt="Check in to a study" tone="sio" ratio="4/5" size="third" />
-    <Media src="nike/data-review.webp" alt="Basic anthropometric data review" tone="hub" ratio="4/5" size="third" />
+  <MediaGrid slot="after" min={300}>
+    <Media src="nike/gradient-fourtrack-visitors.webp" alt="Today's visitors: three participants with date of birth, scheduled time and study" fit="cover" ratio="4/3" size="half" />
+    <Media src="nike/gradient-fourtrack-tablet.webp" alt="Fourtrack check-in on a tablet: participant, consent and waiver, study and location" fit="cover" ratio="4/3" size="half" />
   </MediaGrid>
 </Chapter>
 
@@ -68,20 +68,26 @@ Today's visitors, check-in, consent and waivers, study assignment and measuremen
 
 Each capture step mirrors what happens in the room, with errors caught at entry instead of during analysis.
 
+  <Media slot="after" src="nike/gradient-fourtrack-cards.webp" alt="Check-in progress, consent and waiver forms, and captured anthropometry data" fit="cover" ratio="1901/1428" size="wide" />
 </Chapter>
 
 <Chapter eyebrow="04 · Area42" title="Ask the data a question, get an answer the same day.">
   <Video
     slot="media"
-    src="nike/area42"
-    poster="nike/area42-poster.webp"
-    label="Area42 query builder in use"
+    src="nike/area42-walkthrough"
+    poster="nike/area42-walkthrough-poster.webp"
+    label="Area42 query builder: choosing a data anchor, building rules, grouping them with And and Or, then running the query"
     tone="hub"
-    ratio="1080/608"
+    ratio="16/9"
   />
 
 A web app with a query builder, so researchers run faster and more thorough analysis on live sessions without waiting on an engineer.
 
+
+  <MediaGrid slot="after" min={300}>
+    <Media src="nike/gradient-area42-laptop.webp" alt="Area42 query builder on a laptop, with athlete data results below" fit="cover" ratio="4/3" size="half" />
+    <Media src="nike/gradient-area42-match.webp" alt="Subject matching: two Michelle Miller records side by side at 91 percent match confidence, with the mismatched email flagged" fit="cover" ratio="4/3" size="half" />
+  </MediaGrid>
 </Chapter>
 
 <Chapter eyebrow="05 · Design system" title="Specs that went straight into React.">
@@ -92,6 +98,7 @@ A web app with a query builder, so researchers run faster and more thorough anal
 
 One component library for both tools, specified closely enough that engineers built from it directly. That is what took development from 14 days to 5.
 
+  <Media slot="after" src="nike/gradient-area42-query-fields.webp" alt="Area42 form components: saved queries, data anchor, instrument, attribute, operator and value fields" fit="cover" ratio="1901/1428" size="wide" />
 </Chapter>
 
 <Quote
