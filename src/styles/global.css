@@ -204,6 +204,7 @@ html:has(dialog[open]) {
   margin: 0;
 }
 .prose a {
+  color: var(--accent);
   text-underline-offset: 3px;
 }
 

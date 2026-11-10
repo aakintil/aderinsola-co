@@ -24,6 +24,8 @@ interface Props {
   /** Fixed CSS height instead of a ratio (used by heroes). */
   height?: string | undefined;
   bg?: string | undefined;
+  /** Which part of a cover image stays in view when cropped, as CSS object-position. e.g. "top". */
+  focus?: string | undefined;
   /** Placeholder label for an image still to come. */
   tag?: string | undefined;
   /** Rendered width, for responsive image selection. */
@@ -33,6 +35,8 @@ interface Props {
   priority?: boolean | undefined;
   /** Render a tiny blurred preview under the image, for the hero entrance. */
   blurUp?: boolean | undefined;
+  /** Show a blurred preview while the image loads, then fade it in. On by default. */
+  soft?: boolean | undefined;
   only?: 'mobile' | 'desktop' | undefined;
   class?: string | undefined;
   style?: string | undefined;
@@ -47,11 +51,13 @@ const {
   ratio,
   height,
   bg,
+  focus,
   tag,
   size = 'wide',
   large = false,
   priority = false,
   blurUp = false,
+  soft = true,
   only,
   class: className,
   style: extraStyle,
@@ -74,17 +80,20 @@ const style = [
   aspect && `aspect-ratio:${aspect}`,
   height && `height:${height}`,
   bg && `background:${bg}`,
+  focus && `--focus:${focus}`,
   extraStyle,
 ]
   .filter(Boolean)
   .join(';');
 
 const placeholder = !src;
-const preview = src && blurUp ? await lqip(src) : null;
+// The hero handles its own preview in motion.css; other photos use the load fade below.
+const loadFade = Boolean(src) && soft && !blurUp;
+const preview = src && (blurUp || loadFade) ? await lqip(src) : null;
 ---
 
 <div
-  class:list={['ph', fit, { large, placeholder }, className]}
+  class:list={['ph', fit, { large, placeholder, soft: loadFade }, className]}
   style={style}
   role={placeholder && SHOW_DRAFTS ? 'img' : undefined}
   aria-label={placeholder && SHOW_DRAFTS ? `Placeholder: ${tag ?? 'image'}` : undefined}
@@ -127,6 +136,7 @@ const preview = src && blurUp ? await lqip(src) : null;
     max-width: none;
     max-height: none;
     object-fit: cover;
+    object-position: var(--focus, center);
     border-radius: 0;
     box-shadow: none;
     background: none;
@@ -163,7 +173,30 @@ const preview = src && blurUp ? await lqip(src) : null;
   }
   .cover .lqip {
     object-fit: cover;
+    object-position: var(--focus, center);
     transform: scale(1.08);
+  }
+  /* Load fade: the preview shows at once, the image fades in over it once fully loaded,
+     however slow the connection. Without JS the image simply paints over the preview. */
+  .soft .lqip {
+    display: block;
+    border-radius: 8px;
+  }
+  .cover.soft .lqip,
+  .flat.soft .lqip {
+    border-radius: 0;
+  }
+  .soft :global(.shot) {
+    position: relative;
+    transition: opacity 0.5s var(--ease);
+  }
+  .soft :global(.shot.wait) {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .soft :global(.shot) {
+      transition: none;
+    }
   }
   .tag {
     position: absolute;
@@ -177,3 +210,14 @@ const preview = src && blurUp ? await lqip(src) : null;
     background: color-mix(in srgb, var(--bg) 70%, transparent);
   }
 </style>
+
+<script>
+  // Hide images that haven't fully arrived, then fade each one in over its preview once loaded.
+  for (const img of document.querySelectorAll<HTMLImageElement>('.soft img.shot')) {
+    if (img.complete) continue;
+    img.classList.add('wait');
+    const show = () => img.classList.remove('wait');
+    img.addEventListener('load', show, { once: true });
+    img.addEventListener('error', show, { once: true });
+  }
+</script>

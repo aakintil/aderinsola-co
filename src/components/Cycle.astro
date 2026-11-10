@@ -1,0 +1,106 @@
+---
+/**
+ * One frame that crossfades through several states of the same screen, such as a component's
+ * highlighted variants. The images must share one size and alignment.
+ * Pauses offscreen and in background tabs. Under reduced motion, or without JS, shows the first state.
+ */
+import Media from './Media.astro';
+import type { Tone } from '../lib/site';
+
+interface Props {
+  /** Image paths from src/assets/img, in display order. */
+  frames: string[];
+  /** Describes the whole sequence; read once by screen readers. */
+  alt: string;
+  ratio?: string;
+  tone?: Tone;
+  bg?: string;
+  /** Milliseconds each state stays on screen. */
+  interval?: number;
+}
+const { frames, alt, ratio, tone = 'sio', bg = '#fff', interval = 1800 } = Astro.props;
+---
+
+<div class="cycle" data-cycle data-interval={interval}>
+  {
+    frames.map((src, i) => (
+      <Media
+        class:list={['layer', { on: i === 0 }]}
+        src={src}
+        alt={i === 0 ? alt : ''}
+        fit="cover"
+        focus="top"
+        tone={tone}
+        bg={bg}
+        ratio={ratio}
+        large
+      />
+    ))
+  }
+</div>
+
+<style>
+  .cycle {
+    position: relative;
+    display: grid;
+  }
+  /* Every state shares one grid cell, so the frame takes the first one's size. */
+  .cycle :global(.layer) {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease);
+  }
+  .cycle :global(.layer.on) {
+    opacity: 1;
+    z-index: 1;
+  }
+  .cycle :global(.layer.top) {
+    z-index: 2;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cycle :global(.layer) {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // The incoming state fades in on top of the current one, which stays visible underneath until it's covered.
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  for (const el of document.querySelectorAll<HTMLElement>('[data-cycle]')) {
+    const layers = [...el.querySelectorAll<HTMLElement>('.layer')];
+    if (layers.length < 2) continue;
+    const wait = Number(el.dataset.interval) || 1800;
+    let i = 0;
+    let timer = 0;
+    let visible = false;
+
+    const step = () => {
+      const prev = i;
+      i = (i + 1) % layers.length;
+      layers.forEach((l, n) => {
+        l.classList.toggle('on', n === i || n === prev);
+        l.classList.toggle('top', n === i);
+      });
+    };
+    const sync = () => {
+      const run = visible && !document.hidden && !still.matches;
+      if (run && !timer) timer = window.setInterval(step, wait);
+      if (!run && timer) {
+        clearInterval(timer);
+        timer = 0;
+      }
+    };
+
+    // Start from the frame's position now, since the observer can report late.
+    const r = el.getBoundingClientRect();
+    visible = r.bottom > 0 && r.top < innerHeight;
+    sync();
+    new IntersectionObserver(([e]) => {
+      visible = Boolean(e?.isIntersecting);
+      sync();
+    }).observe(el);
+    document.addEventListener('visibilitychange', sync);
+    still.addEventListener('change', sync);
+  }
+</script>

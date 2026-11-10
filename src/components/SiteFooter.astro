@@ -72,8 +72,13 @@ const { links, class: className } = Astro.props;
     color: var(--muted);
     text-decoration: none;
   }
-  ul:first-child li:first-child a,
-  a:hover {
+  a {
+    transition: color 0.2s;
+  }
+  ul:first-child li:first-child a {
     color: var(--fg);
+  }
+  a:hover {
+    color: var(--accent);
   }
 </style>

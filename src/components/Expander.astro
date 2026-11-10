@@ -9,7 +9,12 @@ interface Props {
 ---
 
 <details class="xp">
-  <summary><span class="plus" aria-hidden="true">+</span>{Astro.props.summary}</summary>
+  <summary>
+    <span class="icon" aria-hidden="true">
+      {/* Material Symbols "expand_more" (Apache 2.0). Points down when closed, up when open. */}
+      <svg viewBox="0 -960 960 960" width="18" height="18"><path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z"></path></svg>
+    </span>{Astro.props.summary}
+  </summary>
   <div class="more">
     <slot />
   </div>
@@ -37,29 +42,33 @@ interface Props {
     text-decoration: underline;
     text-underline-offset: 3px;
   }
-  .plus {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
+  .icon {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 22px;
+    height: 22px;
     border: 1px solid currentColor;
     border-radius: 50%;
-    font-size: 13px;
-    line-height: 1;
+  }
+  .icon svg {
+    fill: currentColor;
     transition: transform var(--t-expand) var(--ease);
   }
-  details[open] .plus {
-    transform: rotate(45deg);
+  details[open] .icon svg {
+    transform: rotate(180deg);
   }
-  details:global(.closing) .plus {
+  details:global(.closing) .icon svg {
     transform: none;
+  }
+  summary:hover .icon {
+    background: color-mix(in srgb, currentColor 8%, transparent);
   }
   .more {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    padding: 4px 0 8px 30px;
+    padding: 4px 0 8px 32px;
     font-size: 15px;
     line-height: 1.6;
     color: var(--muted);

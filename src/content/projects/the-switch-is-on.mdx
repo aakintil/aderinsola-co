@@ -9,13 +9,13 @@ tone: sio
 headline: Making home electrification the obvious choice.
 lead: I led design for every digital product on SIO, a nonprofit platform that connects homeowners with rebates and electrification contractors in 14 states.
 hero:
+  src: sio/hero-screens.webp
+  alt: Pages from The Switch Is On site, laid out at an angle, including the home page, Heat Pump Week and customer stories
+  fit: cover
+feature:
   src: sio/field-1.webp
   alt: A contractor reviewing a heat pump plan with two homeowners outside their home
   fit: cover
-feature:
-  src: sio/finder-graphic.webp
-  alt: Contractor Finder brand graphic with two contractor cards
-  tone: hub
   ratio: 16/8
 stats:
   - value: 23,357
@@ -42,7 +42,7 @@ card:
 ---
 
 <Chapter eyebrow="01 · The problem" title="Great tools nobody could find.">
-  <Media slot="media" tone="sio" tag="Old homepage, 2024, above the fold" ratio="16/9" large />
+  <Media slot="media" src="sio/old-homepage-2024.webp" alt="The 2024 Switch Is On homepage: a beach hero photo, then tool cards and appliance sections further down" fit="cover" focus="top" ratio="16/10" large />
 
 In 2024, only about 1 in 70 visitors ever reached the Incentive Finder. And the site looked so much like a paid lead marketplace that visitors kept asking what we were selling.
 
@@ -54,14 +54,14 @@ Rebates were the top reason people visited, but the Incentive Finder sat below t
 </Chapter>
 
 <Chapter eyebrow="02 · The reframe" title="One word changed the brief: better.">
-  <MediaGrid slot="media" min={200}>
-    <Media tone="sio" tag="Healthier" ratio="3/4" />
-    <Media tone="nike" tag="Comfort" ratio="3/4" />
-    <Media tone="hub" tag="Savings" ratio="3/4" />
-    <Media tone="cigna" tag="Future-ready" ratio="3/4" />
-  </MediaGrid>
+  <Cycle
+    slot="media"
+    frames={['sio/better-cheaper.webp', 'sio/better-professional.webp', 'sio/better-efficient.webp', 'sio/better-easy.webp']}
+    alt="Homepage section titled Better heating and cooling starts here, with four cards: Make it cheaper, Make it professional, Make it efficient and Make it easy, each taking a turn in its own color"
+    ratio="200/129"
+  />
 
-The problem was language before it was layout. "Switch", "electrify" and "decarbonize" made it sound like work. Modern electric appliances are simply better, for your health, comfort, wallet and future.
+The problem was language before it was layout. "Switch", "electrify" and "decarbonize" made it sound like work. Modern electric appliances are simply better: cheaper with local incentives, installed by verified pros, more efficient and easy to get.
 
   <Decision
     slot="after"
