@@ -35,7 +35,13 @@
   --gutter-r: max(24px, env(safe-area-inset-right, 0px));
   --bleed-l: max(12px, env(safe-area-inset-left, 0px));
   --bleed-r: max(12px, env(safe-area-inset-right, 0px));
-  --chapter-gap: 80px;
+  /* Spacing by relationship (Gestalt proximity): the more related two things are,
+     the closer they sit. Each step is about double the one before, so groups read at a glance. */
+  --gap-tight: 8px; /* a label and what it labels: eyebrow → heading, quote → name, title → line */
+  --gap-text: 16px; /* heading → body, paragraph → paragraph */
+  --gap-media: 24px; /* an image → the text that explains it */
+  --gap-related: 48px; /* another block in the same chapter or section: decision rows, extra images */
+  --gap-section: 128px; /* between chapters and page sections */
   --radius: 10px;
   --radius-lg: 16px;
 
@@ -48,4 +54,11 @@
   --t-text: calc(560ms * var(--speed));
   --t-load: calc(480ms * var(--speed));
   --t-expand: calc(420ms * var(--speed));
+}
+
+@media (max-width: 720px) {
+  :root {
+    --gap-related: 40px;
+    --gap-section: 88px;
+  }
 }

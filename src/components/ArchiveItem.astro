@@ -28,7 +28,7 @@ const frames = Array.from({ length: Math.max(3, images.length) }, (_, i) => imag
       tone={tone}
       tag={name}
       ratio="4/3"
-      size="third"
+      size="half"
     />
     <span class="t">{name}</span>
     <span class="d">{line}</span>
@@ -65,7 +65,7 @@ const frames = Array.from({ length: Math.max(3, images.length) }, (_, i) => imag
   .atile {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--gap-tight);
     width: 100%;
     padding: 0;
     border: 0;
@@ -82,7 +82,9 @@ const frames = Array.from({ length: Math.max(3, images.length) }, (_, i) => imag
   .atile:hover :global(.ph .shot) {
     transform: scale(1.02);
   }
+  /* Image, then title and line as one unit, then tags */
   .t {
+    margin-top: 6px;
     font-family: var(--display);
     font-weight: var(--bold);
     font-size: 18px;
@@ -94,6 +96,7 @@ const frames = Array.from({ length: Math.max(3, images.length) }, (_, i) => imag
     color: var(--accent);
   }
   .d {
+    margin-top: -4px;
     font-size: 14px;
     line-height: 1.45;
     color: var(--muted);

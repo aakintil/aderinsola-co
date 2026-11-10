@@ -18,10 +18,10 @@ const { text, cite } = Astro.props;
   .quote {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: var(--gap-media);
     max-width: 980px;
     margin: 0;
-    padding-block: 48px 56px;
+    padding-block: var(--gap-related) var(--gap-section);
     border-top: 1px solid var(--line);
   }
   blockquote,

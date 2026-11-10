@@ -122,18 +122,28 @@ const filters = [
   .agroup {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding-top: 32px;
+    gap: var(--gap-media);
+    padding-top: var(--gap-related); /* the first visible group sits close to its filters */
+  }
+  /* Each later group is a new section. Works when a filter hides a group too. */
+  .agroup:not([hidden]) ~ .agroup {
+    padding-top: var(--gap-section);
   }
   .agrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
-    gap: 28px 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-related) var(--gap-media);
     margin: 0;
     padding: 0;
     list-style: none;
   }
+  @media (max-width: 720px) {
+    .agrid {
+      grid-template-columns: 1fr;
+    }
+  }
   main :global(.archive-foot) {
-    padding-block: 56px 120px;
+    margin-top: var(--gap-section);
+    padding-block: 24px 120px;
   }
 </style>

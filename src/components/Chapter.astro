@@ -27,22 +27,39 @@ const { eyebrow, title, id = slugify(title) } = Astro.props;
     <h2 class="h2" id={id}>{title}</h2>
     <slot />
   </div>
-  <slot name="after" />
+  {
+    Astro.slots.has('after') && (
+      <div class="after">
+        <slot name="after" />
+      </div>
+    )
+  }
 </section>
 
 <style>
   .chapter {
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    padding-bottom: var(--chapter-gap);
+    gap: var(--gap-media);
+    padding-bottom: var(--gap-section);
     scroll-margin-top: 24px;
   }
   .ctext {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--gap-text);
     max-width: 760px;
+  }
+  /* The eyebrow labels the heading, so it sits tighter to it than the heading does to its text */
+  .ctext > .eyebrow {
+    margin-bottom: calc(var(--gap-tight) - var(--gap-text));
+  }
+  /* The expander continues the sub text; its 44px tap target already adds air */
+  .ctext > :global(details) {
+    margin-top: calc(var(--gap-tight) - var(--gap-text));
+  }
+  .after {
+    margin-top: calc(var(--gap-related) - var(--gap-media));
   }
   /* MDX paragraphs in the default slot are the chapter's sub text */
   .ctext > :global(p:not(.eyebrow)) {

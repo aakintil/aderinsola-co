@@ -20,8 +20,11 @@ const eyebrow = [title, client, years].filter(Boolean).join(' · ');
   .title {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--gap-media);
     max-width: 960px;
-    padding-block: 48px 36px;
+    padding-block: var(--gap-related);
+  }
+  .eyebrow {
+    margin-bottom: calc(var(--gap-tight) + 4px - var(--gap-media));
   }
 </style>

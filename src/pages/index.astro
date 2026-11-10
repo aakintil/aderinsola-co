@@ -87,18 +87,25 @@ const colleagues = [
     padding-top: 44px;
   }
   .intro {
-    padding-top: 44px;
+    padding-top: var(--gap-section);
+  }
+  .statement {
+    margin-bottom: 4px;
   }
   .say {
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    padding-top: 48px;
+    gap: var(--gap-related);
+    padding-top: var(--gap-section);
+  }
+  /* The section label binds to the list, closer than the quotes sit to each other */
+  .say > h2 {
+    margin-bottom: calc(var(--gap-media) - var(--gap-related));
   }
   .tq {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--gap-tight);
     margin: 0;
   }
   .tq blockquote,
