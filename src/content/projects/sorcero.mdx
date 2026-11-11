@@ -8,12 +8,13 @@ tone: sor
 headline: Medical Affairs insight, from 6 weeks to hours.
 lead: An enterprise AI platform that helps Medical Affairs teams understand medical content and find insights faster. Three modules and a digital style guide.
 hero:
-  src: sorcero/rapt.webp
-  alt: Sorcero RAPT literature monitoring, two screens side by side
+  src: sorcero/purple-hero.webp
+  alt: 'MIM collection detail for Patterns of Genomes: insight sources as a bar chart and occurrence on a US map'
+  fit: cover
 feature:
-  src: sorcero/analytics.webp
+  src: sorcero/purple-analytics.webp
   alt: 'Insights analytics module: listening topics, strategic imperatives, trending insights and regional activity'
-  tone: sor2
+  fit: cover
   ratio: 16/8
 stats:
   - value: 1000%
@@ -43,7 +44,7 @@ card:
 ---
 
 <Chapter eyebrow="The problem" title="Up to six weeks to find one insight.">
-  <Media slot="media" src="sorcero/article-card.webp" alt="Literature monitoring article card with highlighted drug mentions and knowledge graph" tone="sor" ratio="16/9" large />
+  <Media slot="media" src="sorcero/purple-articles.webp" alt="IPM article list for Immunology: each publication with relevance scores, citation counts and topic tags" fit="cover" ratio="16/9" large />
 
 Medical Affairs teams sift clinical trial data, publications and health records by hand, across spreadsheets and slide decks. One insight could take six weeks.
 
@@ -103,7 +104,10 @@ Action items, stages and navigating from the dashboard added steps to a workflow
 </Chapter>
 
 <Chapter eyebrow="The turning point" title="What would Spotify do?">
-  <Media slot="media" src="sorcero/cluster.webp" alt="MIM observation with AI suggested related observations, grouped like a playlist" tone="sor" ratio="16/10" large />
+  <MediaGrid slot="media" min={300}>
+    <Media src="sorcero/purple-collections.webp" alt="Your Collections: each collection with a description, record count and stage" fit="cover" ratio="4/3" size="half" />
+    <Media src="sorcero/purple-add-to-collection.webp" alt="Add to Collection dialog over the records list, with existing collections and a field to create a new one" fit="cover" ratio="4/3" size="half" />
+  </MediaGrid>
 
 Insights as songs, collections as playlists. A mental model even medical experts already use every day.
 
@@ -118,7 +122,10 @@ Insights as songs, collections as playlists. A mental model even medical experts
 </Chapter>
 
 <Chapter eyebrow="Bottom-up workflow" title="Capture first, interface second.">
-  <Media slot="media" src="sorcero/observation.webp" alt="Observation card with metadata and sentiment" tone="sor2" ratio="16/7" large />
+  <MediaGrid slot="media" min={300}>
+    <Media src="sorcero/purple-records.webp" alt="MIM records list with AI tags on drugs and topics shown inline in each insight" fit="cover" ratio="4/3" size="half" />
+    <Media src="sorcero/purple-record-detail.webp" alt="Record detail panel beside the list: content, dates, source, drug and type" fit="cover" ratio="4/3" size="half" />
+  </MediaGrid>
 
 This time I started from the bottom up, making sure the basic workflows and data points were captured before designing the screens. Field teams can correct AI tagging without leaving the page.
 
@@ -130,9 +137,9 @@ This time I started from the bottom up, making sure the basic workflows and data
 
 <Chapter eyebrow="Design system" title="One system across three modules.">
   <MediaGrid slot="media" min={220}>
-    <Media src="sorcero/geo.webp" alt="Insights by geography choropleth chart" tone="sor" ratio="4/5" size="third" />
-    <Media src="sorcero/filters.webp" alt="Filter panel component" tone="sor2" ratio="4/5" size="third" />
-    <Media src="sorcero/obs-default.webp" alt="Observation detail built from the new component library" tone="sor" ratio="4/5" size="third" />
+    <Media src="sorcero/purple-concept-tree.webp" alt="MIM collection detail: insight sources as a bar chart and a concept tree of topics" fit="cover" ratio="4/3" size="third" />
+    <Media src="sorcero/purple-articles-43.webp" alt="IPM article list built from the same components" fit="cover" ratio="4/3" size="third" />
+    <Media src="sorcero/purple-ingestion-jobs.webp" alt="Ingestion Manager jobs list built from the same components" fit="cover" ratio="4/3" size="third" />
   </MediaGrid>
 
 After MIM v1 launched, I rebuilt the design system from the MIM designs and carried it into IPM and Analytics, with a component library built alongside our front-end developer and a Figma library.

@@ -15,8 +15,8 @@
   /* Project tones: the panel behind framed screenshots */
   --t-sio: #dce6d9;
   --t-hub: #d9e1ec;
-  --t-sor: #e8e3f4;
-  --t-sor2: #ded6ef;
+  --t-sor: linear-gradient(135deg, #f3effa, #e6dff5 50%, #d4c8ec); /* matches the baked Sorcero screen backgrounds */
+  --t-sor2: linear-gradient(135deg, #f3effa, #e6dff5 50%, #d4c8ec);
   --t-nike: #ece1d6;
   --t-cigna: #d8e7e8;
   --t-gok: #eee5cf;

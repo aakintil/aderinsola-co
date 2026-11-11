@@ -9,14 +9,34 @@ interface Props {
   entry: CollectionEntry<'archive'>;
 }
 const { entry } = Astro.props;
-const { name, meta, line, text, tone, images } = entry.data;
+const { name, meta, line, text, tone, images, url } = entry.data;
 // Placeholder-only descriptions are dropped in production, so skip the empty paragraph.
 const showText = SHOW_DRAFTS || stripDrafts(text).length > 0;
 ---
 
-<li class="atile">
-  <Media src={images[0]?.src} alt={images[0]?.alt ?? ''} tone={tone} tag={name} ratio="4/3" size="half" />
-  <h3 class="t">{name}</h3>
+<li class:list={['atile', { linked: url }]}>
+  <Media
+    src={images[0]?.src}
+    alt={images[0]?.alt ?? ''}
+    fit={images[0] ? 'cover' : undefined}
+    tone={tone}
+    tag={name}
+    ratio="4/3"
+    size="half"
+  />
+  <h3 class="t">
+    {
+      url ? (
+        <a href={url} target="_blank" rel="noopener">
+          {name}
+          <span class="ext" aria-hidden="true">↗</span>
+          <span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+      ) : (
+        name
+      )
+    }
+  </h3>
   <p class="d">{line}</p>
   {
     showText && (
@@ -36,6 +56,61 @@ const showText = SHOW_DRAFTS || stripDrafts(text).length > 0;
   }
   .atile :global(.ph) {
     width: 100%;
+    transition: transform 0.35s var(--ease);
+  }
+  /* The title link covers the whole tile, so the image is clickable too, with one link to announce */
+  .linked {
+    position: relative;
+  }
+  .t a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .t a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .ext {
+    display: inline-block;
+    margin-left: 0.3em;
+    font-weight: 400;
+    color: var(--muted);
+    transition:
+      transform 0.25s var(--ease),
+      color 0.2s;
+  }
+  .linked:hover .t,
+  .linked:focus-within .t {
+    color: var(--accent);
+  }
+  .linked:hover .ext,
+  .linked:focus-within .ext {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+  .linked:hover :global(.ph) {
+    transform: translateY(-3px);
+  }
+  .t a:focus-visible {
+    outline: none;
+  }
+  .t a:focus-visible::after {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
+    border-radius: var(--radius);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .atile :global(.ph),
+    .ext {
+      transition: none;
+    }
+    .linked:hover :global(.ph),
+    .linked:hover .ext,
+    .linked:focus-within .ext {
+      transform: none;
+    }
   }
   .atile p {
     margin: 0;
