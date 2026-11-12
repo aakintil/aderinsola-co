@@ -418,8 +418,28 @@ const mobilePosters = await Promise.all(
       border-radius: 3px;
       background: var(--fg);
     }
+    /* The strip, counter and one project row fit the first screen. Cards keep 4:5 and
+       shrink on short phones; 234px is the header, counter, row and spacing around them. */
+    .work {
+      padding-top: 16px;
+    }
+    .mcard {
+      flex-basis: min(84%, calc((100svh - 234px) * 0.8));
+    }
+    /* One row: the project centered in the strip. home.ts moves data-on as you swipe. */
     .index {
-      margin-top: 20px;
+      margin-top: 12px;
+    }
+    .index li:not(:has(> [data-on])) {
+      display: none;
+    }
+    /* On phones the row arrives with its card in the page fade, and swipes swap it instantly.
+       (A row's own entrance would replay, with its stagger delay, each time it is shown again.) */
+    :global(.m) .index li {
+      animation: none;
+    }
+    .pick[data-on] .n {
+      transform: none;
     }
     .pick:not([data-on]) .r {
       display: none;
