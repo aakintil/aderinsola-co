@@ -1,21 +1,37 @@
 ---
-/** A row of images. Columns fit automatically down to `min` px each, or use a fixed `cols`. */
+/**
+ * A row of images. Columns fit automatically down to `min` px each, or use a fixed `cols`.
+ * On phones the row stays two-up instead of stacking: pairs sit side by side, and in an odd
+ * count the first image runs full width above the rest. `stack` opts out and stacks on phones.
+ */
 interface Props {
   min?: number;
   cols?: number;
+  stack?: boolean;
   class?: string;
 }
-const { min = 220, cols, class: className } = Astro.props;
+const { min = 220, cols, stack = false, class: className } = Astro.props;
 const columns = cols ? `repeat(${cols}, minmax(0, 1fr))` : `repeat(auto-fit, minmax(min(${min}px, 100%), 1fr))`;
 ---
 
-<div class:list={['grid', className]} style={`grid-template-columns:${columns}`}>
+<div class:list={['grid', { stack }, className]} style={`--cols:${columns}`}>
   <slot />
 </div>
 
 <style>
   .grid {
     display: grid;
+    grid-template-columns: var(--cols);
     gap: 10px;
+  }
+  @media (max-width: 720px) {
+    .grid:not(.stack) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    /* Odd count: the first image leads at full width. Counted by div, since Astro may inline a script between images. */
+    .grid:not(.stack) > :global(div:first-of-type:nth-last-of-type(2n + 3)) {
+      grid-column: 1 / -1;
+    }
   }
 </style>

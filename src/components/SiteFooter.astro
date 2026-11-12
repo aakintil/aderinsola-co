@@ -190,6 +190,9 @@ const { links, class: className } = Astro.props;
   .row a {
     display: flex;
     align-items: center;
+    justify-content: center;
+    /* Short labels like "X" still get a thumb-sized target */
+    min-width: 32px;
     min-height: 32px;
     color: var(--muted);
     text-decoration: none;
