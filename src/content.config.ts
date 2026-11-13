@@ -38,7 +38,7 @@ const projects = defineCollection({
     hero: media,
     /** Wide image between the title block and the facts. */
     feature: media.optional(),
-    stats: z.array(z.object({ value: z.string(), caption: z.string() })).min(1).max(3),
+    stats: z.array(z.object({ value: z.string(), caption: z.string() })).min(1).max(4),
     meta: z.array(z.object({ label: z.string(), value: z.string() })).length(3),
     footnote: z.string().optional(),
     /** How the project appears on the home index and in "Next" links. */

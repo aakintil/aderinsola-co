@@ -95,6 +95,7 @@ const preview = src && (blurUp || loadFade) ? await lqip(src) : null;
 <div
   class:list={['ph', fit, { large, placeholder, soft: loadFade }, className]}
   style={style}
+  data-size={size}
   role={placeholder && SHOW_DRAFTS ? 'img' : undefined}
   aria-label={placeholder && SHOW_DRAFTS ? `Placeholder: ${tag ?? 'image'}` : undefined}
   aria-hidden={placeholder && !SHOW_DRAFTS ? 'true' : undefined}

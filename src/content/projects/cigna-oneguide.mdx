@@ -49,14 +49,15 @@ card:
 
 Guidance lived in Compass. Coverage lived in myCigna. Customers had to stitch the two together, so most of them picked up the phone.
 
-<Expander summary="Four goals for the new OneGuide">
-
-1. Reduce the number of customer phone calls
-2. Give quick access to personal health information
-3. Make it easier to find care, lower-cost options, and pre and post-surgery support
-4. Turn moments of doubt into a calm digital experience
-
-</Expander>
+  <Decision
+    slot="after"
+    items={[
+      { label: 'Goal 01', value: 'Reduce the number of customer phone calls' },
+      { label: 'Goal 02', value: 'Give quick access to personal health information' },
+      { label: 'Goal 03', value: 'Make it easier to find care, lower-cost options, and pre and post-surgery support' },
+      { label: 'Goal 04', value: 'Turn moments of doubt into a calm digital experience' },
+    ]}
+  />
 </Chapter>
 
 <Chapter eyebrow="Research" title="Following one journey, end to end.">
@@ -71,15 +72,9 @@ Guidance lived in Compass. Coverage lived in myCigna. Customers had to stitch th
 
 Instead of auditing features, we followed a single chronic back-pain journey and tested low-fidelity wireframes at each step.
 
-<Draft block>
-<Expander summary="The journey map">
-
-[Back-pain journey map with the moments of doubt marked.]
-
-<Media tone="cigna" tag="Journey map" ratio="16/7" />
-
-</Expander>
-</Draft>
+  <Draft slot="after" block>
+    <Media tone="cigna" tag="Back-pain journey map with the moments of doubt marked" ratio="16/7" />
+  </Draft>
 </Chapter>
 
 <Chapter eyebrow="The idea" title="Sensing moments: the next best action, right on time.">

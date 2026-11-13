@@ -6,8 +6,8 @@ years: 2023–2026
 order: 1
 type: case
 tone: sio
-headline: Making home electrification the obvious choice.
-lead: I led design for every digital product on SIO, a nonprofit platform that connects homeowners with rebates and electrification contractors in 14 states.
+headline: Making a nonprofit's best tools easy to find.
+lead: I led design for SIO, a nonprofit platform that helps homeowners find electrification rebates and trusted contractors in 14 states. Then I built the system that lets new programs launch as configuration.
 hero:
   src: sio/hero-screens.webp
   alt: Pages from The Switch Is On site, laid out at an angle, including the home page, Heat Pump Week and customer stories
@@ -19,19 +19,21 @@ feature:
   ratio: 16/8
 stats:
   - value: 23,357
-    caption: Homeowner leads sent to contractors since 2024
+    caption: Homeowner leads sent to contractors since Oct 2024
   - value: 44%
-    caption: Incentive Finder detail views, up from 18%
-  - value: 1.9K
-    caption: Participating contractors across 14 states
+    caption: Incentive Finder searchers opening rebate details, up from 18%
+  - value: 61%
+    caption: Leads acknowledged by a contractor, up from 18%
+  - value: '4'
+    caption: Brands running on one design system
 meta:
   - label: Role
     value: Senior Product Designer, design lead for SIO
   - label: Team
-    value: Engineering, brand, content, CX
+    value: Product, engineering, brand, data, content
   - label: Scope
-    value: Website, three finders, Contractor Hub, design system
-footnote: '[Figures pending confirmation]'
+    value: Website, three finder tools, Contractor Hub, contractor cards and badges, design system
+footnote: Lead outcomes from the production database. Behavior from Mixpanel, unique users, bots filtered out.
 card:
   result: 23,357 homeowner leads
   src: sio/field-1.webp
@@ -45,125 +47,84 @@ card:
       poster: sio/site-walkthrough-mobile-poster.webp
 ---
 
-<Chapter eyebrow="01 · The problem" title="Great tools nobody could find.">
+<Chapter eyebrow="01 · The problem" title="Good tools nobody could reach.">
   <Media slot="media" src="sio/old-homepage-2024.webp" alt="The 2024 Switch Is On homepage: a beach hero photo, then tool cards and appliance sections further down" fit="cover" focus="top" ratio="16/10" large />
 
-In 2024, only about 1 in 70 visitors ever reached the Incentive Finder. And the site looked so much like a paid lead marketplace that visitors kept asking what we were selling.
+About 40% of visitors came for rebates, but the Incentive Finder sat below the fold, behind dense copy and stock photos. And the site looked so much like a lead marketplace that visitors kept asking what it was selling.
 
-<Expander summary="What user testing showed">
+<Expander summary="What we found">
 
-Rebates were the top reason people came to the site, but the Incentive Finder sat below the fold, behind dense copy and stock imagery. The tool most visitors wanted was the hardest one to reach.
+**Most visitors were on a phone.** 52% of visitors use mobile, and iOS alone is 42%. A buried tool on a desktop is a tool nobody finds on a phone.
 
-Contractors had the opposite problem. They landed on what looked like a homeowner site, assumed it was not for them and left, so they never found the free leads waiting for them.
+**Few searches ended in a conversation.** Only 7.7% of people who searched for a contractor went on to contact one.
 
-Then there was trust. When the site explained that SIO was a nonprofit, testing showed it sounded defensive and made people more suspicious, not less. Saying it was not enough; the site had to show it.
+**The nonprofit advantage was invisible.** SIO looked like Angi or Thumbtack. When the site tried to explain that it sold nothing, it made things worse: in testing, the more the site said what it wasn't, the more suspicious people became.
+
+**Every new program meant rebuilding.** Three finders had each grown their own layout, filters, cards and icons. Any new partner or brand meant redoing decisions that had already been made somewhere else.
 
 </Expander>
 </Chapter>
 
-<Chapter eyebrow="02 · The reframe" title="One word changed the brief: better.">
-  <Cycle
-    slot="media"
-    frames={['sio/better-cheaper.webp', 'sio/better-professional.webp', 'sio/better-efficient.webp', 'sio/better-easy.webp']}
-    alt="Homepage section titled Better heating and cooling starts here, with four cards: Make it cheaper, Make it professional, Make it efficient and Make it easy, each taking a turn in its own color"
-    ratio="200/129"
-  />
-
-The problem was language before it was layout. "Switch", "electrify" and "decarbonize" made it sound like work. Modern electric appliances are simply better: cheaper with local incentives, installed by verified pros, more efficient and easy to get.
-
-<Expander summary="How we landed on better">
-
-The mission words described what we wanted homeowners to do, not what they would get. "Better" turns that around: every message answers what is in it for you. The homepage carries it as four cards, one reason each, so a visitor sees the benefit before they see the ask.
-
-</Expander>
-
-  <Decision
-    slot="after"
-    items={[
-      { label: 'Chose', value: 'A single benefit-led idea: better' },
-      { label: 'Moved away from', value: 'Mission-first framing: switch, electrify, decarbonize' },
-      { label: 'Why', value: 'Testing showed the mission framing made electrification feel like effort' },
-    ]}
-  />
-</Chapter>
-
-<Chapter eyebrow="03 · Two front doors" title="A homepage that asks one question.">
+<Chapter eyebrow="02 · The front door" title="One word, two paths.">
   <MediaGrid slot="media" min={300}>
     <Media src="sio/homepage-laptop.webp" alt="The Switch Is On homepage on a laptop: the headline, two buttons, Take me to incentives and Find me a pro, and a row of appliance cards below" fit="cover" ratio="4/3" size="half" />
     <Media src="sio/homepage-mobile.webp" alt="Three phone screens from the site: a heat pump article, the contractor sign-up banner above How can I go electric, and the We have so much info to share cards" fit="cover" ratio="4/3" size="half" />
   </MediaGrid>
 
-What do you need? Two paths above the fold: find incentives or find a pro. Everything below them does one job and is measured on its own.
+"Switch" sounds like effort, "electrification" sounds technical, and "decarbonize" sounds political. We replaced all three with one benefit-led idea, *better*, and a homepage that asks one question: *Take me to incentives* or *Find me a pro*.
 
-<Expander summary="Five modules, one job each">
+<Expander summary="How the homepage works">
 
-- **Hero:** clear in three seconds.
-- **Tool crossroads:** sends people to incentives or to contractors.
-- **Benefit carousel:** carries the four "better" themes.
-- **About SIO:** builds trust through behavior, not claims. This is where the nonprofit lesson from testing landed.
-- **Contractor gateway:** gives pros a direct route to free leads, so they stop bouncing off a homeowner site.
+**Stop asking people to give something up.** Modern electric appliances are better for your health, your comfort, your wallet and your future. Visitors finish the sentence with whatever motivates them, and they don't get a lecture.
 
-<Draft block>
+<Cycle
+  frames={['sio/better-cheaper.webp', 'sio/better-professional.webp', 'sio/better-efficient.webp', 'sio/better-easy.webp']}
+  alt="Homepage section titled Better heating and cooling starts here, with four cards: Make it cheaper, Make it professional, Make it efficient and Make it easy, each taking a turn in its own color"
+  ratio="200/129"
+  size="half"
+/>
 
-After the April 2026 redesign, the share of visitors reaching Incentive Finder detail views rose from 18.5% to 44.4%. [Confirm: non-Windows devices only, launch date inferred]
+**Show trust instead of claiming it.** We cut the defensive "we don't sell anything" copy. Trust now comes through how the site behaves: methodology notes on tool pages, a quiet strip of partner logos, and data sources linked at the bottom of each page.
 
-</Draft>
+**Five modules, one job each.** Below the two paths, each module can be measured and changed on its own. Contractors got their own entry point in the navigation and a Pros page in the same voice as the rest of the site.
 
-</Expander>
-</Chapter>
-
-<Chapter eyebrow="04 · Three refreshes" title="Three rounds, each one less guesswork.">
-  <MediaGrid slot="media" min={220}>
-    <Media tone="sio" tag="2024 · Platform move to Next.js" ratio="4/3" />
-    <Media tone="hub" tag="2025 · Full site refresh" ratio="4/3" />
-    <Media tone="nike" tag="2026 · Heat Pump Finder and newsroom" ratio="4/3" />
-  </MediaGrid>
-
-A platform move in 2024, a full refresh in 2025, then a rolling program of rebuilds in 2026. Each round started from what the last one taught us.
-
-</Chapter>
-
-<Chapter eyebrow="05 · The design system" title="The system had stalled twice. I changed how it got made.">
-  <MediaGrid slot="media" min={220}>
-    <Media src="sio/ds-color.webp" alt="Design system color palettes" tone="sio" ratio="4/5" size="third" />
-    <Media src="sio/ds-buttons.webp" alt="Design system buttons" tone="hub" ratio="4/5" size="third" />
-    <Media src="sio/ds-cards.webp" alt="Design system cards" tone="cigna" ratio="4/5" size="third" />
-  </MediaGrid>
-
-Past attempts died in review, not in build. I became the single decision owner, moved pages over one at a time as they were touched, and made a shared checklist the definition of done.
-
-<Expander summary="Inside the token pipeline">
-
-I built a token pipeline and a custom Figma plugin to keep design and code in sync. Engineering then decided against adding a layer between Figma and code. Rather than defend the work, I collapsed the system to 13 role colors defined the same way for every brand, made the code the source of truth, and kept the plugin as a backup.
-
-<Media src="sio/ds-tokens.webp" alt="Token architecture page from the design system" tone="hub" ratio="16/10" size="half" />
+The redesign also opened a new path: 680 to 1,128 people a month now click through to a rebate provider's site.
 
 </Expander>
 
   <Decision
     slot="after"
     items={[
-      { label: 'Chose', value: 'Code as the source of truth, with 13 role colors per brand' },
-      { label: 'Moved away from', value: 'My own token pipeline and Figma plugin' },
-      { label: 'Why', value: 'Engineering decided against a layer between Figma and code' },
+      { label: 'Chose', value: 'One benefit-led idea: better' },
+      { label: 'Moved away from', value: 'Switch, electrify, decarbonize' },
+      { label: 'Why', value: 'Each one described what you give up, not what you get' },
     ]}
   />
 </Chapter>
 
-<Chapter eyebrow="06 · The finders" title="Trust is won on the card, not the profile.">
-  <Media slot="media" src="sio/confirmed-installs.webp" alt="Contractor cards with verified licenses and confirmed installs" fit="cover" large />
+<Chapter eyebrow="03 · Where trust gets decided" title="Trust is won on the card, not the profile.">
+  <Video
+    slot="media"
+    src="sio/badge-row"
+    poster="sio/badge-row-poster.webp"
+    label="Contractor cards in search results: tapping the stacked program badges opens them into a row with each program's name"
+    tone="sio"
+    ratio="850/640"
+  />
 
-Three finders had grown their own shells, filters and cards. The data showed homeowners decide on the card, so that is where I put the proof: verified licenses and confirmed installs.
+Viewing a contractor's full profile only moves contact from 4.8% to 6.8%. Homeowners decide at the card in the results list, so that's where I put the proof, and where every partner wanted their badge.
 
-<Expander summary="Three finders, one system">
+<Expander summary="Proof, badges and the other side of the lead">
 
-The finders stayed separate products, each with its own job. What changed is that they now answer to one design system: the same shell, filters and card. The rule for bringing them in was conform first, then converge. Each finder moved onto the shared components before any of them changed how it worked.
+**Use proof, not adjectives.** I wrote a framework that separates four kinds of signal that had been mixed together: contractor type, performance tier, program membership and manufacturer certification. The tier system is anchored to verified heat pump installs rather than lead volume. The first piece to ship was a "Verified Installs" counter, added to the existing card so it didn't have to wait for the full overhaul.
 
-<MediaGrid min={160}>
-  <Media src="sio/finder-results.webp" alt="Contractor Finder results page composition" tone="sio" ratio="4/3" size="third" />
-  <Media src="sio/finder-detail.webp" alt="Contractor detail page composition" tone="hub" ratio="4/3" size="third" />
-  <Media src="sio/contractor-card.webp" alt="Contractor card graphic" tone="sor" ratio="4/3" size="third" />
-</MediaGrid>
+<Media src="sio/card-anatomy.webp" alt="Contractor card guidelines: a card with labeled rows for logo, title, reviews, location, details and action, each with its height and padding" tone="sio" size="half" />
+
+**Close the loop on the contractor side.** A lead only matters if a contractor answers it. I designed the lead flows in the [Contractor Hub](/work/contractor-hub): receive, acknowledge, accept or decline. In the 60 days after launch, leads acknowledged by a contractor went from 18% to 61%, and 824 were acknowledged in the first month alone. Response speed now counts toward a contractor's ranking in search.
+
+<Media src="sio/hub-response.webp" alt="Contractor Hub explainer titled Why does this matter: fast responses help you appear higher in search results, and declining a lead doesn't lower your score" tone="hub" size="half" />
+
+**Every badge is a political decision.** Every partner program cared about whose badge showed and how prominently. My constraint was that badges never shrink. They got their own row above a pinned "Get in touch" button, and the results went from three columns to two so badges wouldn't wrap. I also raised an equity problem: ranking paid or partner badges first quietly pushes down the programs that don't pay.
 
 </Expander>
 
@@ -177,19 +138,90 @@ The finders stayed separate products, each with its own job. What changed is tha
   />
 </Chapter>
 
-<Chapter eyebrow="07 · Reach" title="One system, many brands.">
-  <Media slot="media" src="sio/field-2.webp" alt="An installer working on a heat pump unit in a crawl space" fit="cover" ratio="16/8" large />
+<Chapter eyebrow="04 · The system underneath" title="The system had stalled twice. I changed who decides.">
+  <MediaGrid slot="media" min={220}>
+    <Media src="sio/brand-sio.webp" alt="A test page in The Switch Is On colors: buttons, a search card and a dark band" tone="sio" size="quarter" />
+    <Media src="sio/brand-cch.webp" alt="The same test page in Colorado Contractor Hub colors" tone="hub" size="quarter" />
+    <Media src="sio/brand-pac.webp" alt="The same test page in Power Ahead Colorado colors" tone="cigna" size="quarter" />
+    <Media src="sio/brand-wats.webp" alt="The same test page in WattSipper colors" tone="nike" size="quarter" />
+  </MediaGrid>
 
-With the same 13 role colors per brand, a new program became a configuration, not a project. Our first white-label Incentive Finder shipped that way, and California's statewide heat pump partnership now points people to SIO.
+Two design-system efforts had stalled before mine, with pull requests closed without merging. Nobody owned the yes. I became the single owner for review, pages moved over one at a time as they were needed, and a 12-point checklist became the definition of done.
 
+<Expander summary="Inside the 13 role colors">
+
+**Then engineering turned down my pipeline.** There were two token systems built in opposite directions: 160 primitives and 74 aliases in Figma, per-brand theme files in the repo, kept in sync by hand. I built a `tokens.json` pipeline and a custom Figma plugin to connect them. Engineering decided against a JSON layer between Figma and code, which made my merged plugin unnecessary.
+
+Instead of defending it, I simplified the system to **13 role colors, named the same way in every brand**. The code theme files became the source of truth. With matching names in Figma and code, AI can compare them directly, and there's nothing left to map between the two.
+
+<Media src="sio/role-colors.webp" alt="Table of the 13 role colors with their values for SIO, Colorado Contractor Hub, Power Ahead Colorado and WattSipper" tone="hub" />
+
+**The proof is what got faster.** WattSipper, BDC's first white-label, launched as an Incentive Finder set up as a configuration rather than built from scratch. When the team redesigned the Incentive Finder's detail view in April 2026, they built it quickly on this system. The share of searchers who opened an incentive's details went from 18% to 44%, and on iOS from 16% to 47%. Detail views went from 4,257 to 5,692 a month.
+
+<Media tone="nike" tag="WattSipper beside SIO" ratio="16/9" size="half" />
+
+</Expander>
+
+  <Decision
+    slot="after"
+    items={[
+      { label: 'Chose', value: 'Code as the source of truth, with 13 role colors per brand' },
+      { label: 'Moved away from', value: 'My own token pipeline and Figma plugin' },
+      { label: 'Why', value: 'Engineering decided against a layer between Figma and code' },
+    ]}
+  />
+</Chapter>
+
+<Chapter eyebrow="05 · What didn't move" title="The Hub made responses visible. Not every contractor responds.">
+
+Fewer searches turn into leads than when we started, and a third of leads still go unanswered. The card is the next thing to fix.
+
+  <Metrics
+    slot="after"
+    items={[
+      {
+        label: 'Contractor searches that end in a lead',
+        from: { value: '5.8%', when: 'Q4 2024' },
+        to: { value: '3.4%', when: 'Q3 2026' },
+        note: 'Most of the drop comes after the profile view: profile viewers sending a lead fell from 16.5% to 11.3%.',
+      },
+      {
+        label: 'Lead forms finished once started',
+        from: { value: '55%', when: 'Oct 2024 to Jul 2025' },
+        to: { value: '47%', when: 'Dec 2025 to Oct 2026' },
+      },
+      {
+        label: 'Contractors who finish onboarding',
+        to: { value: '36%', when: 'of those who start' },
+        note: 'The biggest drop is at the licenses step, where 44% leave before basic info.',
+      },
+      {
+        label: 'Leads never acknowledged',
+        to: { value: '32%' },
+        parts: [
+          { label: 'Accepted', value: 56 },
+          { label: 'Declined', value: 11 },
+          { label: 'Never acknowledged', value: 32 },
+        ],
+        note: 'Every lead in the 12 months to Aug 2026.',
+      },
+    ]}
+    source="Lead outcomes come from the production database. Behavior figures come from Mixpanel: unique users, bot traffic filtered out, with March to June 2026 excluded where bots skewed it."
+  />
 </Chapter>
 
 <Closing eyebrow="What I'd keep">
   <Trio
     items={[
-      { title: 'System first', text: 'Settle styles, tokens and components before pages, not after.' },
-      { title: 'Content in rounds', text: 'Two to four structured passes before sign-off, in step with design.' },
-      { title: 'Talk more often', text: 'Frequent cross-team check-ins beat milestone reviews when time is tight.' },
+      { title: 'System first', text: 'Every decision made once in the system is one fewer decision made again on every page.' },
+      { title: 'Content in rounds', text: 'Two to four rounds across content, design and engineering catch problems while they are cheap.' },
+      { title: 'Change the model', text: 'When a build stalls, change who decides, where the truth lives or what the layout protects.' },
     ]}
   />
+</Closing>
+
+<Closing eyebrow="Credits">
+
+Jeff Chenoweth, André Meurer, Eduardo Lopez, Matt Rigg, John Masuga, Jenae Elliott, Srishti Bal, Diana Oh, Celine Ryan, Anita Singha. Partners: California Heat Pump Partnership, Xpedition.
+
 </Closing>

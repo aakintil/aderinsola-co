@@ -1,0 +1,241 @@
+---
+/**
+ * Number tiles, two by two. Each tile is one of:
+ *   a change: `from` → `to`, drawn as two bars (the larger value fills the bar),
+ *   a share: one `to` value, drawn as a bar out of 100%,
+ *   a split: `parts` that add up to about 100%, drawn as one stacked bar.
+ * Values are strings like "5.8%"; the bars read the number from them.
+ */
+interface Point {
+  value: string;
+  /** When it was measured, e.g. "Q4 2024". */
+  when?: string;
+}
+interface Item {
+  label: string;
+  from?: Point;
+  to: Point;
+  parts?: { label: string; value: number }[];
+  note?: string;
+}
+interface Props {
+  items: Item[];
+  /** Small print under the tiles, e.g. where the numbers come from. */
+  source?: string;
+}
+const { items, source } = Astro.props;
+const num = (s: string) => parseFloat(s.replace(/[^\d.]/g, '')) || 0;
+const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
+---
+
+<div class="metrics">
+  <ul>
+    {
+      items.map((it) => {
+        const a = it.from ? num(it.from.value) : 0;
+        const b = num(it.to.value);
+        const top = Math.max(a, b);
+        return (
+          <li>
+            <span class="label">{it.label}</span>
+            <p class="values">
+              {it.from && (
+                <>
+                  <span class="from">{it.from.value}</span>
+                  <span class="arrow" aria-label="to">
+                    →
+                  </span>
+                </>
+              )}
+              <span class="to">{it.to.value}</span>
+              {it.from?.when && it.to.when && <span class="visually-hidden">{`, ${it.from.when} to ${it.to.when}`}</span>}
+            </p>
+            {it.parts ? (
+              <div class="split" aria-hidden="true">
+                <div class="stack">
+                  {it.parts.map((p, i) => (
+                    <span class={`seg s${i}`} style={`width:${p.value}%`} />
+                  ))}
+                </div>
+                <ul class="key">
+                  {it.parts.map((p, i) => (
+                    <li>
+                      <span class={`dot s${i}`} />
+                      {p.label} {p.value}%
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <div class="bars" aria-hidden="true">
+                {it.from && (
+                  <div class="bar">
+                    <span class="track">
+                      <span class="fill was" style={`width:${pct((a / top) * 100)}`} />
+                    </span>
+                    <span class="when">{it.from.when}</span>
+                  </div>
+                )}
+                <div class="bar">
+                  <span class="track">
+                    <span class="fill now" style={`width:${pct(it.from ? (b / top) * 100 : b)}`} />
+                  </span>
+                  <span class="when">{it.to.when}</span>
+                </div>
+              </div>
+            )}
+            {it.note && <span class="note">{it.note}</span>}
+          </li>
+        );
+      })
+    }
+  </ul>
+  {source && <p class="source">{source}</p>}
+</div>
+
+<style>
+  .metrics {
+    max-width: 960px;
+  }
+  .metrics > ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .metrics > ul > li {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px 24px 26px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+  }
+  .label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg-2);
+  }
+  .values {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 0;
+    font-family: var(--display);
+    font-weight: var(--bold);
+    line-height: 1;
+    letter-spacing: -0.005em;
+    font-variant-numeric: tabular-nums;
+  }
+  .from {
+    font-size: 28px;
+    color: var(--muted);
+  }
+  .arrow {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .to {
+    font-size: 44px;
+    color: var(--fg);
+  }
+  /* One grid for both bars, so their tracks line up whatever the date labels' widths */
+  .bars {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 12px;
+  }
+  .bar {
+    display: contents;
+  }
+  .track {
+    height: 8px;
+    border-radius: 99px;
+    background: var(--panel);
+    overflow: hidden;
+  }
+  .fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+  }
+  .was {
+    background: #b9c0cb;
+  }
+  .now {
+    background: var(--accent);
+  }
+  .when {
+    min-width: 0;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .stack {
+    display: flex;
+    gap: 2px;
+    height: 8px;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .seg {
+    display: block;
+    height: 100%;
+  }
+  .s0 {
+    background: #b9c0cb;
+  }
+  .s1 {
+    background: #8a93a1;
+  }
+  .s2 {
+    background: var(--accent);
+  }
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .key li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .note {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .source {
+    margin: 14px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  @media (max-width: 720px) {
+    .metrics > ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .metrics > ul > li {
+      padding: 20px;
+    }
+    .to {
+      font-size: 40px;
+    }
+  }
+</style>

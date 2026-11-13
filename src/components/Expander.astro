@@ -21,8 +21,9 @@ interface Props {
 </details>
 
 <style>
+  /* Closed, it is a link. Open, the content is a full-width white panel. */
   details {
-    max-width: 620px;
+    width: 100%;
   }
   summary {
     list-style: none;
@@ -64,17 +65,41 @@ interface Props {
   summary:hover .icon {
     background: color-mix(in srgb, currentColor 8%, transparent);
   }
+  /* Two columns: text and lists take one, images take both unless they're half-size.
+     Bold-led points pair up side by side; a half image sits beside the point it shows. */
   .more {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 4px 0 8px 32px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 24px 48px;
+    margin-top: 12px;
+    padding: 32px 36px 36px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
     font-size: 15px;
     line-height: 1.6;
     color: var(--muted);
   }
+  .more > :global(*) {
+    min-width: 0;
+  }
+  .more > :global(:is(.ph, .vid, .cycle, .grid, .draft):not([data-size='half'])) {
+    grid-column: 1 / -1;
+  }
   .more :global(p) {
     margin: 0;
+  }
+  .more :global(strong) {
+    color: var(--fg-2);
+  }
+  @media (max-width: 720px) {
+    .more {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      margin-inline: -8px;
+      padding: 22px 20px 24px;
+    }
   }
   /* Numbered steps: 01, 02, 03 */
   .more :global(ol) {
@@ -86,13 +111,27 @@ interface Props {
     gap: 8px;
     counter-reset: step;
   }
+  /* The number hangs, so a wrapped line lines up with the text, not under the number */
   .more :global(ol > li) {
     counter-increment: step;
+    display: grid;
+    grid-template-columns: 2.2em minmax(0, 1fr);
   }
   .more :global(ol > li)::before {
     content: counter(step, decimal-leading-zero);
-    margin-right: 12px;
     font-weight: 600;
     color: var(--accent);
+  }
+  /* A list on its own spreads across both columns, two items per row */
+  .more > :global(ol:only-child) {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 48px;
+  }
+  @media (max-width: 720px) {
+    .more > :global(ol:only-child) {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>

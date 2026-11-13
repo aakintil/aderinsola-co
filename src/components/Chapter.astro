@@ -44,10 +44,13 @@ const { eyebrow, title, id = slugify(title) } = Astro.props;
     padding-bottom: var(--gap-section);
     scroll-margin-top: 24px;
   }
+  /* Full chapter width so an open expander can spread out; the heading keeps a reading width */
   .ctext {
     display: flex;
     flex-direction: column;
     gap: var(--gap-text);
+  }
+  .ctext > .h2 {
     max-width: 760px;
   }
   /* The eyebrow labels the heading, so it sits tighter to it than the heading does to its text */

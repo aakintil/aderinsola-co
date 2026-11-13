@@ -9,6 +9,7 @@
   --fg-2: #2e343d;
   --muted: #5b6472;
   --line: #e3e7ed;
+  --panel: #eef0f4; /* a shade darker than --bg: empty bar tracks */
   --accent: #6a1fa0; /* Grape: 8.5:1 on --bg */
   --scrim: rgb(20 23 28 / 0.45);
 

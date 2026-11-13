@@ -13,15 +13,17 @@ interface Props {
   /** Describes the whole sequence; read once by screen readers. */
   alt: string;
   ratio?: string;
+  /** Rendered width; "half" takes one column inside an expander. */
+  size?: 'wide' | 'half';
   tone?: Tone;
   bg?: string;
   /** Milliseconds each state stays on screen. */
   interval?: number;
 }
-const { frames, alt, ratio, tone = 'sio', bg = '#fff', interval = 1800 } = Astro.props;
+const { frames, alt, ratio, tone = 'sio', bg = '#fff', interval = 1800, size = 'wide' } = Astro.props;
 ---
 
-<div class="cycle" data-cycle data-interval={interval}>
+<div class="cycle" data-cycle data-interval={interval} data-size={size}>
   {
     frames.map((src, i) => (
       <Media
@@ -33,6 +35,7 @@ const { frames, alt, ratio, tone = 'sio', bg = '#fff', interval = 1800 } = Astro
         tone={tone}
         bg={bg}
         ratio={ratio}
+        size={size}
         large
       />
     ))
