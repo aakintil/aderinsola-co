@@ -118,6 +118,27 @@ if (entrances && 'IntersectionObserver' in window) {
   }
 }
 
+/* ---------- start at the top ---------- */
+
+// A page reached by clicking a link starts at the top. Some browsers (seen in Firefox on a Mac)
+// can carry the previous page's scroll position over. Back/forward, reloads and #anchors keep theirs,
+// and once the visitor scrolls, we leave the page alone.
+{
+  const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+  if (nav?.type === 'navigate' && !location.hash) {
+    let touched = false;
+    const mark = () => (touched = true);
+    for (const type of ['wheel', 'touchstart', 'keydown', 'pointerdown']) {
+      addEventListener(type, mark, { once: true, passive: true });
+    }
+    const top = () => {
+      if (!touched && scrollY > 0) scrollTo(0, 0);
+    };
+    top();
+    addEventListener('load', () => requestAnimationFrame(top), { once: true });
+  }
+}
+
 /* ---------- page exit ---------- */
 
 const page = document.querySelector<HTMLElement>('.page');
