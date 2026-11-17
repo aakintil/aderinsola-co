@@ -85,6 +85,7 @@ const speculation = JSON.stringify({
             var p = JSON.parse(localStorage.getItem('palette-explore') || '{}');
             if (p.palette) document.documentElement.dataset.palette = p.palette;
             if (p.project) document.documentElement.dataset.project = '';
+            if (p.bold) document.documentElement.dataset.bold = '';
           } catch (e) {}
         </script>
       )

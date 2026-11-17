@@ -1,15 +1,33 @@
 ---
 /**
  * Palette exploration control. Rendered only in dev and on preview deploys (see Base.astro).
- * Sets data-palette and data-project on <html> and remembers the choice in localStorage.
+ * Sets data-palette, data-bold and data-project on <html> and remembers the choice in localStorage.
  * Base.astro applies the saved choice in <head>, before first paint.
  */
-const palettes = [
-  { id: 'current', name: 'Current', swatches: ['#f7f8fa', '#14171c', '#6a1fa0'] },
-  { id: 'parca', name: 'Parca', swatches: ['#ebe5db', '#182639', '#f18d46'] },
-  { id: 'hyro', name: 'Hyro', swatches: ['#fef9ec', '#131114', '#ff5004'] },
-  { id: 'vogue', name: 'Vogue', swatches: ['#fdfbf7', '#080508', '#035f31'] },
-  { id: 'squash', name: 'Squash Lap', swatches: ['#e3edf1', '#183e57', '#dff37d'] },
+const groups = [
+  { name: 'Today', palettes: [{ id: 'current', name: 'Current', swatches: ['#f7f8fa', '#14171c', '#6a1fa0'] }] },
+  {
+    name: 'From the reel',
+    palettes: [
+      { id: 'parca', name: 'Parca', swatches: ['#ebe5db', '#182639', '#f18d46'] },
+      { id: 'hyro', name: 'Hyro', swatches: ['#fef9ec', '#131114', '#ff5004'] },
+      { id: 'vogue', name: 'Vogue', swatches: ['#fdfbf7', '#080508', '#035f31'] },
+      { id: 'squash', name: 'Squash Lap', swatches: ['#e3edf1', '#183e57', '#dff37d'] },
+      { id: 'egyptian', name: 'Customers', swatches: ['#eef3f8', '#051f3e', '#de2c33'] },
+      { id: 'yankees', name: 'Yankees', swatches: ['#efe5dc', '#2f2c1a', '#fe74b6'] },
+      { id: 'arc', name: 'Arc', swatches: ['#fbf0f5', '#2a1226', '#004aff'] },
+      { id: 'kyron', name: 'Kyron', swatches: ['#edf2f4', '#172126', '#e0272d'] },
+    ],
+  },
+  {
+    name: 'New',
+    palettes: [
+      { id: 'ember', name: 'Ember', swatches: ['#f4f0e8', '#1b1f27', '#c84d1c'] },
+      { id: 'cobalt', name: 'Cobalt', swatches: ['#f5f3ee', '#121417', '#2448ff'] },
+      { id: 'coral', name: 'Coral', swatches: ['#f3f1f6', '#1e1a2b', '#ff5a4e'] },
+      { id: 'night', name: 'Night', swatches: ['#121416', '#eceef0', '#d4f35a'] },
+    ],
+  },
 ];
 ---
 
@@ -19,20 +37,29 @@ const palettes = [
     <fieldset>
       <legend>Palette</legend>
       {
-        palettes.map((p) => (
-          <label>
-            <input type="radio" name="palette" value={p.id} />
-            <span class="sw" aria-hidden="true">
-              {p.swatches.map((c) => (
-                <i style={`background:${c}`} />
-              ))}
-            </span>
-            {p.name}
-          </label>
+        groups.map((g) => (
+          <>
+            <p class="group">{g.name}</p>
+            {g.palettes.map((p) => (
+              <label>
+                <input type="radio" name="palette" value={p.id} />
+                <span class="sw" aria-hidden="true">
+                  {p.swatches.map((c) => (
+                    <i style={`background:${c}`} />
+                  ))}
+                </span>
+                {p.name}
+              </label>
+            ))}
+          </>
         ))
       }
     </fieldset>
     <label class="proj">
+      <input type="checkbox" name="bold" />
+      Bold accent (labels and links too)
+    </label>
+    <label>
       <input type="checkbox" name="project" />
       Project colors on case pages
     </label>
@@ -44,7 +71,7 @@ const palettes = [
   const root = document.documentElement;
   const box = document.querySelector<HTMLDetailsElement>('[data-palette-switcher]');
   if (box) {
-    let saved: { palette?: string; project?: boolean; open?: boolean } = {};
+    let saved: { palette?: string; project?: boolean; bold?: boolean; open?: boolean } = {};
     try {
       saved = JSON.parse(localStorage.getItem(KEY) || '{}');
     } catch {}
@@ -57,10 +84,13 @@ const palettes = [
       root.dataset.palette = saved.palette || 'current';
       if (saved.project) root.dataset.project = '';
       else delete root.dataset.project;
+      if (saved.bold) root.dataset.bold = '';
+      else delete root.dataset.bold;
     };
     const radio = box.querySelector<HTMLInputElement>(`input[value="${saved.palette || 'current'}"]`);
     if (radio) radio.checked = true;
     box.querySelector<HTMLInputElement>('input[name="project"]')!.checked = Boolean(saved.project);
+    box.querySelector<HTMLInputElement>('input[name="bold"]')!.checked = Boolean(saved.bold);
     box.open = Boolean(saved.open);
     apply();
 
@@ -68,6 +98,7 @@ const palettes = [
       const t = e.target as HTMLInputElement;
       if (t.name === 'palette') saved.palette = t.value;
       if (t.name === 'project') saved.project = t.checked;
+      if (t.name === 'bold') saved.bold = t.checked;
       apply();
       save();
     });
@@ -103,6 +134,8 @@ const palettes = [
     display: none;
   }
   .body {
+    max-height: min(70vh, 640px);
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -119,11 +152,22 @@ const palettes = [
   legend {
     display: none;
   }
+  .group {
+    margin: 8px 0 2px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #5b6472;
+  }
+  .group:first-of-type {
+    margin-top: 0;
+  }
   label {
     display: flex;
     align-items: center;
     gap: 8px;
-    min-height: 32px;
+    min-height: 28px;
     cursor: pointer;
   }
   .sw {
