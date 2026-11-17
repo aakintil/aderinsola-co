@@ -1,0 +1,146 @@
+---
+/**
+ * Palette exploration control. Rendered only in dev and on preview deploys (see Base.astro).
+ * Sets data-palette and data-project on <html> and remembers the choice in localStorage.
+ * Base.astro applies the saved choice in <head>, before first paint.
+ */
+const palettes = [
+  { id: 'current', name: 'Current', swatches: ['#f7f8fa', '#14171c', '#6a1fa0'] },
+  { id: 'parca', name: 'Parca', swatches: ['#ebe5db', '#182639', '#f18d46'] },
+  { id: 'hyro', name: 'Hyro', swatches: ['#fef9ec', '#131114', '#ff5004'] },
+  { id: 'vogue', name: 'Vogue', swatches: ['#fdfbf7', '#080508', '#035f31'] },
+  { id: 'squash', name: 'Squash Lap', swatches: ['#e3edf1', '#183e57', '#dff37d'] },
+];
+---
+
+<details class="pal" data-palette-switcher>
+  <summary>Palette</summary>
+  <div class="body">
+    <fieldset>
+      <legend>Palette</legend>
+      {
+        palettes.map((p) => (
+          <label>
+            <input type="radio" name="palette" value={p.id} />
+            <span class="sw" aria-hidden="true">
+              {p.swatches.map((c) => (
+                <i style={`background:${c}`} />
+              ))}
+            </span>
+            {p.name}
+          </label>
+        ))
+      }
+    </fieldset>
+    <label class="proj">
+      <input type="checkbox" name="project" />
+      Project colors on case pages
+    </label>
+  </div>
+</details>
+
+<script>
+  const KEY = 'palette-explore';
+  const root = document.documentElement;
+  const box = document.querySelector<HTMLDetailsElement>('[data-palette-switcher]');
+  if (box) {
+    let saved: { palette?: string; project?: boolean; open?: boolean } = {};
+    try {
+      saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    } catch {}
+    const save = () => {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(saved));
+      } catch {}
+    };
+    const apply = () => {
+      root.dataset.palette = saved.palette || 'current';
+      if (saved.project) root.dataset.project = '';
+      else delete root.dataset.project;
+    };
+    const radio = box.querySelector<HTMLInputElement>(`input[value="${saved.palette || 'current'}"]`);
+    if (radio) radio.checked = true;
+    box.querySelector<HTMLInputElement>('input[name="project"]')!.checked = Boolean(saved.project);
+    box.open = Boolean(saved.open);
+    apply();
+
+    box.addEventListener('change', (e) => {
+      const t = e.target as HTMLInputElement;
+      if (t.name === 'palette') saved.palette = t.value;
+      if (t.name === 'project') saved.project = t.checked;
+      apply();
+      save();
+    });
+    box.addEventListener('toggle', () => {
+      saved.open = box.open;
+      save();
+    });
+  }
+</script>
+
+<style>
+  /* Fixed colors, so the control looks the same whatever palette it shows */
+  .pal {
+    position: fixed;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    z-index: 100;
+    max-width: calc(100vw - 24px);
+    border: 1px solid #d5d8de;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #14171c;
+    font: 500 13px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.14);
+  }
+  summary {
+    padding: 10px 14px;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 14px 14px;
+  }
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  legend {
+    display: none;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+    cursor: pointer;
+  }
+  .sw {
+    display: inline-flex;
+    overflow: hidden;
+    border: 1px solid #d5d8de;
+    border-radius: 6px;
+  }
+  .sw i {
+    width: 14px;
+    height: 20px;
+  }
+  .proj {
+    padding-top: 8px;
+    border-top: 1px solid #e3e7ed;
+  }
+  input {
+    accent-color: #14171c;
+  }
+</style>

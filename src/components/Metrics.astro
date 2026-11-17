@@ -165,10 +165,10 @@ const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
     border-radius: inherit;
   }
   .was {
-    background: #b9c0cb;
+    background: var(--bar-was);
   }
   .now {
-    background: var(--accent);
+    background: var(--mark);
   }
   .when {
     min-width: 0;
@@ -188,13 +188,13 @@ const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
     height: 100%;
   }
   .s0 {
-    background: #b9c0cb;
+    background: var(--bar-was);
   }
   .s1 {
-    background: #8a93a1;
+    background: var(--bar-mid);
   }
   .s2 {
-    background: var(--accent);
+    background: var(--mark);
   }
   .key {
     display: flex;

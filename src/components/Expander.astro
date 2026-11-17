@@ -33,7 +33,7 @@ interface Props {
     min-height: 44px;
     font-size: 14px;
     font-weight: 600;
-    color: var(--accent);
+    color: var(--link);
     cursor: pointer;
   }
   summary::-webkit-details-marker {
@@ -120,7 +120,7 @@ interface Props {
   .more :global(ol > li)::before {
     content: counter(step, decimal-leading-zero);
     font-weight: 600;
-    color: var(--accent);
+    color: var(--label);
   }
   /* A list on its own spreads across both columns, two items per row */
   .more > :global(ol:only-child) {

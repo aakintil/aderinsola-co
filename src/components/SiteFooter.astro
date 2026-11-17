@@ -141,7 +141,7 @@ const { links, class: className } = Astro.props;
   }
   .addr:hover,
   .addr:focus-visible {
-    color: var(--accent);
+    color: var(--link);
     background-size: 100% 2px;
   }
   .copy {
@@ -150,10 +150,11 @@ const { links, class: className } = Astro.props;
     align-items: center;
     min-height: 40px;
     padding: 0 16px;
-    border: 1px solid var(--line);
+    /* At rest the button is quiet by default; a palette can make it the page's accent action */
+    border: 1px solid var(--cta-rest-line, var(--line));
     border-radius: 999px;
-    background: var(--surface);
-    color: var(--fg-2);
+    background: var(--cta-rest-bg, var(--surface));
+    color: var(--cta-rest-fg, var(--fg-2));
     font-size: 13px;
     cursor: pointer;
     transition:
@@ -162,13 +163,13 @@ const { links, class: className } = Astro.props;
       background 0.2s;
   }
   .copy:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    border-color: var(--cta-hover-line, var(--cta));
+    color: var(--cta-hover-fg, var(--link));
   }
   .copy[data-done] {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: #fff;
+    border-color: var(--cta);
+    background: var(--cta);
+    color: var(--on-accent);
   }
   .row {
     display: flex;
@@ -199,7 +200,7 @@ const { links, class: className } = Astro.props;
     transition: color 0.2s;
   }
   .row a:hover {
-    color: var(--accent);
+    color: var(--link);
   }
   @media (prefers-reduced-motion: reduce) {
     .addr,

@@ -11,7 +11,29 @@
   --line: #e3e7ed;
   --panel: #eef0f4; /* a shade darker than --bg: empty bar tracks */
   --accent: #6a1fa0; /* Grape: 8.5:1 on --bg */
+  --on-accent: #ffffff; /* text on an accent fill */
   --scrim: rgb(20 23 28 / 0.45);
+
+  /* Color roles. Components use these, never --accent directly, so a palette can decide
+     how much of the page the accent touches. Today they all point at the accent. */
+  --label: var(--accent); /* eyebrows, list numbers, small markers */
+  --link: var(--accent); /* text links and hover states */
+  --mark: var(--accent); /* data: progress bar, number tile bars, the active project marker */
+  --cta: var(--accent); /* the one primary action: the email copy button */
+  --focus: var(--accent); /* keyboard focus ring */
+  --bar-was: #b9c0cb; /* the "before" bar in number tiles */
+  --bar-mid: #8a93a1;
+
+  /* Project accents: each project's own color, dark enough for small text on --bg.
+     Used for labels and marks on that project's page when project colors are on. */
+  --p-sio: #1d6b43;
+  --p-hub: #1f4e8c;
+  --p-sor: #6a1fa0;
+  --p-sor2: #6a1fa0;
+  --p-nike: #b0441b;
+  --p-cigna: #0b6c75;
+  --p-gok: #8a6400;
+  --project: var(--accent);
 
   /* Project tones: the panel behind framed screenshots */
   --t-sio: #dce6d9;

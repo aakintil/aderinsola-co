@@ -83,11 +83,11 @@ const showText = SHOW_DRAFTS || stripDrafts(text).length > 0;
   }
   .linked:hover .t,
   .linked:focus-within .t {
-    color: var(--accent);
+    color: var(--link);
   }
   .linked:hover .ext,
   .linked:focus-within .ext {
-    color: var(--accent);
+    color: var(--link);
     transform: translate(2px, -2px);
   }
   .linked:hover :global(.ph) {
@@ -97,7 +97,7 @@ const showText = SHOW_DRAFTS || stripDrafts(text).length > 0;
     outline: none;
   }
   .t a:focus-visible::after {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--focus);
     outline-offset: 6px;
     border-radius: var(--radius);
   }

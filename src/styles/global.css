@@ -1,4 +1,5 @@
 @import './tokens.css';
+@import './palettes.css';
 @import './motion.css';
 
 /* ---------- base ---------- */
@@ -42,7 +43,7 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -176,7 +177,7 @@ button {
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--label);
 }
 .eyebrow.quiet {
   color: var(--muted);
@@ -199,7 +200,7 @@ button {
   margin: 0;
 }
 .prose a {
-  color: var(--accent);
+  color: var(--link);
   text-underline-offset: 3px;
 }
 

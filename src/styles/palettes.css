@@ -1,0 +1,81 @@
+/*
+ * Palette exploration. Off by default: the site uses the tokens in tokens.css.
+ * The switcher (dev and preview deploys only) sets data-palette and data-project on <html>.
+ *
+ * Each palette is a base pair plus one accent. The accent gets one job: data marks
+ * (progress bar, number tile bars, the active project marker) and the email Copy button.
+ * Labels and links go to ink, so the accent stands out where it appears.
+ * Light accents (amber, orange, lime) are never used as text; on fills they carry ink text.
+ */
+
+/* Shared: everything else is mixed from the base pair */
+:root[data-palette]:not([data-palette='current']) {
+  --fg-2: color-mix(in srgb, var(--fg) 86%, var(--bg));
+  --muted: color-mix(in srgb, var(--fg) 68%, var(--bg));
+  --line: color-mix(in srgb, var(--fg) 13%, var(--bg));
+  --panel: color-mix(in srgb, var(--fg) 6%, var(--bg));
+  --bar-was: color-mix(in srgb, var(--fg) 22%, var(--bg));
+  --bar-mid: color-mix(in srgb, var(--fg) 45%, var(--bg));
+  --scrim: color-mix(in srgb, var(--fg) 45%, transparent);
+
+  --label: var(--fg-2);
+  --link: var(--fg);
+  --mark: var(--accent-mark, var(--accent));
+  --cta: var(--accent);
+  --focus: var(--fg);
+
+  /* The email Copy button is the accent's one action: filled at rest, ink edge on hover */
+  --cta-rest-bg: var(--accent);
+  --cta-rest-line: var(--accent);
+  --cta-rest-fg: var(--on-accent);
+  --cta-hover-fg: var(--on-accent);
+  --cta-hover-line: var(--fg);
+}
+
+/* Parca: Oat Ivory, Ink Blue, Amber Orange */
+:root[data-palette='parca'] {
+  --bg: #ebe5db;
+  --surface: #f7f4ee;
+  --fg: #182639;
+  --accent: #f18d46;
+  --on-accent: #182639;
+}
+
+/* Hyro: Warm White, Charcoal, Performance Orange */
+:root[data-palette='hyro'] {
+  --bg: #fef9ec;
+  --surface: #ffffff;
+  --fg: #131114;
+  --accent: #ff5004;
+  --on-accent: #131114;
+}
+
+/* Vogue: Skeleton Cream, Deep Black, Pine Green */
+:root[data-palette='vogue'] {
+  --bg: #fdfbf7;
+  --surface: #ffffff;
+  --fg: #080508;
+  --accent: #035f31;
+  --on-accent: #fdfbf7;
+}
+
+/* Squash Lap: Mist Blue, Deep Teal, Acid Lime. The page is a light tint of the mist. */
+:root[data-palette='squash'] {
+  --bg: #e3edf1;
+  --surface: #f6fafb;
+  --fg: #183e57;
+  --accent: #dff37d;
+  --on-accent: #183e57;
+  /* Lime is too light for a thin bar on a pale page: marks use a deeper lime */
+  --accent-mark: #c9e04a;
+}
+:root[data-palette='squash'][data-palette] {
+  /* The mist page is darker than the others: gray text needs more ink to pass 4.5:1 */
+  --muted: color-mix(in srgb, var(--fg) 76%, var(--bg));
+}
+
+/* Project colors: on a project's page, its own color takes over labels and marks */
+:root[data-project] main[data-tone] {
+  --label: var(--project);
+  --mark: var(--project);
+}
