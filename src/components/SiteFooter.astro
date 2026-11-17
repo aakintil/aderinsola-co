@@ -1,6 +1,7 @@
 ---
 /**
- * Site footer: a large email sign-off with a copy button, then page links and socials.
+ * Site footer: a large email sign-off on a full-width black block, with a copy button,
+ * then page links and socials.
  * The copy button needs the Clipboard API, so it stays hidden until the script shows it.
  */
 import { site } from '../lib/site';
@@ -105,14 +106,20 @@ const { links, class: className } = Astro.props;
     flex-direction: column;
     gap: var(--gap-related);
     margin-top: var(--gap-section);
-    padding-block: var(--gap-related) 60px;
-    border-top: 1px solid var(--line);
+    padding-bottom: 60px;
     container-type: inline-size;
   }
+  /* Ink block, paper text: the site's own voice. Color on this site belongs to the projects. */
   .hello {
+    --fg: var(--ink-block-fg);
+    --label: color-mix(in srgb, var(--ink-block-fg) 72%, var(--ink-block));
     display: flex;
     flex-direction: column;
     gap: var(--gap-tight);
+    margin-inline: calc(50% - 50vw);
+    /* Full width, with the content still on the column's edges */
+    padding: clamp(72px, 11vw, 144px) calc(50vw - 50%);
+    background: var(--ink-block);
   }
   .hello .eyebrow {
     margin: 0;
@@ -129,7 +136,7 @@ const { links, class: className } = Astro.props;
     font-family: var(--display);
     font-weight: var(--bold);
     /* Sized to the footer, not the window, so the address stays on one line in narrow columns */
-    font-size: clamp(22px, 5.6cqi, 60px);
+    font-size: clamp(18px, 5.8cqi, 76px);
     line-height: 1.05;
     letter-spacing: var(--track-head);
     color: var(--fg);
@@ -141,7 +148,6 @@ const { links, class: className } = Astro.props;
   }
   .addr:hover,
   .addr:focus-visible {
-    color: var(--link);
     background-size: 100% 2px;
   }
   .copy {
@@ -150,11 +156,10 @@ const { links, class: className } = Astro.props;
     align-items: center;
     min-height: 40px;
     padding: 0 16px;
-    /* At rest the button is quiet by default; a palette can make it the page's accent action */
-    border: 1px solid var(--cta-rest-line, var(--line));
+    border: 1px solid var(--ink-block-fg);
     border-radius: 999px;
-    background: var(--cta-rest-bg, var(--surface));
-    color: var(--cta-rest-fg, var(--fg-2));
+    background: var(--ink-block-fg);
+    color: var(--ink-block);
     font-size: 13px;
     cursor: pointer;
     transition:
@@ -162,14 +167,10 @@ const { links, class: className } = Astro.props;
       color 0.2s,
       background 0.2s;
   }
-  .copy:hover {
-    border-color: var(--cta-hover-line, var(--cta));
-    color: var(--cta-hover-fg, var(--link));
-  }
+  .copy:hover,
   .copy[data-done] {
-    border-color: var(--cta);
-    background: var(--cta);
-    color: var(--on-accent);
+    background: transparent;
+    color: var(--ink-block-fg);
   }
   .row {
     display: flex;

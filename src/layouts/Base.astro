@@ -3,8 +3,7 @@ import '../styles/global.css';
 import { Font, getImage } from 'astro:assets';
 import { image } from '../lib/images';
 import { site } from '../lib/site';
-import { stripDrafts, SHOW_DRAFTS } from '../lib/drafts';
-import PaletteSwitcher from '../components/PaletteSwitcher.astro';
+import { stripDrafts } from '../lib/drafts';
 
 interface Props {
   /** Page title. The site name is appended. Omit on the home page. */
@@ -77,20 +76,6 @@ const speculation = JSON.stringify({
       })();
     </script>
 
-    {
-      SHOW_DRAFTS && (
-        <script is:inline>
-          // Palette exploration (dev and previews only): apply the saved choice before first paint.
-          try {
-            var p = JSON.parse(localStorage.getItem('palette-explore') || '{}');
-            if (p.palette) document.documentElement.dataset.palette = p.palette;
-            if (p.project) document.documentElement.dataset.project = '';
-            if (p.bold) document.documentElement.dataset.bold = '';
-          } catch (e) {}
-        </script>
-      )
-    }
-
     <Font cssVariable="--font-body" preload />
     {hasFlexa && <Font cssVariable={displayFont} preload={[{ weight: 700 }]} />}
 
@@ -112,7 +97,6 @@ const speculation = JSON.stringify({
     <div class="page">
       <slot />
     </div>
-    {SHOW_DRAFTS && <PaletteSwitcher />}
     <script>
       import '../scripts/motion';
     </script>

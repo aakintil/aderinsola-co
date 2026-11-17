@@ -10,30 +10,48 @@
   --muted: #5b6472;
   --line: #e3e7ed;
   --panel: #eef0f4; /* a shade darker than --bg: empty bar tracks */
-  --accent: #6a1fa0; /* Grape: 8.5:1 on --bg */
-  --on-accent: #ffffff; /* text on an accent fill */
   --scrim: rgb(20 23 28 / 0.45);
 
-  /* Color roles. Components use these, never --accent directly, so a palette can decide
-     how much of the page the accent touches. Today they all point at the accent. */
-  --label: var(--accent); /* eyebrows, list numbers, small markers */
-  --link: var(--accent); /* text links and hover states */
-  --mark: var(--accent); /* data: progress bar, number tile bars, the active project marker */
-  --cta: var(--accent); /* the one primary action: the email copy button */
-  --focus: var(--accent); /* keyboard focus ring */
+  /* Color roles. The site itself is paper and ink: color comes from the work.
+     On a project's page, --label becomes that project's text color. */
+  --label: var(--fg-2); /* eyebrows, list numbers, small markers */
+  --link: var(--fg); /* text links and hover states */
+  --mark: var(--fg); /* data bars outside a project color field */
   --bar-was: #b9c0cb; /* the "before" bar in number tiles */
   --bar-mid: #8a93a1;
+  --ink-block: var(--fg); /* the contact block: ink field, paper text */
+  --ink-block-fg: var(--bg);
 
-  /* Project accents: each project's own color, dark enough for small text on --bg.
-     Used for labels and marks on that project's page when project colors are on. */
-  --p-sio: #1d6b43;
-  --p-hub: #1f4e8c;
+  /* Project colors, sampled from each project's own screens. Three per project:
+       --p-x       the fill: header field, outcomes band, number tiles, home row
+       --p-x-on    text on that fill (white on dark fills, dark on light ones)
+       --p-x-text  the project's color as text on the page: eyebrows, progress line
+     Every pair passes 4.5:1, including 90% --p-x-on for secondary text. */
+  --p-sio: #f9ed68; /* SIO yellow */
+  --p-sio-on: #14171c;
+  --p-sio-text: #1d6b43; /* SIO green, the brand's other color */
+  --p-hub: #02245e; /* Hub sign-in navy */
+  --p-hub-on: #ffffff;
+  --p-hub-text: #02245e;
   --p-sor: #6a1fa0;
+  --p-sor-on: #ffffff;
+  --p-sor-text: #6a1fa0;
   --p-sor2: #6a1fa0;
-  --p-nike: #b0441b;
-  --p-cigna: #0b6c75;
+  --p-sor2-on: #ffffff;
+  --p-sor2-text: #6a1fa0;
+  --p-cigna: #83c8ee; /* OneGuide sky blue */
+  --p-cigna-on: #083a55;
+  --p-cigna-text: #0b496a; /* Cigna wordmark navy */
+  --p-nike: #23ca85; /* Fourtrack green */
+  --p-nike-on: #14171c;
+  --p-nike-text: #007a45;
   --p-gok: #8a6400;
-  --project: var(--accent);
+  --p-gok-on: #ffffff;
+  --p-gok-text: #8a6400;
+  /* Outside a project (home's Archive row, any page without one), the project color is ink */
+  --project: var(--fg);
+  --on-project: var(--bg);
+  --project-text: var(--fg);
 
   /* Project tones: the panel behind framed screenshots */
   --t-sio: #dce6d9;
@@ -54,6 +72,7 @@
   /* Layout */
   --col: 492px;
   --wide: 1240px;
+  --hero-max: 1440px; /* full-bleed heroes stop growing here */
   --gutter-l: max(24px, env(safe-area-inset-left, 0px));
   --gutter-r: max(24px, env(safe-area-inset-right, 0px));
   --bleed-l: max(12px, env(safe-area-inset-left, 0px));

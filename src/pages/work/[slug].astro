@@ -9,7 +9,7 @@ import NextProject from '../../components/NextProject.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import { mdxComponents } from '../../components/mdx';
 import { getProjects, position, type Project } from '../../lib/projects';
-import { pad2 } from '../../lib/site';
+import { pad2, projectColors } from '../../lib/site';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -24,19 +24,20 @@ const { project } = Astro.props;
 const d = project.data;
 const { index, total, next, nextIndex } = position(await getProjects(), project);
 const { Content } = await render(project);
+const projectVars = projectColors(d.tone);
 const og = d.hero.fit === 'cover' ? d.hero.src : d.card.src;
 ---
 
 <Base title={d.title} description={d.description ?? d.lead} ogImage={og}>
-  <div class="progress" aria-hidden="true"></div>
-  <header class="gutter">
+  <div class="progress" aria-hidden="true" style={projectVars}></div>
+  <header class="gutter case-head" style={projectVars}>
     <div class="case-top wide">
       <a class="back" href="/"><span aria-hidden="true">←</span> All work</a>
       <span class="label" aria-label={`Project ${index + 1} of ${total}`}>{pad2(index + 1)} / {pad2(total)}</span>
     </div>
   </header>
 
-  <main id="main" data-type={d.type} data-tone={d.tone} style={`--project:var(--p-${d.tone})`}>
+  <main id="main" data-type={d.type} data-tone={d.tone} style={projectVars}>
     <article>
       <Hero hero={d.hero} tone={d.tone} />
       <div class="gutter">
@@ -98,7 +99,7 @@ const og = d.hero.fit === 'cover' ? d.hero.src : d.card.src;
     z-index: 30;
     height: 2px;
     margin-top: env(safe-area-inset-top, 0px);
-    background: var(--mark);
+    background: var(--project-text);
     transform-origin: 0 50%;
     transform: scaleX(0);
     pointer-events: none;
@@ -118,6 +119,18 @@ const og = d.hero.fit === 'cover' ? d.hero.src : d.card.src;
     .progress {
       display: none;
     }
+  }
+
+  /* The project's color is the page's only color: a field behind the header and hero,
+     and its text color for the eyebrows. Colors per project are in tokens.css. */
+  .case-head {
+    --fg: var(--on-project);
+    --link: var(--on-project);
+    --muted: color-mix(in srgb, var(--on-project) 90%, var(--project));
+    background: var(--project);
+  }
+  main {
+    --label: var(--project-text);
   }
 
   .case-top {

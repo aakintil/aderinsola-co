@@ -11,7 +11,7 @@ import { getImage } from 'astro:assets';
 import Media from './Media.astro';
 import { image } from '../lib/images';
 import { projectHref, type Project } from '../lib/projects';
-import { pad2 } from '../lib/site';
+import { pad2, projectColors } from '../lib/site';
 
 interface Props {
   projects: Project[];
@@ -163,7 +163,13 @@ const mobilePosters = await Promise.all(
       {
         projects.map((p, i) => (
           <li data-enter="fade" style={`--d:${360 + i * 60}`}>
-            <a class="pick" href={projectHref(p)} data-i={i} data-on={i === 0 ? '' : undefined}>
+            <a
+              class="pick"
+              href={projectHref(p)}
+              data-i={i}
+              data-on={i === 0 ? '' : undefined}
+              style={projectColors(p.data.tone)}
+            >
               <span class="n">{p.data.title}</span>
               <span class="r">
                 {p.data.card.result} <span aria-hidden="true">→</span>
@@ -276,13 +282,21 @@ const mobilePosters = await Promise.all(
   .index li {
     border-top: 1px solid var(--line);
   }
+  /* The selected project's row fills with its color (the Archive row with ink) */
   .pick {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
     min-height: 48px;
+    margin-inline: -14px;
+    padding-inline: 14px;
+    border-radius: 8px;
     text-decoration: none;
+    transition: background-color 0.25s var(--ease);
+  }
+  .pick[data-on] {
+    background: var(--project);
   }
   .n {
     color: var(--muted);
@@ -297,9 +311,11 @@ const mobilePosters = await Promise.all(
     opacity: 0;
     transition: opacity 0.2s;
   }
-  .pick:hover .n,
+  .pick:hover .n {
+    color: var(--project-text);
+  }
   .pick[data-on] .n {
-    color: var(--mark);
+    color: var(--on-project);
   }
   .pick[data-on] .n {
     transform: translateX(6px);
@@ -307,6 +323,9 @@ const mobilePosters = await Promise.all(
   .pick[data-on] .r,
   .pick:focus-visible .r {
     opacity: 1;
+  }
+  .pick[data-on] .r {
+    color: color-mix(in srgb, var(--on-project) 90%, var(--project));
   }
 
   /* ---------- mobile strip ---------- */

@@ -1,6 +1,7 @@
 ---
 /**
- * Outcomes and project meta on one 3-column grid with hairline rules (up to four outcomes).
+ * Outcomes and project meta on one 3-column grid with hairline rules (up to four outcomes),
+ * on a full-width band of the project's color.
  * Each stat is a single value; the caption carries any before-to-after.
  * Below 720px it stacks, with meta as label beside value.
  */
@@ -55,7 +56,14 @@ const showNote = footnote && (SHOW_DRAFTS || stripDrafts(footnote).length > 0);
 
 <style>
   .facts {
-    margin: 32px 0 var(--gap-section);
+    --fg: var(--on-project);
+    --fg-2: color-mix(in srgb, var(--on-project) 90%, var(--project));
+    --muted: color-mix(in srgb, var(--on-project) 90%, var(--project));
+    --line: color-mix(in srgb, var(--on-project) 28%, var(--project));
+    margin: 32px calc(50% - 50vw) var(--gap-section);
+    /* Full width, with the content still on the column's edges */
+    padding: clamp(48px, 7vw, 96px) calc(50vw - 50%);
+    background: var(--project);
   }
   .stats,
   .meta {

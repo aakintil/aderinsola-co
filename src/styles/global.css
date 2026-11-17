@@ -1,5 +1,4 @@
 @import './tokens.css';
-@import './palettes.css';
 @import './motion.css';
 
 /* ---------- base ---------- */
@@ -43,7 +42,7 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus);
+  outline: 2px solid currentColor; /* reads on paper and on every project color */
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -117,7 +116,7 @@ button {
   margin: 0 0 10px;
   font-family: var(--display);
   font-weight: var(--bold);
-  font-size: 34px;
+  font-size: clamp(34px, 4vw, 52px);
   line-height: 1.08;
   letter-spacing: var(--track-head);
   color: var(--fg);
@@ -128,8 +127,8 @@ button {
   margin: 0;
   font-family: var(--display);
   font-weight: var(--bold);
-  font-size: clamp(40px, 6vw, 84px);
-  line-height: 0.98;
+  font-size: clamp(48px, 8.4vw, 124px);
+  line-height: 0.94;
   letter-spacing: var(--track-head);
   color: var(--fg);
   text-wrap: balance;
@@ -139,7 +138,7 @@ button {
   margin: 0;
   font-family: var(--display);
   font-weight: var(--bold);
-  font-size: clamp(28px, 3.4vw, 44px);
+  font-size: clamp(32px, 4.6vw, 60px);
   line-height: 1.04;
   letter-spacing: var(--track-head);
   color: var(--fg);

@@ -14,6 +14,10 @@ export const site = {
 export const tones = ['sio', 'hub', 'sor', 'sor2', 'nike', 'cigna', 'gok'] as const;
 export type Tone = (typeof tones)[number];
 
+/** Inline style that gives an element a project's three colors (see the project colors in tokens.css). */
+export const projectColors = (t: Tone) =>
+  `--project:var(--p-${t});--on-project:var(--p-${t}-on);--project-text:var(--p-${t}-text)`;
+
 export const pad2 = (n: number) => String(n).padStart(2, '0');
 
 export const slugify = (s: string) =>
