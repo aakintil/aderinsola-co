@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { Font, getImage } from 'astro:assets';
+import Analytics from '@vercel/analytics/astro';
 import { image } from '../lib/images';
 import { site } from '../lib/site';
 import { stripDrafts } from '../lib/drafts';
@@ -83,16 +84,8 @@ const speculation = JSON.stringify({
 
     <script type="speculationrules" is:inline set:html={speculation} />
 
-    {
-      analytics && (
-        <>
-          <script is:inline>
-            window.va = window.va || function () {(window.vaq = window.vaq || []).push(arguments);};
-          </script>
-          <script is:inline defer src="/_vercel/insights/script.js" />
-        </>
-      )
-    }
+    {/* Vercel serves the script from a per-project path set at build time; the component reads it. */}
+    {analytics && <Analytics />}
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
