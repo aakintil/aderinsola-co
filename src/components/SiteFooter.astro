@@ -104,8 +104,8 @@ const { links, class: className } = Astro.props;
   .foot {
     display: flex;
     flex-direction: column;
-    gap: var(--gap-related);
-    margin-top: var(--gap-section);
+    gap: calc(var(--gap-related) / 2);
+    margin-top: calc(var(--gap-section) / 2);
     padding-bottom: 60px;
     container-type: inline-size;
   }
@@ -118,7 +118,7 @@ const { links, class: className } = Astro.props;
     gap: var(--gap-tight);
     margin-inline: calc(50% - 50vw);
     /* Full width, with the content still on the column's edges */
-    padding: clamp(72px, 11vw, 144px) calc(50vw - 50%);
+    padding: clamp(36px, 5.5vw, 72px) calc(50vw - 50%);
     background: var(--ink-block);
   }
   .hello .eyebrow {
@@ -179,12 +179,12 @@ const { links, class: className } = Astro.props;
     gap: 12px 24px;
     padding-top: 16px;
     border-top: 1px solid var(--line);
-    font-size: 13px;
+    font-size: 17px;
   }
   ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 20px;
+    gap: 4px 28px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -195,7 +195,7 @@ const { links, class: className } = Astro.props;
     justify-content: center;
     /* Short labels like "X" still get a thumb-sized target */
     min-width: 32px;
-    min-height: 32px;
+    min-height: 44px;
     color: var(--muted);
     text-decoration: none;
     transition: color 0.2s;
