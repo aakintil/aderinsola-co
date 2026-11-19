@@ -43,9 +43,8 @@ const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
               {it.from && (
                 <>
                   <span class="from">{it.from.value}</span>
-                  <span class="arrow" aria-label="to">
-                    →
-                  </span>
+                  <span class="arrow" aria-hidden="true">→</span>
+                  <span class="visually-hidden"> to </span>
                 </>
               )}
               <span class="to">{it.to.value}</span>

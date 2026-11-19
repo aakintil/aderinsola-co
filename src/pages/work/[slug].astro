@@ -33,7 +33,11 @@ const og = d.hero.fit === 'cover' ? d.hero.src : d.card.src;
   <header class="gutter case-head" style={projectVars}>
     <div class="case-top wide">
       <a class="back" href="/"><span aria-hidden="true">←</span> All work</a>
-      <span class="label" aria-label={`Project ${index + 1} of ${total}`}>{pad2(index + 1)} / {pad2(total)}</span>
+      <span class="label"
+        ><span class="visually-hidden">{`Project ${index + 1} of ${total}`}</span><span aria-hidden="true"
+          >{pad2(index + 1)} / {pad2(total)}</span
+        ></span
+      >
     </div>
   </header>
 
