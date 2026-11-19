@@ -5,7 +5,10 @@
  */
 interface Props {
   summary: string;
+  /** Each point on its own row: text on the left, the picture or stat it goes with on the right. */
+  rows?: boolean;
 }
+const { summary, rows = false } = Astro.props;
 ---
 
 <details class="xp">
@@ -13,9 +16,9 @@ interface Props {
     <span class="icon" aria-hidden="true">
       {/* Material Symbols "expand_more" (Apache 2.0). Points down when closed, up when open. */}
       <svg viewBox="0 -960 960 960" width="18" height="18"><path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z"></path></svg>
-    </span>{Astro.props.summary}
+    </span>{summary}
   </summary>
-  <div class="more">
+  <div class:list={['more', { rows }]}>
     <slot />
   </div>
 </details>
@@ -83,6 +86,36 @@ interface Props {
   }
   .more > :global(*) {
     min-width: 0;
+  }
+  /* Rows: a narrower text column, the visual beside it, both centered on each other.
+     Phones keep the single column below, so each visual follows its point. */
+  @media (min-width: 721px) {
+    .more.rows {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      align-items: center;
+      gap: 48px 56px;
+    }
+    .more.rows > :global(p:not(.stat)) {
+      grid-column: 1;
+    }
+    .more.rows > :global(:is(.ph, .vid, .cycle, .grid, .stat)) {
+      grid-column: 2;
+    }
+  }
+  /* A number that carries a point on its own */
+  .more :global(.stat) {
+    margin: 0;
+    color: var(--muted);
+  }
+  .more :global(.stat strong) {
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--display);
+    font-weight: var(--bold);
+    font-size: clamp(40px, 4.4vw, 64px);
+    line-height: 1;
+    letter-spacing: var(--track-head);
+    color: var(--fg);
   }
   .more > :global(:is(.ph, .vid, .cycle, .grid, .draft):not([data-size='half'])) {
     grid-column: 1 / -1;

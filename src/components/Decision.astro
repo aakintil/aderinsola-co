@@ -1,34 +1,56 @@
 ---
-/** A design decision in rows, such as Chose / Moved away from / Why. */
+/**
+ * A design decision in rows, such as Chose / Moved away from / Why, under a short title
+ * so a skimmer knows what they're looking at. The first value is the call itself, so it leads.
+ */
 interface Props {
   items: { label: string; value: string }[];
+  /** Names the record: "Key decision", "Goals", "Principles". */
+  title?: string;
   /** Minimum column width in px before the rows wrap. */
   min?: number;
 }
-const { items, min = 200 } = Astro.props;
+const { items, title, min = 200 } = Astro.props;
+// Only a Chose / Why record has a lead value; goals and principles are equals.
+const lead = items[0]?.label === 'Chose';
 ---
 
-<dl class="decision" style={`--min:${min}px`}>
-  {
-    items.map((it) => (
-      <div>
-        <dt>{it.label}</dt>
-        <dd>{it.value}</dd>
-      </div>
-    ))
-  }
-</dl>
+<section class:list={['decision', { lead }]} aria-label={title}>
+  {title && <p class="title">{title}</p>}
+  <dl style={`--min:${min}px`}>
+    {
+      items.map((it) => (
+        <div>
+          <dt>{it.label}</dt>
+          <dd>{it.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
 
 <style>
   .decision {
+    max-width: 960px;
+    padding-block: 20px 22px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  /* The headline face, at a size that sits under the chapter title */
+  .title {
+    margin: 0 0 16px;
+    font-family: var(--display);
+    font-weight: var(--bold);
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: var(--track-head);
+    color: var(--fg);
+  }
+  dl {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(var(--min), 100%), 1fr));
     gap: 24px;
-    max-width: 960px;
     margin: 0;
-    padding-block: 22px;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
   }
   dt {
     font-size: 12px;
@@ -41,5 +63,9 @@ const { items, min = 200 } = Astro.props;
     margin: 6px 0 0;
     font-size: 16px;
     color: var(--fg);
+  }
+  /* The call itself */
+  .lead div:first-child dd {
+    font-weight: 600;
   }
 </style>

@@ -32,6 +32,8 @@ interface Props {
   size?: Size | undefined;
   /** 16px corners for large single images. */
   large?: boolean | undefined;
+  /** A hairline edge, for screenshots whose white background meets the page. */
+  outline?: boolean | undefined;
   priority?: boolean | undefined;
   /** Render a tiny blurred preview under the image, for the hero entrance. */
   blurUp?: boolean | undefined;
@@ -55,6 +57,7 @@ const {
   tag,
   size = 'wide',
   large = false,
+  outline = false,
   priority = false,
   blurUp = false,
   soft = true,
@@ -93,7 +96,7 @@ const preview = src && (blurUp || loadFade) ? await lqip(src) : null;
 ---
 
 <div
-  class:list={['ph', fit, { large, placeholder, soft: loadFade }, className]}
+  class:list={['ph', fit, { large, outline, placeholder, soft: loadFade }, className]}
   style={style}
   data-size={size}
   role={placeholder && SHOW_DRAFTS ? 'img' : undefined}
@@ -115,6 +118,15 @@ const preview = src && (blurUp || loadFade) ? await lqip(src) : null;
     overflow: hidden;
     border-radius: var(--radius);
     background: var(--tone);
+  }
+  /* Drawn over the image so it stays visible where the screenshot is white. */
+  .outline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--line);
+    border-radius: inherit;
+    pointer-events: none;
   }
   .large {
     border-radius: var(--radius-lg);
