@@ -7,6 +7,7 @@ import Draft from './Draft.astro';
 import Expander from './Expander.astro';
 import Media from './Media.astro';
 import MediaGrid from './MediaGrid.astro';
+import Point from './Point.astro';
 import Metrics from './Metrics.astro';
 import Quote from './Quote.astro';
 import Quotes from './Quotes.astro';
@@ -22,6 +23,7 @@ export const mdxComponents = {
   Expander,
   Media,
   MediaGrid,
+  Point,
   Metrics,
   Quote,
   Quotes,

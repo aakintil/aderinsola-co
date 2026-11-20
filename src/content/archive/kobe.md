@@ -5,7 +5,7 @@ tags: [brand, ai]
 order: 2
 meta: Brand identity · Blue Meridian
 line: A lifestyle brand for the ones who don't back down.
-text: Built from scratch with AI tools, from concept to identity to campaign visuals.
+text: Built with AI tools, starting from the concept and ending with the campaign visuals.
 tone: nike
 url: https://vimeo.com/1116782865
 images:

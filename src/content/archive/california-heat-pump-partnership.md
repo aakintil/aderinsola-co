@@ -5,7 +5,7 @@ tags: [product]
 order: 1
 meta: Content and visual design update · 2026
 line: A refreshed home for the statewide partnership behind 6M heat pumps by 2030.
-text: I helped lead the content and visual design update for the partnership's site, which points homeowners and contractors to The Switch Is On and the Contractor Hub. Content and visual design with the BDC brand and content team.
+text: I helped lead the content and visual design update for the partnership's site, which points homeowners and contractors to The Switch Is On and the Contractor Hub. I worked with the BDC brand and content team.
 tone: sio
 url: https://heatpumppartnership.org/
 images:

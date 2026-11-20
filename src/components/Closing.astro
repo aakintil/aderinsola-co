@@ -19,7 +19,12 @@ const id = `s-${slugify(eyebrow)}`;
     display: flex;
     flex-direction: column;
     gap: var(--gap-media);
-    padding-block: var(--gap-related) var(--gap-section);
+    /* Closing sections sit closer together than chapters do: half the usual space */
+    padding-block: calc(var(--gap-related) / 2) calc(var(--gap-section) / 2);
     border-top: 1px solid var(--line);
+  }
+  /* Halve the space a chapter leaves before the first closing section */
+  :global(.chapter) + .closing {
+    margin-top: calc(var(--gap-section) / -2);
   }
 </style>

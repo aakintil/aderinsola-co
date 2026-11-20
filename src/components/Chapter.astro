@@ -61,8 +61,9 @@ const { eyebrow, title, id = slugify(title) } = Astro.props;
   .ctext > :global(details) {
     margin-top: calc(var(--gap-tight) - var(--gap-text));
   }
+  /* The decision record gets clear air below an open or closed expander */
   .after {
-    margin-top: calc(var(--gap-related) - var(--gap-media));
+    margin-top: calc(var(--gap-related) - var(--gap-media) + 24px);
   }
   /* MDX paragraphs in the default slot are the chapter's sub text */
   .ctext > :global(p:not(.eyebrow)) {

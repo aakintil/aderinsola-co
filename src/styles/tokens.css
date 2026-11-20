@@ -30,6 +30,8 @@
   --p-sio: #f9ed68; /* SIO yellow */
   --p-sio-on: #14171c;
   --p-sio-text: #1d6b43; /* SIO green, the brand's other color */
+  --p-sio-alt: #20b774; /* SIO's bright green, a second fill */
+  --p-sio-alt-on: #14171c;
   --p-hub: #02245e; /* Hub sign-in navy */
   --p-hub-on: #ffffff;
   --p-hub-text: #02245e;
@@ -61,6 +63,7 @@
   --t-nike: #ece1d6;
   --t-cigna: #d8e7e8;
   --t-gok: #eee5cf;
+  --t-mist: linear-gradient(135deg, #f6f8fb, #e4e9f1 50%, #cdd7e6); /* matches the baked SIO homepage screen backgrounds */
 
   /* Type. --font-body and --font-display come from Astro's Fonts API, with metric-matched fallbacks.
      GT Flexa only exists when the licensed files were present at build time. */

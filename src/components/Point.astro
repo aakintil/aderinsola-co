@@ -1,0 +1,55 @@
+---
+/**
+ * One point inside an expander, in three steps of detail:
+ * a one-line title, a supporting sentence, then the explanation (the slot, optional).
+ */
+interface Props {
+  title: string;
+  /** The supporting sentence: the point in brief. */
+  lead: string;
+}
+const { title, lead } = Astro.props;
+const hasBody = Astro.slots.has('default');
+---
+
+<div class="point">
+  <h3>{title}</h3>
+  <p class="brief">{lead}</p>
+  {hasBody && <div class="body"><slot /></div>}
+</div>
+
+<style>
+  .point {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: var(--bold);
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: var(--track-head);
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  .brief {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .body :global(p) {
+    margin: 0;
+  }
+</style>

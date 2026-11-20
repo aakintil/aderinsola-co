@@ -74,7 +74,7 @@ const { summary, rows = false } = Astro.props;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
-    gap: 24px 48px;
+    gap: 36px 48px;
     margin-top: 12px;
     padding: 32px 36px 36px;
     border: 1px solid var(--line);
@@ -88,19 +88,27 @@ const { summary, rows = false } = Astro.props;
     min-width: 0;
   }
   /* A number that carries a point on its own */
+  /* A number that stands on its own, as a block of project color like the metric tiles.
+     A page can pass --stat-bg / --stat-on to use a brand's second color. */
   .more :global(.stat) {
+    --on: var(--stat-on, var(--on-project));
     margin: 0;
-    color: var(--muted);
+    padding: 28px 30px 30px;
+    border-radius: 12px;
+    font-size: 17px;
+    line-height: 1.45;
+    background: var(--stat-bg, var(--project));
+    color: color-mix(in srgb, var(--on) 90%, var(--stat-bg, var(--project)));
   }
   .more :global(.stat strong) {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
     font-family: var(--display);
     font-weight: var(--bold);
     font-size: clamp(40px, 4.4vw, 64px);
     line-height: 1;
     letter-spacing: var(--track-head);
-    color: var(--fg);
+    color: var(--on);
   }
   .more > :global(:is(.ph, .vid, .cycle, .grid, .draft):not([data-size='half'])) {
     grid-column: 1 / -1;
@@ -113,7 +121,7 @@ const { summary, rows = false } = Astro.props;
       align-items: center;
       gap: 48px 56px;
     }
-    .more.rows > :global(p:not(.stat)) {
+    .more.rows > :global(:is(p:not(.stat), .point)) {
       grid-column: 1;
     }
     .more.rows > :global(:is(.ph, .vid, .cycle, .grid, .stat)) {

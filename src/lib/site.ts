@@ -1,7 +1,7 @@
 export const site = {
   name: 'Ade Akintilo',
   role: 'Lead Product Designer',
-  description: 'A lead product designer who turns complex systems into products people actually use.',
+  description: 'A lead product designer who turns complex systems into products people use.',
   // Leave empty until confirmed. Empty values render as drafts (hidden in production).
   email: 'aderinsola.akintilo@gmail.com',
   resume: '/Aderinsola-Akintilo-Resume.pdf',
