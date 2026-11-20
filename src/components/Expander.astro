@@ -87,21 +87,6 @@ const { summary, rows = false } = Astro.props;
   .more > :global(*) {
     min-width: 0;
   }
-  /* Rows: a narrower text column, the visual beside it, both centered on each other.
-     Phones keep the single column below, so each visual follows its point. */
-  @media (min-width: 721px) {
-    .more.rows {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-      align-items: center;
-      gap: 48px 56px;
-    }
-    .more.rows > :global(p:not(.stat)) {
-      grid-column: 1;
-    }
-    .more.rows > :global(:is(.ph, .vid, .cycle, .grid, .stat)) {
-      grid-column: 2;
-    }
-  }
   /* A number that carries a point on its own */
   .more :global(.stat) {
     margin: 0;
@@ -119,6 +104,21 @@ const { summary, rows = false } = Astro.props;
   }
   .more > :global(:is(.ph, .vid, .cycle, .grid, .draft):not([data-size='half'])) {
     grid-column: 1 / -1;
+  }
+  /* Rows: a narrower text column, the visual beside it, both centered on each other.
+     Phones keep the single column below, so each visual follows its point. */
+  @media (min-width: 721px) {
+    .more.rows {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      align-items: center;
+      gap: 48px 56px;
+    }
+    .more.rows > :global(p:not(.stat)) {
+      grid-column: 1;
+    }
+    .more.rows > :global(:is(.ph, .vid, .cycle, .grid, .stat)) {
+      grid-column: 2;
+    }
   }
   .more :global(p) {
     margin: 0;
