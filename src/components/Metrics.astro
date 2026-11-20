@@ -6,6 +6,7 @@
  *   a split: `parts` that add up to about 100%, drawn as one stacked bar.
  * Values are strings like "5.8%"; the bars read the number from them.
  * Tiles are filled with the project's color; text and bars use its on-fill color.
+ * `quiet` draws plain white tiles with smaller numbers, for results that aren't wins.
  */
 interface Point {
   value: string;
@@ -18,18 +19,21 @@ interface Item {
   to: Point;
   parts?: { label: string; value: number }[];
   note?: string;
+  /** What I'd do about it, shown last. */
+  next?: string;
 }
 interface Props {
   items: Item[];
   /** Small print under the tiles, e.g. where the numbers come from. */
   source?: string;
+  quiet?: boolean;
 }
-const { items, source } = Astro.props;
+const { items, source, quiet = false } = Astro.props;
 const num = (s: string) => parseFloat(s.replace(/[^\d.]/g, '')) || 0;
 const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
 ---
 
-<div class="metrics">
+<div class:list={['metrics', { quiet }]}>
   <ul>
     {
       items.map((it) => {
@@ -85,6 +89,12 @@ const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
               </div>
             )}
             {it.note && <span class="note">{it.note}</span>}
+            {it.next && (
+              <p class="next">
+                <span>Next</span>
+                {it.next}
+              </p>
+            )}
           </li>
         );
       })
@@ -102,7 +112,7 @@ const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
     padding: 0;
     list-style: none;
   }
-  .metrics > ul > li {
+  .metrics:not(.quiet) > ul > li {
     --fg: var(--on-project);
     --fg-2: color-mix(in srgb, var(--on-project) 90%, var(--project));
     --muted: color-mix(in srgb, var(--on-project) 90%, var(--project));
@@ -110,12 +120,28 @@ const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
     --bar-was: color-mix(in srgb, var(--on-project) 38%, var(--project));
     --bar-mid: color-mix(in srgb, var(--on-project) 62%, var(--project));
     --mark: var(--on-project);
+    background: var(--project);
+  }
+  /* Plain tiles in the page's own ink, so misses don't look like wins */
+  .quiet > ul > li {
+    --panel: color-mix(in srgb, var(--fg) 8%, transparent);
+    --bar-was: color-mix(in srgb, var(--fg) 30%, var(--surface));
+    --mark: var(--fg);
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .quiet .to {
+    font-size: 32px;
+  }
+  .quiet .from {
+    font-size: 22px;
+  }
+  .metrics > ul > li {
     display: flex;
     flex-direction: column;
     gap: 14px;
     padding: 24px 24px 26px;
     border-radius: 12px;
-    background: var(--project);
   }
   .label {
     font-size: 14px;
@@ -223,6 +249,24 @@ const pct = (n: number) => `${Math.max(2, Math.min(100, n)).toFixed(1)}%`;
     font-size: 14px;
     line-height: 1.5;
     color: var(--muted);
+  }
+  .next {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: auto 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--fg);
+  }
+  .next span {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--label);
   }
   .source {
     margin: 14px 0 0;

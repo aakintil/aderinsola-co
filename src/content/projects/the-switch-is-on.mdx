@@ -234,36 +234,24 @@ When the team redesigned the Incentive Finder's detail view in April 2026, they 
 
 <Chapter eyebrow="05 · What didn't move" title="The Hub made responses visible. Not every contractor responds.">
 
-Fewer searches turn into leads than when we started, and a third of leads still go unanswered. The card is the next thing to fix.
+Fewer searches turn into leads than when we started. And while far more leads get answered than before, about a third still never do.
 
   <Metrics
     slot="after"
+    quiet
     items={[
       {
         label: 'Contractor searches that end in a lead',
         from: { value: '5.8%', when: 'Q4 2024' },
         to: { value: '3.4%', when: 'Q3 2026' },
         note: 'Most of the drop comes after the profile view: profile viewers sending a lead fell from 16.5% to 11.3%.',
-      },
-      {
-        label: 'Lead forms finished once started',
-        from: { value: '55%', when: 'Oct 2024 to Jul 2025' },
-        to: { value: '47%', when: 'Dec 2025 to Oct 2026' },
+        next: 'Fix the card, since that’s where people decide.',
       },
       {
         label: 'Contractors who finish onboarding',
         to: { value: '36%', when: 'of those who start' },
         note: 'The biggest drop is at the licenses step, where 44% leave before basic info.',
-      },
-      {
-        label: 'Leads never acknowledged',
-        to: { value: '32%' },
-        parts: [
-          { label: 'Accepted', value: 56 },
-          { label: 'Declined', value: 11 },
-          { label: 'Never acknowledged', value: 32 },
-        ],
-        note: 'Every lead in the 12 months to Aug 2026.',
+        next: 'The licenses step is the next thing I’d fix.',
       },
     ]}
     source="Lead outcomes come from the production database. Behavior figures come from Mixpanel: unique users, bot traffic filtered out, with March to June 2026 excluded where bots skewed it."
