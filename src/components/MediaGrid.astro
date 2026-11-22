@@ -29,6 +29,9 @@ const columns = cols ? `repeat(${cols}, minmax(0, 1fr))` : `repeat(auto-fit, min
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
+    .grid.stack {
+      grid-template-columns: minmax(0, 1fr);
+    }
     /* Odd count: the first image leads at full width. Counted by div, since Astro may inline a script between images. */
     .grid:not(.stack) > :global(div:first-of-type:nth-last-of-type(2n + 3)) {
       grid-column: 1 / -1;
