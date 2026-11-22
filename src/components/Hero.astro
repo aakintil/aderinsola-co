@@ -12,6 +12,8 @@ interface Props {
 }
 const { hero, tone } = Astro.props;
 const flat = hero.fit === 'flat';
+// A cover hero with a ratio is a composed image: on phones it keeps that ratio, so it shrinks to fit instead of cropping.
+const fitPhone = hero.fit === 'cover' && hero.ratio;
 ---
 
 <div class="bleed hero">
@@ -24,7 +26,8 @@ const flat = hero.fit === 'flat';
     focus={hero.focus}
     ratio={flat ? hero.ratio : undefined}
     height={flat ? undefined : 'clamp(320px, 52vw, 720px)'}
-    style={flat ? 'max-height:780px;margin-inline:auto' : undefined}
+    style={flat ? 'max-height:780px;margin-inline:auto' : fitPhone ? `--phone-ratio:${hero.ratio}` : undefined}
+    class={fitPhone ? 'fit-phone' : undefined}
     size="full"
     large
     priority
@@ -41,5 +44,11 @@ const flat = hero.fit === 'flat';
   .hero > :global(*) {
     max-width: var(--hero-max);
     margin-inline: auto;
+  }
+  @media (max-width: 720px) {
+    .hero > :global(.fit-phone) {
+      height: auto !important;
+      aspect-ratio: var(--phone-ratio);
+    }
   }
 </style>
