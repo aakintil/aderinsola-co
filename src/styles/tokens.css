@@ -64,6 +64,7 @@
   --t-cigna: #d8e7e8;
   --t-gok: #eee5cf;
   --t-mist: linear-gradient(135deg, #f6f8fb, #e4e9f1 50%, #cdd7e6); /* matches the baked SIO homepage screen backgrounds */
+  --t-paper: linear-gradient(135deg, #faf8f3, #e9edf3 55%, #d3dce9); /* off-white to mist, matches the baked Hub hero */
 
   /* Type. --font-body and --font-display come from Astro's Fonts API, with metric-matched fallbacks.
      GT Flexa only exists when the licensed files were present at build time. */
