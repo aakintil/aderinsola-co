@@ -44,6 +44,8 @@
   --p-cigna: #83c8ee; /* OneGuide sky blue */
   --p-cigna-on: #083a55;
   --p-cigna-text: #0b496a; /* Cigna wordmark navy */
+  /* Runs left to right, so the header and the hero below it line up without a seam */
+  --p-cigna-field: linear-gradient(90deg, #b3ddf4, #8fcdef 50%, #72bde7);
   --p-nike: #23ca85; /* Fourtrack green */
   --p-nike-on: #14171c;
   --p-nike-text: #007a45;

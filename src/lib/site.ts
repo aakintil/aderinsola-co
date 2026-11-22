@@ -14,9 +14,10 @@ export const site = {
 export const tones = ['sio', 'hub', 'sor', 'sor2', 'nike', 'cigna', 'gok'] as const;
 export type Tone = (typeof tones)[number];
 
-/** Inline style that gives an element a project's three colors (see the project colors in tokens.css). */
+/** Inline style that gives an element a project's colors (see the project colors in tokens.css).
+ *  --project-field paints the header and the top of the hero: the project color, or a --p-x-field gradient if it has one. */
 export const projectColors = (t: Tone) =>
-  `--project:var(--p-${t});--on-project:var(--p-${t}-on);--project-text:var(--p-${t}-text)`;
+  `--project:var(--p-${t});--on-project:var(--p-${t}-on);--project-text:var(--p-${t}-text);--project-field:var(--p-${t}-field, linear-gradient(var(--p-${t}), var(--p-${t})))`;
 
 export const pad2 = (n: number) => String(n).padStart(2, '0');
 
