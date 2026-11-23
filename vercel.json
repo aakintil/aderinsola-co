@@ -28,6 +28,11 @@
       "source": "/veckta",
       "destination": "/archive",
       "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/",
+      "permanent": true
     }
   ],
   "headers": [
