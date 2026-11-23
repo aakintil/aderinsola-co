@@ -5,7 +5,7 @@ tags: [brand, ai]
 order: 3
 meta: Branding · Blue Meridian
 line: AI-enabled brand identity.
-text: '[Two sentences on DARA.]'
+text: 'An exploration of perfume bottle styles and materials for DARA: built in Nigeria, made for the world.'
 tone: sor2
 images:
   - src: archive/dara-options.webp

@@ -12,6 +12,7 @@
     "dev": "astro dev",
     "prebuild": "node scripts/fetch-fonts.mjs",
     "build": "astro check && astro build",
+    "postbuild": "node scripts/check-links.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "drafts": "node scripts/list-drafts.mjs",

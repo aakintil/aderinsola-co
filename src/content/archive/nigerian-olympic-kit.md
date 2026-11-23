@@ -5,7 +5,7 @@ tags: [brand, ai]
 order: 4
 meta: Branding · Blue Meridian · 2024
 line: AI-enabled kit concept.
-text: '[Two sentences on the Olympic kit.]'
+text: 'An exploration of the styles the Nigerian Olympic team should have worn.'
 tone: cigna
 images:
   - src: archive/olympic-kit-looks.webp

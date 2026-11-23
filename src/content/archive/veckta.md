@@ -5,7 +5,7 @@ tags: [product]
 order: 5
 meta: Product design
 line: A marketplace for an energy transition platform.
-text: '[Two sentences on Veckta.]'
+text: 'I led UX and UI for a two-sided marketplace that connects energy buyers with vetted suppliers, including the Rapid Ranker for comparing proposals. VECKTA reports bids now arrive in 4 weeks instead of months, with 30 to 50% cost savings.'
 tone: sio
 url: https://veckta.com/
 images:

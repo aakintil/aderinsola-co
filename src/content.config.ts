@@ -79,7 +79,7 @@ const archive = defineCollection({
     line: z.string(),
     text: z.string(),
     /** Live site or write-up. The whole tile links here. */
-    url: z.string().url().optional(),
+    url: z.url({ protocol: /^https?$/ }).optional(),
     images: z.array(z.object({ src: z.string(), alt: z.string() })).default([]),
     tone,
     draft: z.boolean().default(false),

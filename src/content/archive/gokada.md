@@ -5,7 +5,7 @@ tags: [product]
 order: 3
 meta: Chief Product Officer · Lagos
 line: Daily rides from 200 to 2,000+.
-text: '[Two sentences on Gokada: what you led as CPO and what changed.]'
+text: 'As CPO I led product and design for the rider and driver apps, and set the roadmap with finance, operations and engineering. Recommendations built from research with 500+ customers grew daily rides 10x.'
 tone: gok
 url: https://www.gokada.ng/
 images:
