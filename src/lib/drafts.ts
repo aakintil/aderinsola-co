@@ -1,7 +1,7 @@
 /**
  * Draft content.
  *
- * Placeholder copy is written in square brackets, for example "Nike Sport Research Lab · [Year]".
+ * Placeholder copy is written in square brackets, for example "Nike Sports Research Lab · [Year]".
  * Wrap whole blocks in <Draft>. Drafts show (highlighted) in dev and on Vercel preview deploys,
  * and are removed from production HTML. Run `npm run drafts` to list them all.
  */

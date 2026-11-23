@@ -6,7 +6,12 @@
   "redirects": [
     {
       "source": "/nike",
-      "destination": "/work/nike-sport-research-lab",
+      "destination": "/work/nike-sports-research-lab",
+      "permanent": true
+    },
+    {
+      "source": "/work/nike-sport-research-lab",
+      "destination": "/work/nike-sports-research-lab",
       "permanent": true
     },
     {
