@@ -8,12 +8,15 @@ interface Props {
   number: number;
 }
 const { project, number } = Astro.props;
-const { card, tone, title } = project.data;
+const { hero, tone, title } = project.data;
+// The next project's own hero, so the picture you click is the one you land on.
+// Kept at the hero's proportions; a cover hero without a set ratio shows at about the 2:1 it has on desktop.
+const ratio = hero.ratio ?? (hero.fit === 'cover' ? '2/1' : undefined);
 ---
 
 <a class="next" href={projectHref(project)}>
   <span class="label">Next · {pad2(number)}</span>
-  <Media src={card.src} alt="" fit={card.fit} tone={tone} bg={card.bg} ratio="21/9" large={card.fit !== 'flat'} />
+  <Media src={hero.src} alt="" fit={hero.fit} tone={hero.tone ?? tone} bg={hero.bg} focus={hero.focus} ratio={ratio} large />
   <span class="t">{title} <span aria-hidden="true">→</span></span>
 </a>
 
